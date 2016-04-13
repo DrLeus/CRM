@@ -91,13 +91,13 @@ public class MainController {
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("DROP TABLE public.goods");
         stmt.executeUpdate("CREATE TABLE goods(" +
-                "id INTEGER PRIMARY KEY," +
+                "id NUMERIC PRIMARY KEY," +
                 "code TEXT UNIQUE NOT NULL, " +
                 "codeprevious TEXT UNIQUE NOT NULL, " +
                 "name TEXT NOT NULL, " +
                 "net_price TEXT NOT NULL, " +
                 "cusmomer_price TEXT NOT NULL, " +
-                "id_groups INTEGER /*PRIMARY KEY*/ NOT NULL)");
+                "id_groups NUMERIC /*PRIMARY KEY*/ NOT NULL)");
         stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
                 "VALUES (1, 'H77435', '583327893', 'SEAL SV-25 EPDM CAT 2', '2,04', '22,88', '1')");
         stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
@@ -108,6 +108,45 @@ public class MainController {
                 "VALUES (4, 'H77509', '583347893', 'SEAL SV-65 EPDM CAT 2', '4,00', '30,59', '1')");
         stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
                 "VALUES (5, 'H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
+
+        // create table suppliers
+        stmt.executeUpdate("DROP TABLE public.suppliers");
+        stmt.executeUpdate("CREATE TABLE suppliers(" +
+                "id NUMERIC PRIMARY KEY," +
+                "name TEXT NOT NULL, " +
+                "respon_persone TEXT NOT NULL, " +
+                "phone TEXT UNIQUE NOT NULL, " +
+                "address TEXT NOT NULL)");
+        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
+                "VALUES (1, 'SPX Kolding', 'Niels Raevsager', '+48 3300 000 000', 'Denmark, Kolding')");
+        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
+                "VALUES (2, 'SPX Silkiborg', 'Conni Dones', '+48 430 000 000', 'Denmark, Silkiborg')");
+        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
+                "VALUES (3, 'SPX Unna', 'Isabelle Teillere', '+44 00 000 000', 'Germany, Unna')");
+        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
+                "VALUES (4, 'SPX Bydgosh', 'Katarzyna Drozden', '+42 00 000 000', 'Poland, Bydgosh')");
+        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
+                "VALUES (5, 'SPX Hungary', 'Molnar Mols', '+45 00 000 000', 'Hungary, Budapesht')");
+
+
+        // create table transport_operators
+        stmt.executeUpdate("DROP TABLE public.transport");
+        stmt.executeUpdate("CREATE TABLE transport(" +
+                "id NUMERIC PRIMARY KEY," +
+                "name TEXT NOT NULL, " +
+                "respon_persone TEXT NOT NULL, " +
+                "phone TEXT UNIQUE NOT NULL, " +
+                "address TEXT NOT NULL)");
+        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
+                "VALUES (1, 'CAT', 'Alan Juret', '+38 044 111 11 11', 'Kiev, Borshchagovka')");
+        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
+                "VALUES (2, 'Nova Pochta', 'Alex Dumin', '+38 044 222 22 22', 'Kiev, Solomenka')");
+        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
+                "VALUES (3, 'TNT', 'Inna Krug', '+38 044 333 33 33', 'Kiev, Darnica')");
+        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
+                "VALUES (4, 'Auto Lux', 'Katerina Strogonova', '+38 044 444 44 44', 'Kiev region, Borispol')");
+
+
         stmt.close();
     }
 
