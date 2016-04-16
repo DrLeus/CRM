@@ -89,7 +89,7 @@ public class MainController {
 
         // insert temp data
         Statement stmt = connection.createStatement();
-        stmt.executeUpdate("DROP TABLE public.goods");
+        stmt.executeUpdate("DROP TABLE public.goods CASCADE");
         stmt.executeUpdate("CREATE TABLE goods(" +
                 "id NUMERIC PRIMARY KEY," +
                 "code TEXT UNIQUE NOT NULL, " +
@@ -110,10 +110,10 @@ public class MainController {
                 "VALUES (5, 'H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
 
         // create table suppliers
-        stmt.executeUpdate("DROP TABLE public.suppliers");
+        stmt.executeUpdate("DROP TABLE public.suppliers CASCADE");
         stmt.executeUpdate("CREATE TABLE suppliers(" +
                 "id NUMERIC PRIMARY KEY," +
-                "name TEXT NOT NULL, " +
+                "name TEXT UNIQUE NOT NULL, " +
                 "respon_persone TEXT NOT NULL, " +
                 "phone TEXT UNIQUE NOT NULL, " +
                 "address TEXT NOT NULL)");
@@ -130,12 +130,12 @@ public class MainController {
 
 
         // create table transport_operators
-        stmt.executeUpdate("DROP TABLE public.transport");
+        stmt.executeUpdate("DROP TABLE public.transport CASCADE");
         stmt.executeUpdate("CREATE TABLE transport(" +
                 "id NUMERIC PRIMARY KEY," +
-                "name TEXT NOT NULL, " +
+                "name TEXT UNIQUE NOT NULL, " +
                 "respon_persone TEXT NOT NULL, " +
-                "phone TEXT UNIQUE NOT NULL, " +
+                "phone TEXT NOT NULL, " +
                 "address TEXT NOT NULL)");
         stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
                 "VALUES (1, 'CAT', 'Alan Juret', '+38 044 111 11 11', 'Kiev, Borshchagovka')");
@@ -145,6 +145,44 @@ public class MainController {
                 "VALUES (3, 'TNT', 'Inna Krug', '+38 044 333 33 33', 'Kiev, Darnica')");
         stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
                 "VALUES (4, 'Auto Lux', 'Katerina Strogonova', '+38 044 444 44 44', 'Kiev region, Borispol')");
+
+
+        // create table Employee
+        stmt.executeUpdate("DROP TABLE public.employee CASCADE");
+        stmt.executeUpdate("CREATE TABLE employee(" +
+                "id NUMERIC PRIMARY KEY," +
+                "name TEXT UNIQUE NOT NULL, " +
+                "surname TEXT NOT NULL, " +
+                "position TEXT UNIQUE NOT NULL, " +
+                "past_position TEXT NOT NULL, " +
+                "phone TEXT UNIQUE NOT NULL)");
+        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
+                "VALUES (1, 'Elena', 'Tupota', 'director', 'accounter', '+38 050 111 11 11')");
+        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
+                "VALUES (2, 'Inna', 'Voinova', 'chief account', 'accounter', '+38 050 222 22 22')");
+        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
+                "VALUES (3, 'Valentin', 'Korop', 'service manager', '-', '+38 050 333 33 33')");
+        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
+                "VALUES (4, 'Yana', 'Pavlik', 'assistance', '-', '+38 050 444 44 44')");
+
+        // create table ListIncomingInvoice
+        stmt.executeUpdate("DROP TABLE public.ListIncomingInvoices CASCADE");
+        stmt.executeUpdate("CREATE TABLE ListIncomingInvoices(" +
+                "id NUMERIC PRIMARY KEY," +
+                "name TEXT REFERENCES suppliers(name), " +
+                "data timestamp NOT NULL, " +
+                "transport TEXT REFERENCES transport(name), " +
+                "response_person TEXT REFERENCES employee(name), " +
+                "id_incoming_goods NUMERIC UNIQUE NOT NULL)");
+        stmt.executeUpdate("INSERT INTO public.ListIncomingInvoices (id, name, data, transport, response_person, id_incoming_goods)" +
+                "VALUES (1, 'SPX Kolding', '2004-10-19 10:23:54', 'TNT', 'Elena', 1)");
+
+        stmt.executeUpdate("DROP TABLE public.IncomingGoods CASCADE");
+        stmt.executeUpdate("CREATE TABLE IncomingGoods(" +
+                "id NUMERIC PRIMARY KEY REFERENCES ListIncomingInvoices(id_incoming_goods)," +
+                "code TEXT REFERENCES goods(code))");
+        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code)" +
+                "VALUES (1, 'H77435')");
 
 
         stmt.close();
