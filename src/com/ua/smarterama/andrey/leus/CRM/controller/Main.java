@@ -1,12 +1,16 @@
 package com.ua.smarterama.andrey.leus.CRM.controller;
 
 
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
+
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] argv) {
 
-        MainController controller = new MainController();
+        MainController controller = new MainController(new Console());
+
         try {
             controller.run();
         } catch (SQLException e) {
