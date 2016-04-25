@@ -17,63 +17,128 @@ public class MainController {
         this.view = view;
     }
 
-    public void run() throws SQLException, ClassNotFoundException {
+    public MainController() {
+    }
 
-        connect();
+    public void run(MainController controller) throws SQLException, ClassNotFoundException {
 
-        initialDB.setupTempDates(connection);
+        connect("CRM", "postgres","postgres");
 
+//        initialDB.setupTempDates(connection);
+
+        // System.out.println(getAmountRowTable("goods")); // get quantity of rows of table used name of table
+//         System.out.println(Arrays.toString(getTableData("suppliers"))); // get table
+
+//        System.exit(0);
+
+        mainCommander(controller);
+    }
+
+    public void mainCommander(MainController controller) throws SQLException, ClassNotFoundException {
         doHelp();
 
         while (true) {
 
+            view.write("\nВведите команду: ");
+
             String input = view.read();
 
-            if (input.equals("addRT")) {
+            if (input.equals("addIncomingOrder") | input.equals("addIO")) {
 //                doList();
-            } else if (input.equals("incoming")) {
+            } else if (input.equals("store")) {
 //                doFind(command);
-            } else if (input.equals("addInvoice")) {
+            } else if (input.equals("addOrder") | input.equals("addOO")) {
 //                doFind(command);
-            } else if (input.equals("disposal")) {
-//                doFind(command);
+            } else if (input.equals("writeoff")) {
+//                report.reportGoods(connection);
+            } else if (input.equals("catalog")) {
+                report.commanderCatalog(connection, view, controller);
             } else if (input.equals("report")) {
-                report.reportGoods(connection);
-            } else if (input.equals("listIn")) {
-                report.reportListIncommingInvoices(connection);
-            } else if (input.equals("listOut")) {
+//                report.reportGoods(connection);
+            } else if (input.equals("listIncomingOrders") | input.equals("listIO")) {
+//                report.reportIncommingOrders(connection);
+            } else if (input.equals("listOrders") | input.equals("listOO")) {
 //                doFind(command);
             } else if (input.equals("help")) {
                 doHelp();
             } else if (input.equals("exit")) {
-                view.write("До скорой встречи!");
+                view.write("\nДо скорой встречи!");
                 System.exit(0);
             } else {
-                System.out.println("Несуществующая команда: " + input);
+                view.write("\nНесуществующая команда: " + input);
             }
         }
     }
 
-    private void connect() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/CRM", "postgres",
-                "postgres");
-    }
+    public void connect(String database, String userName, String password) {
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Please add jdbc jar to project.", e);
+            }
+            try {
+                connection = DriverManager.getConnection(
+                        "jdbc:postgresql://localhost:5432/" + database, userName,
+                        password);
+            } catch (SQLException e) {
+                connection = null;
+                throw new RuntimeException(
+                        String.format("Cant get connection for model:%s user:%s",
+                                database, userName),
+                        e);
+            }
+        }
 
-    private static void doHelp() {
-        System.out.print("Данный модуль позволяет реализовать следующие операции:\n" +
-                "- создание приходной накладной: команда “addRT”;\n" +
-                "- оприходование товара: команда “incoming” затем ввести id приходной накладной \n" +
-                "- создание расходной накладной: команда “addInvoice”\n" +
-                "- списание товар: команда “disposal” затем ввести id расходной накладной \n" +
-                "- отчет об остатках на складах: команда “report”\n" +
-                "- предоставление списка приходных накладных: команда “listIn”\n" +
-                "- предоставление списка расходных накладных: команда “listOut”\n" +
+//        Class.forName("org.postgresql.Driver");
+//        connection = DriverManager.getConnection(
+//                "jdbc:postgresql://localhost:5432/CRM", "postgres",
+//                "postgres");
+//    }
+
+    private void doHelp() {
+        view.write("\nДанный модуль позволяет реализовать следующие операции:\n" +
+                "- создание приходной накладной: команда “addIncomingOrder” или “addIO”;\n" +
+                "- оприходование товара: команда “store” затем ввести id приходной накладной (store/id);\n" +
+                "- создание расходной накладной: команда “addOrder” или “addOO”;\n" +
+                "- списание товар: команда “writeoff” затем ввести id расходной накладной (writeoff/id); \n" +
+                "- отчет об остатках на складах: команда “report”;\n" +
+                "- справочник товаров: команда “catalog”;\n" +
+                "- предоставление списка приходных накладных: команда “listIncomingOrders” или “listIO”;\n" +
+                "- предоставление списка расходных накладных: команда “listOrders” или “listOO”\n" +
                 "Дополнительные команды (list, add, update, delete) доступны в соответствующих разделах.\n" +
                 "Для вызова справки введите “help”.\n" +
-                "Команда “exit” позволяет выйти на уровень вверх или из модуля.\n" +
-                "Введите команду:\n");
+                "Команда “exit” позволяет выйти на уровень вверх или из модуля.\n");
+    }
+
+    private int getAmountRowTable(String tableName) throws SQLException {
+        Statement stmt = connection.createStatement();
+
+        ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM public." + tableName);
+        rsCount.next();
+        int size = rsCount.getInt(1);
+        rsCount.close();
+        return size;
+    }
+
+    public String[] getTableData (String tableName) throws SQLException {
+        int size  = getAmountRowTable(tableName);
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName);
+        ResultSetMetaData rsmd = rs.getMetaData();
+        String[] result = new String[size];
+        int index = 0;
+        while (rs.next()){
+            String str = "\n";
+            for (int i = 1; i <= rsmd.getColumnCount() ; i++) {
+                str += String.format("%-16s", rs.getObject(i));
+                str += "\t\t";
+            }
+            result[index] = str;
+            index++;
+        }
+        rs.close();
+        stmt.close();
+        return result;
     }
 }
 

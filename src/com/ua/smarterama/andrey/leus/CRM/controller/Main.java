@@ -12,7 +12,7 @@ public class Main {
         MainController controller = new MainController(new Console());
 
         try {
-            controller.run();
+            controller.run(controller);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

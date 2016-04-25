@@ -5,20 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Created by Admin on 17.04.2016.
- */
 public class InitialDB {
 
-//    private Connection connection;
-
     public void setupTempDates(Connection connection) throws ClassNotFoundException, SQLException {
-//        Class.forName("org.postgresql.Driver");
-//        this.connection = DriverManager.getConnection(
-//                "jdbc:postgresql://localhost:5432/CRM", "postgres",
-//                "postgres");
 
-        // insert temp data
+        // insert table goods
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("DROP TABLE public.goods CASCADE");
         stmt.executeUpdate("CREATE TABLE goods(" +
@@ -97,23 +88,33 @@ public class InitialDB {
                 "VALUES (4, 'Yana', 'Pavlik', 'assistance', '-', '+38 050 444 44 44')");
 
         // create table ListIncomingInvoice
-        stmt.executeUpdate("DROP TABLE public.ListIncomingInvoices CASCADE");
-        stmt.executeUpdate("CREATE TABLE ListIncomingInvoices(" +
-                "id NUMERIC PRIMARY KEY," +
+        stmt.executeUpdate("DROP TABLE public.ListIncomingOrders CASCADE");
+        stmt.executeUpdate("CREATE TABLE ListIncomingOrders(" +
+                "id NUMERIC PRIMARY KEY UNIQUE NOT NULL," +
                 "name TEXT REFERENCES suppliers(name), " +
                 "data timestamp NOT NULL, " +
                 "transport TEXT REFERENCES transport(name), " +
-                "response_person TEXT REFERENCES employee(surname), " +
-                "id_incoming_goods NUMERIC UNIQUE NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.ListIncomingInvoices (id, name, data, transport, response_person, id_incoming_goods)" +
-                "VALUES (1, 'SPX Kolding', '2004-10-19 10:23:54', 'TNT', 'Tupota', 1)");
+                "response_person TEXT REFERENCES employee(surname))");
+        stmt.executeUpdate("INSERT INTO public.ListIncomingOrders (id, name, data, transport, response_person)" +
+                "VALUES (1, 'SPX Kolding', '2015-10-19 10:23:54', 'TNT', 'Tupota')");
+        stmt.executeUpdate("INSERT INTO public.ListIncomingOrders (id, name, data, transport, response_person)" +
+                "VALUES (2, 'SPX Unna', '2015-11-29 11:23:54', 'TNT', 'Korop')");
+        stmt.executeUpdate("INSERT INTO public.ListIncomingOrders (id, name, data, transport, response_person)" +
+                "VALUES (3, 'SPX Silkiborg', '2015-12-09 15:23:54', 'TNT', 'Pavlik')");
 
+
+        // create table goods for IncomingInvoice
         stmt.executeUpdate("DROP TABLE public.IncomingGoods CASCADE");
         stmt.executeUpdate("CREATE TABLE IncomingGoods(" +
-                "id NUMERIC PRIMARY KEY REFERENCES ListIncomingInvoices(id_incoming_goods)," +
-                "code TEXT REFERENCES goods(code))");
-        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code)" +
-                "VALUES (1, 'H77435')");
+                "id NUMERIC PRIMARY KEY," +
+                "code TEXT REFERENCES goods(code)," +
+                "id_incomingOrder NUMERIC REFERENCES ListIncomingOrders(id))");
+        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
+                "VALUES (1, 'H77435', 1)");
+        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
+                "VALUES (2, 'H77509', 1)");
+        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
+                "VALUES (3, 'H77435', 1)");
 
 
         stmt.close();
