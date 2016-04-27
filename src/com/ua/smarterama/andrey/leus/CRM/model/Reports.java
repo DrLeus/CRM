@@ -32,6 +32,8 @@ public class Reports {
                 doHelpCatalog(view);
             } else if (input.equals("exit")) {
                 controller.mainCommander(controller);
+            } else if (input.equals("fexit")) {
+                System.exit(0);
             } else {
                 System.out.println("\nНесуществующая команда: " + input);
             }
@@ -40,34 +42,54 @@ public class Reports {
 
     private void add(Connection connection, View view) {
 
-        view.write("\nВведите код товара в формате Н75968");
-        String cod = view.read();
+        view.write("Для внесения нового товара неоходимо ввести (каждое поле через Enter):\n" +
+        "  \t код, старый код, имя товара, входящая цена, цена отпускная, группа товара;\n\n" +
+                "\t команда exit прерывает внесение данных и возвращает в модуль catalog \n");
 
-        view.write("Введите старый код товара 583327893");
+        view.write("\nВведите код товара в формате Н75968");
+        String code = view.read();
+        if (code.equals("exit")){doHelpCatalog(view);return;}
+        else if (code.isEmpty()) { view.write("\n\nПоле не может быть пустым, начните заново\n");
+            add(connection,view);return;}
+
+        view.write("Введите старый код товара в формате 583327893");
         String oldCode = view.read();
+        if (oldCode.equals("exit")){doHelpCatalog(view);return;}
 
         view.write("Введите наименование товара");
-        String names = view.read();
+        String name = view.read();
+        if (name.equals("exit")){doHelpCatalog(view);return;}
+        else if (name.isEmpty()) { view.write("\nПоле не может быть пустым, начните заново\n");
+            add(connection,view);return;}
 
         view.write("Введите net_price товара, в формате 22,22");
-        String net_prices = view.read();
+        String net_price = view.read();
+        if (net_price.equals("exit")){doHelpCatalog(view);return;}
+        else if (net_price.isEmpty()) { view.write("\n\nПоле не может быть пустым, начните заново\n");
+            add(connection,view);return;}
 
         view.write("Введите customer_price товара, в формате 22,22");
-        String customer_prices = view.read();
+        String customer_price = view.read();
+        if (customer_price.equals("exit")){doHelpCatalog(view);return;}
+        else if (customer_price.isEmpty()) { view.write("\n\nПоле не может быть пустым, начните заново\n");
+            add(connection,view);return;}
 
         view.write("Введите группу товара");
         int id_group = Integer.parseInt(view.read());
-
-
+        if ((String.valueOf(id_group)).equals("exit")){doHelpCatalog(view);return;}
+        else if ((String.valueOf(id_group)).isEmpty()) { view.write("\n\nПоле не может быть пустым, начните заново\n");
+            add(connection,view);return;}
 
 
         try {
             Statement stmt = connection.createStatement();
 
             stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
-                    "VALUES ('" + cod + "', '" + oldCode + "', '" + names + "', '" + net_prices + "', '" +
-                    customer_prices + "', " + id_group + ")");
+                    "VALUES ('" + code + "', '" + oldCode + "', '" + name + "', '" + net_price + "', '" +
+                    customer_price + "', " + id_group + ")");
             stmt.close();
+            view.write("\nТовар успешно добавлен");
+            add(connection,view);return;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,12 +98,13 @@ public class Reports {
     private void doHelpCatalog(View view) {
         view.write("\nМодуль catalog позволяет просмотреть каталог товаров,\n доступные команды:\n" +
                 "- вывести каталог товаров: команда “list”;\n" +
-                "- добавить товар в каталог: команда “add” затем ввести (каждое поле через Enter):\n" +
-                "  \t код, старый код, имя товара, входящая цена, цена отпускная, группа товара);\n" +
-                "- изменить товар в каталоге: команда “update” затем ввести id товара, далее\n" +
+                "- добавить товар в каталог: команда “add” " +
+                "- изменить товар в каталоге: команда “update” затем ввести id товара (list), далее\n" +
                 " \t ввести (каждое поле через Enter): код, старый код, имя товара, входящая цена,\n" +
                 " \t цена отпускная, группа товара (пустая строка поле не изменяет;\n" +
-                "- удалить товар в справочнике: команда “delete” затем ввести id товара (delete/id);\n" +
+                " \t команда exit прерывает внесение данных\n" +
+                "- удалить товар в справочнике: команда “delete” затем ввести id товара (list);\n" +
+                " \t команда exit прерывает внесение данных\n" +
                 "\nДля вызова справки введите “help”.\n" +
                 "Команда “exit” позволяет вернуться в предыдущее меню.\n");
     }

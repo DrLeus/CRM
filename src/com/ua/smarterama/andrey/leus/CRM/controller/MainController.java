@@ -31,8 +31,8 @@ public class MainController {
 //         System.out.println(Arrays.toString(getTableData("suppliers"))); // get table
 
 //        System.exit(0);
-
-        mainCommander(controller);
+        report.commanderCatalog(connection, view, controller);
+//        mainCommander(controller);
     }
 
     public void mainCommander(MainController controller) throws SQLException, ClassNotFoundException {

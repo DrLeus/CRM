@@ -1,0 +1,7 @@
+$ cat .gitignore
+*.txt
+*.md
+target/
+.idea/
+.gitignore/
+pom.xml
