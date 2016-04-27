@@ -11,25 +11,35 @@ public class InitialDB {
 
         // insert table goods
         Statement stmt = connection.createStatement();
+
+        stmt.executeUpdate("DROP SEQUENCE public.goods_seq CASCADE");
+
+        stmt.executeUpdate("CREATE SEQUENCE public.goods_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
+
         stmt.executeUpdate("DROP TABLE public.goods CASCADE");
+
         stmt.executeUpdate("CREATE TABLE goods(" +
-                "id NUMERIC PRIMARY KEY," +
+                "id NUMERIC NOT NULL DEFAULT nextval('goods_seq'::regclass), CONSTRAINT id_pk PRIMARY KEY(id)," +
+//                "id NUMERIC PRIMARY KEY," +
                 "code TEXT UNIQUE NOT NULL, " +
                 "codeprevious TEXT UNIQUE NOT NULL, " +
                 "name TEXT NOT NULL, " +
                 "net_price TEXT NOT NULL, " +
                 "cusmomer_price TEXT NOT NULL, " +
                 "id_groups NUMERIC /*PRIMARY KEY*/ NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
-                "VALUES (1, 'H77435', '583327893', 'SEAL SV-25 EPDM CAT 2', '2,04', '22,88', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
-                "VALUES (2, 'H77459', '583337893', 'SEAL SV-40 EPDM CAT 2', '2,35', '25,27', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
-                "VALUES (3, 'H77484', '583342893', 'SEAL SV-50 EPDM CAT 2', '2,50', '27,75', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
-                "VALUES (4, 'H77509', '583347893', 'SEAL SV-65 EPDM CAT 2', '4,00', '30,59', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (id, code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
-                "VALUES (5, 'H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                "VALUES ('H77435', '583327893', 'SEAL SV-25 EPDM CAT 2', '2,04', '22,88', '1')");
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                "VALUES ('H77459', '583337893', 'SEAL SV-40 EPDM CAT 2', '2,35', '25,27', '1')");
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                "VALUES ('H77484', '583342893', 'SEAL SV-50 EPDM CAT 2', '2,50', '27,75', '1')");
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                "VALUES ('H77509', '583347893', 'SEAL SV-65 EPDM CAT 2', '4,00', '30,59', '1')");
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                "VALUES ('H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
+
+        //
+
 
         // create table suppliers
         stmt.executeUpdate("DROP TABLE public.suppliers CASCADE");

@@ -11,6 +11,7 @@ public class Reports {
     private MainController controller;
 
     public void commanderCatalog(Connection connection, View view, MainController controller) throws SQLException, ClassNotFoundException {
+
         doHelpCatalog(view);
 
         while (true) {
@@ -21,10 +22,8 @@ public class Reports {
 
             if (input.equals("list")) {
                 doList(connection);
-            } else if (input.equals("store")) {
-//                doFind(command);
             } else if (input.equals("add")) {
-//                doFind(command);
+                add(connection, view);
             } else if (input.equals("update")) {
 //                report.reportGoods(connection);
             } else if (input.equals("delete")) {
@@ -39,12 +38,47 @@ public class Reports {
         }
     }
 
+    private void add(Connection connection, View view) {
+
+        view.write("\nВведите код товара в формате Н75968");
+        String cod = view.read();
+
+        view.write("Введите старый код товара 583327893");
+        String oldCode = view.read();
+
+        view.write("Введите наименование товара");
+        String names = view.read();
+
+        view.write("Введите net_price товара, в формате 22,22");
+        String net_prices = view.read();
+
+        view.write("Введите customer_price товара, в формате 22,22");
+        String customer_prices = view.read();
+
+        view.write("Введите группу товара");
+        int id_group = Integer.parseInt(view.read());
+
+
+
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                    "VALUES ('" + cod + "', '" + oldCode + "', '" + names + "', '" + net_prices + "', '" +
+                    customer_prices + "', " + id_group + ")");
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void doHelpCatalog(View view) {
         view.write("\nМодуль catalog позволяет просмотреть каталог товаров,\n доступные команды:\n" +
                 "- вывести каталог товаров: команда “list”;\n" +
                 "- добавить товар в каталог: команда “add” затем ввести (каждое поле через Enter):\n" +
                 "  \t код, старый код, имя товара, входящая цена, цена отпускная, группа товара);\n" +
-                "- изменить товар в каталоге: команда “update” затем ввести id товара (update/id), далее\n" +
+                "- изменить товар в каталоге: команда “update” затем ввести id товара, далее\n" +
                 " \t ввести (каждое поле через Enter): код, старый код, имя товара, входящая цена,\n" +
                 " \t цена отпускная, группа товара (пустая строка поле не изменяет;\n" +
                 "- удалить товар в справочнике: команда “delete” затем ввести id товара (delete/id);\n" +

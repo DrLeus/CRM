@@ -25,8 +25,9 @@ public class MainController {
         connect("CRM", "postgres","postgres");
 
 //        initialDB.setupTempDates(connection);
+//        System.exit(0);
 
-        // System.out.println(getAmountRowTable("goods")); // get quantity of rows of table used name of table
+ //        System.out.println(getAmountRowTable("goods")); // get quantity of rows of table used name of table
 //         System.out.println(Arrays.toString(getTableData("suppliers"))); // get table
 
 //        System.exit(0);
