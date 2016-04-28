@@ -1,7 +1,8 @@
 package com.ua.smarterama.andrey.leus.CRM.controller;
 
-import com.ua.smarterama.andrey.leus.CRM.model.Reports;
+import com.ua.smarterama.andrey.leus.CRM.model.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.InitialDB;
+import com.ua.smarterama.andrey.leus.CRM.model.Model;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
@@ -10,7 +11,7 @@ public class MainController {
 
     private Connection connection;
     private View view;
-    private Reports report = new Reports();
+    private Model report = new Catalog();
     private InitialDB initialDB = new InitialDB();
 
     public MainController(View view) {
@@ -31,12 +32,12 @@ public class MainController {
 //         System.out.println(Arrays.toString(getTableData("suppliers"))); // get table
 
 //        System.exit(0);
-//        report.commanderCatalog(connection, view, controller);
-        mainCommander(controller);
+//        report.commander(connection, view, controller);
+        commander(controller);
     }
 
-    public void mainCommander(MainController controller) throws SQLException, ClassNotFoundException {
-        doHelp();
+    public void commander(MainController controller) throws SQLException, ClassNotFoundException {
+        help();
 
         while (true) {
 
@@ -45,7 +46,7 @@ public class MainController {
             String input = view.read();
 
             if (input.equals("addIncomingOrder") | input.equals("addIO")) {
-//                doList();
+//                list();
             } else if (input.equals("store")) {
 //                doFind(command);
             } else if (input.equals("addOrder") | input.equals("addOO")) {
@@ -53,7 +54,7 @@ public class MainController {
             } else if (input.equals("writeoff")) {
 //                report.reportGoods(connection);
             } else if (input.equals("catalog")) {
-                report.commanderCatalog(connection, view, controller);
+                report.commander(connection, view, controller);
             } else if (input.equals("report")) {
 //                report.reportGoods(connection);
             } else if (input.equals("listIncomingOrders") | input.equals("listIO")) {
@@ -61,7 +62,7 @@ public class MainController {
             } else if (input.equals("listOrders") | input.equals("listOO")) {
 //                doFind(command);
             } else if (input.equals("help")) {
-                doHelp();
+                help();
             } else if (input.equals("exit")) {
                 view.write("\nДо скорой встречи!");
                 System.exit(0);
@@ -96,7 +97,7 @@ public class MainController {
 //                "postgres");
 //    }
 
-    private void doHelp() {
+    private void help() {
         view.write("\nДанный модуль позволяет реализовать следующие операции:\n" +
                 "- создание приходной накладной: команда “addIncomingOrder” или “addIO”;\n" +
                 "- оприходование товара: команда “store”;\n" +

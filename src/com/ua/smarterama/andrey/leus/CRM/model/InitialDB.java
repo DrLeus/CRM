@@ -25,17 +25,17 @@ public class InitialDB {
                 "codeprevious TEXT UNIQUE NOT NULL, " +
                 "name TEXT NOT NULL, " +
                 "net_price TEXT NOT NULL, " +
-                "cusmomer_price TEXT NOT NULL, " +
-                "id_groups NUMERIC /*PRIMARY KEY*/ NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+                "customer_price TEXT NOT NULL, " +
+                "id_groups TEXT /*PRIMARY KEY*/ NOT NULL)");
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
                 "VALUES ('H77435', '583327893', 'SEAL SV-25 EPDM CAT 2', '2,04', '22,88', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
                 "VALUES ('H77459', '583337893', 'SEAL SV-40 EPDM CAT 2', '2,35', '25,27', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
                 "VALUES ('H77484', '583342893', 'SEAL SV-50 EPDM CAT 2', '2,50', '27,75', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
                 "VALUES ('H77509', '583347893', 'SEAL SV-65 EPDM CAT 2', '4,00', '30,59', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, cusmomer_price, id_groups)" +
+        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
                 "VALUES ('H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
 
         //
