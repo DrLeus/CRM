@@ -27,7 +27,7 @@ public class Reports {
             } else if (input.equals("update")) {
 //                report.reportGoods(connection);
             } else if (input.equals("delete")) {
-//                report.catalog(connection);
+                delete(connection, view);
             } else if (input.equals("help")) {
                 doHelpCatalog(view);
             } else if (input.equals("exit")) {
@@ -37,6 +37,52 @@ public class Reports {
             } else {
                 System.out.println("\nНесуществующая команда: " + input);
             }
+        }
+    }
+
+    private void delete(Connection connection, View view) throws SQLException, ClassNotFoundException {
+        view.write("Для удаления товара неоходимо ввести id товара и подтвердить удаление.\n" +
+                "\t Доступные команды:\n" +
+                "  \t - вывести каталог товаров: команда “list”;\n\n" +
+                "\t Команда exit прерывает изменение данных и возвращает в модуль catalog \n");
+
+        view.write("\nВведите id товара в числовом формате");
+
+        String line = view.read();
+
+        if (line.equals("exit")){
+            doHelpCatalog(view);
+            return;
+        }
+        else if (line.equals("list")){
+            doList(connection);
+            delete(connection,view);
+            return;
+        }
+        else if (line.isEmpty()) {
+            view.write("\n\nПоле не может быть пустым введите id или exit для выхода из подмодуля\n");
+            delete(connection,view);
+            return;
+        }
+
+        int id;
+        try {
+           id = Integer.parseInt(line);
+        }   catch (NumberFormatException e) {
+            view.write("id не должно содержать никаких символов кроме чисел\n");
+            delete(connection,view);
+            return;
+    }
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            stmt.executeUpdate("DELETE FROM public.goods WHERE id=" + id );
+            stmt.close();
+            view.write("\nТовар успешно удален\n");
+            delete(connection,view);return;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -96,15 +142,14 @@ public class Reports {
     }
 
     private void doHelpCatalog(View view) {
-        view.write("\nМодуль catalog позволяет просмотреть каталог товаров,\n доступные команды:\n" +
+        view.write("\nМодуль 'catalog' позволяет просмотреть каталог товаров,\n доступные команды:\n" +
                 "- вывести каталог товаров: команда “list”;\n" +
                 "- добавить товар в каталог: команда “add” " +
                 "- изменить товар в каталоге: команда “update” затем ввести id товара (list), далее\n" +
                 " \t ввести (каждое поле через Enter): код, старый код, имя товара, входящая цена,\n" +
                 " \t цена отпускная, группа товара (пустая строка поле не изменяет;\n" +
                 " \t команда exit прерывает внесение данных\n" +
-                "- удалить товар в справочнике: команда “delete” затем ввести id товара (list);\n" +
-                " \t команда exit прерывает внесение данных\n" +
+                "- удалить товар в справочнике: команда “delete”\n" +
                 "\nДля вызова справки введите “help”.\n" +
                 "Команда “exit” позволяет вернуться в предыдущее меню.\n");
     }
@@ -115,15 +160,13 @@ public class Reports {
         Statement stmt;
         stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM public.goods");
-        System.out.println("id: \t code: \t codeprevious: \t name: \t\t\t\t net_price: \t customer_price: \t id_groups:");
+        System.out.printf("%4s%10s%16s%24s%16s%16s%12s%n","id","code","codeprevious","name","net_price","customer_price","id_groups");
+        for (int i = 0; i < 98 ; i++) {System.out.print("-");}
+
+        System.out.println();
         while (rs.next()) {
-            System.out.print(rs.getString("id"));
-            System.out.print("\t\t" + rs.getString("code"));
-            System.out.print("\t\t" + rs.getString("codeprevious"));
-            System.out.print("\t" + rs.getString("name"));
-            System.out.print("\t" + rs.getString("net_price"));
-            System.out.print("\t\t\t" + rs.getString("cusmomer_price"));
-            System.out.println("\t\t\t\t" + rs.getString("id_groups"));
+            System.out.printf("%4s%10s%16s%24s%16s%16s%12s%n",rs.getString("id"),rs.getString("code"),rs.getString("codeprevious"),
+            rs.getString("name"), rs.getString("net_price"), rs.getString("cusmomer_price"), rs.getString("id_groups"));
         }
         rs.close();
         stmt.close();
@@ -150,10 +193,4 @@ public class Reports {
         stmt.close();
     }
 }
-
-//System.out.print(rs.getString("id"));
-//        System.out.print("\t\t\t" + rs.getString("name"));
-//        System.out.print("\t\t" + rs.getString("data"));
-//        System.out.print("\t\t\t" + rs.getString("transport"));
-//        System.out.println("\t\t\t\t" + rs.getString("response_person"));
 

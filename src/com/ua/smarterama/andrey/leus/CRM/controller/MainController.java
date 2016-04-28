@@ -31,8 +31,8 @@ public class MainController {
 //         System.out.println(Arrays.toString(getTableData("suppliers"))); // get table
 
 //        System.exit(0);
-        report.commanderCatalog(connection, view, controller);
-//        mainCommander(controller);
+//        report.commanderCatalog(connection, view, controller);
+        mainCommander(controller);
     }
 
     public void mainCommander(MainController controller) throws SQLException, ClassNotFoundException {
@@ -99,9 +99,9 @@ public class MainController {
     private void doHelp() {
         view.write("\nДанный модуль позволяет реализовать следующие операции:\n" +
                 "- создание приходной накладной: команда “addIncomingOrder” или “addIO”;\n" +
-                "- оприходование товара: команда “store” затем ввести id приходной накладной (store/id);\n" +
+                "- оприходование товара: команда “store”;\n" +
                 "- создание расходной накладной: команда “addOrder” или “addOO”;\n" +
-                "- списание товар: команда “writeoff” затем ввести id расходной накладной (writeoff/id); \n" +
+                "- списание товар: команда “writeoff”;\n" +
                 "- отчет об остатках на складах: команда “report”;\n" +
                 "- справочник товаров: команда “catalog”;\n" +
                 "- предоставление списка приходных накладных: команда “listIncomingOrders” или “listIO”;\n" +
