@@ -5,12 +5,16 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
 
-public class Catalog implements Model {
+public class CatalogGoods implements Model {
 
-//    private View view;
+    private View view;
     private MainController controller;
 
-    public void commander(Connection connection, View view, MainController controller) throws SQLException, ClassNotFoundException {
+    public CatalogGoods(View view) {
+        this.view = view;
+    }
+
+    public void catalog(Connection connection, View view, MainController controller) throws Exception {
 
         help(view);
 
@@ -39,7 +43,7 @@ public class Catalog implements Model {
     }
 
     private void help(View view) {
-        view.write("\nМодуль 'catalog' позволяет просмотреть каталог товаров,\n доступные команды:\n" +
+        view.write("\nМодуль 'CatalogGoods' позволяет просмотреть каталог товаров,\n доступные команды:\n" +
                 "- вывести каталог товаров: команда 'list';\n" +
                 "- добавить товар в каталог: команда 'add';\n " +
                 "- изменить товар в каталоге: команда 'update';\n" +
@@ -69,7 +73,7 @@ public class Catalog implements Model {
 
         view.write("Для внесения нового товара неоходимо ввести (каждое поле через Enter):\n" +
         "  \t код, старый код, имя товара, входящая цена, цена отпускная, группа товара;\n\n" +
-                "\t команда exit прерывает внесение данных и возвращает в модуль catalog \n");
+                "\t команда exit прерывает внесение данных и возвращает в модуль CatalogGoods \n");
 
         view.write("\nВведите код товара в формате Н75968");
         String code = view.read();
@@ -126,12 +130,11 @@ public class Catalog implements Model {
         }
     }
 
-
     public void delete(Connection connection, View view) throws SQLException, ClassNotFoundException {
         view.write("Для удаления товара неоходимо ввести id товара и подтвердить удаление.\n" +
                 "\t Доступные команды:\n" +
                 "  \t - вывести каталог товаров: команда “list”;\n\n" +
-                "\t Команда exit прерывает изменение данных и возвращает в модуль catalog \n");
+                "\t Команда exit прерывает изменение данных и возвращает в модуль CatalogGoods \n");
 
         view.write("\nВведите id товара в числовом формате");
 
@@ -188,7 +191,7 @@ public class Catalog implements Model {
                 "  \t если поле не подлежит изменению, нажимаем Enter.\n\n" +
                 "\t Доступные команды:\n" +
                 "  \t - вывести каталог товаров: команда “list”;\n\n" +
-                "\t команда exit прерывает внесение данных и возвращает в модуль catalog \n");
+                "\t команда exit прерывает внесение данных и возвращает в модуль CatalogGoods \n");
 
         view.write("\nВведите id товара в числовом формате");
 

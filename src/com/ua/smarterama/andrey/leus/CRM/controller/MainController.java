@@ -1,6 +1,8 @@
 package com.ua.smarterama.andrey.leus.CRM.controller;
 
-import com.ua.smarterama.andrey.leus.CRM.model.Catalog;
+import com.sun.javaws.exceptions.ExitException;
+import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
+import com.ua.smarterama.andrey.leus.CRM.model.CatalogGoods;
 import com.ua.smarterama.andrey.leus.CRM.model.InitialDB;
 import com.ua.smarterama.andrey.leus.CRM.model.Model;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
@@ -11,17 +13,27 @@ public class MainController {
 
     private Connection connection;
     private View view;
-    private Model report = new Catalog();
+    private Model report = new CatalogGoods(view);
     private InitialDB initialDB = new InitialDB();
+    private Command[] commands;
 
     public MainController(View view) {
         this.view = view;
+        this.commands = new Command[] {
+                new Catalog(view),
+                new Help(view),
+                new Exit(view),
+                new Report(view),
+                new Store(view),
+                new Writeoff(view),
+                new Unsupported(view)
+        };
     }
 
     public MainController() {
     }
 
-    public void run(MainController controller) throws SQLException, ClassNotFoundException {
+    public void run(MainController controller) throws Exception {
 
         connect("CRM", "postgres","postgres");
 
@@ -32,11 +44,11 @@ public class MainController {
 //         System.out.println(Arrays.toString(getTableData("suppliers"))); // get table
 
 //        System.exit(0);
-//        report.commander(connection, view, controller);
+//        Report.CatalogGoods(connection, view, controller);
         commander(controller);
     }
 
-    public void commander(MainController controller) throws SQLException, ClassNotFoundException {
+    public void commander(MainController controller) throws Exception {
         help();
 
         while (true) {
@@ -45,30 +57,45 @@ public class MainController {
 
             String input = view.read();
 
-            if (input.equals("addIncomingOrder") | input.equals("addIO")) {
-//                list();
-            } else if (input.equals("store")) {
-//                doFind(command);
-            } else if (input.equals("addOrder") | input.equals("addOO")) {
-//                doFind(command);
-            } else if (input.equals("writeoff")) {
-//                report.reportGoods(connection);
-            } else if (input.equals("catalog")) {
-                report.commander(connection, view, controller);
-            } else if (input.equals("report")) {
-//                report.reportGoods(connection);
-            } else if (input.equals("listIncomingOrders") | input.equals("listIO")) {
-//                report.reportIncommingOrders(connection);
-            } else if (input.equals("listOrders") | input.equals("listOO")) {
-//                doFind(command);
-            } else if (input.equals("help")) {
-                help();
-            } else if (input.equals("exit")) {
-                view.write("\nДо скорой встречи!");
-                System.exit(0);
-            } else {
-                view.write("\nНесуществующая команда: " + input);
+            for (Command command : commands) {
+                try {
+                    if (command.canProcess(input)) {
+                        command.process(input);
+                        break;
+                    }
+                } catch (Exception e) {
+                    if (e instanceof ExitException) {
+                        throw e;
+                    }
+                    view.error("Error", e);
+                    break;
+                }
             }
+
+
+//            if (input.equals("addIncomingOrder") | input.equals("addIO")) {
+////                list();
+//            } else if (input.equals("Store")) {
+////                doFind(command);
+//            } else if (input.equals("addOrder") | input.equals("addOO")) {
+////                doFind(command);
+//            } else if (input.equals("Writeoff")) {
+////                Report.reportGoods(connection);
+//            } else if (input.equals("CatalogGoods")) {
+//                Report.CatalogGoods(connection, view, controller);
+//            } else if (input.equals("Report")) {
+////                Report.reportGoods(connection);
+//            } else if (input.equals("listIncomingOrders") | input.equals("listIO")) {
+////                Report.reportIncommingOrders(connection);
+//            } else if (input.equals("listOrders") | input.equals("listOO")) {
+////                doFind(command);
+//            } else if (input.equals("help")) {
+//                help();
+//            } else if (input.equals("exit")) {
+//
+//            } else {
+//                view.write("\nНесуществующая команда: " + input);
+//            }
         }
     }
 
@@ -100,11 +127,11 @@ public class MainController {
     private void help() {
         view.write("\nДанный модуль позволяет реализовать следующие операции:\n" +
                 "- создание приходной накладной: команда “addIncomingOrder” или “addIO”;\n" +
-                "- оприходование товара: команда “store”;\n" +
+                "- оприходование товара: команда “Store”;\n" +
                 "- создание расходной накладной: команда “addOrder” или “addOO”;\n" +
-                "- списание товар: команда “writeoff”;\n" +
+                "- списание товар: команда “Writeoff”;\n" +
                 "- отчет об остатках на складах: команда “report”;\n" +
-                "- справочник товаров: команда “catalog”;\n" +
+                "- справочник товаров: команда “CatalogGoods”;\n" +
                 "- предоставление списка приходных накладных: команда “listIncomingOrders” или “listIO”;\n" +
                 "- предоставление списка расходных накладных: команда “listOrders” или “listOO”\n" +
                 "Дополнительные команды (list, add, update, delete) доступны в соответствующих разделах.\n" +

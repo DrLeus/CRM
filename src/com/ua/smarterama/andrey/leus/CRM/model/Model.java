@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * Created by Admin on 28.04.2016.
  */
 public interface Model {
-    void commander(Connection connection, View view, MainController controller) throws SQLException, ClassNotFoundException;
+    void catalog(Connection connection, View view, MainController controller) throws Exception;
 
     void list(Connection connection) throws SQLException, ClassNotFoundException;
 
