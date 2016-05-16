@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +26,7 @@ public interface DataBaseManager {
 
 //    Set<String> getTableColumns(String tableName);
 
-    List<Object> getTableData(String tableName);
+    List<Object> getTableData(String tableName) throws SQLException;
 
     Set<String> getTableNames();
 

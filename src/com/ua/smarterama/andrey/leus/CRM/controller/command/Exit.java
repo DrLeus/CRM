@@ -5,7 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 /**
  * Created by Admin on 11.05.2016.
  */
-public class Exit implements Command {
+public class Exit extends Command {
 
     private View view;
 
@@ -19,7 +19,7 @@ public class Exit implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process() {
         view.write("\nДо скорой встречи!");
         System.exit(0);
     }
