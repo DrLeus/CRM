@@ -35,7 +35,7 @@ public class CatalogGoods implements Model {
             } else if (input.equals("help")) {
                 help(view);
             } else if (input.equals("exit")) {
-                controller.commander(controller);
+//                controller.commander(controller);
             } else {
                 System.out.println("\nНесуществующая команда: " + input);
             }
