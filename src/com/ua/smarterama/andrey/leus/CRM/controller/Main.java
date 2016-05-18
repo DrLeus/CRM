@@ -16,7 +16,7 @@ public class Main {
 
 
         try {
-            controller.run(controller, manager);
+            controller.run();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

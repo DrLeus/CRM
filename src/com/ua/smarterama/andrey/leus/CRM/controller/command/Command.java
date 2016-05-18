@@ -3,7 +3,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
-
 import java.sql.Connection;
 
 public abstract class Command {
@@ -19,9 +18,10 @@ public abstract class Command {
     public Command() {
     }
 
-    public Command(View view, DataBaseManager manager) {
-        this.view = view;
+    public Command(DataBaseManager manager, View view) {
+
         this.manager = manager;
+        this.view = view;
     }
 
     public abstract boolean canProcess(String command);

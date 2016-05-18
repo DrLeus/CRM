@@ -1,15 +1,25 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
+import com.ua.smarterama.andrey.leus.CRM.controller.command.ConnectToDataBase;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
+
+import java.awt.*;
 import java.sql.*;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
     private Connection connection;
-    private String user;
-    private String nameDataBase;
-    private String password;
+
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Oops.... Please add jdbc jar to project.", e);
+        }
+    }
+
 
     @Override
     public void clear(String tableName) {
@@ -22,8 +32,31 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
+    public void connect(ConnectToDataBase.User user, View view) {
+
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/" +  user.getNameDataBase(), user.getUserName(),
+                    user.getPassword());
+            view.write("Connection succeeded to "+ user.getNameDataBase());
+        } catch (SQLException e) {
+            connection = null;
+            throw new RuntimeException(
+                    String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s",
+                            user.getNameDataBase(), user.getUserName(), user.getPassword()));
+        }
+
+    }
+
+    @Override
     public void createDatabase(String databaseName) {
 
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE DATABASE " + databaseName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -39,11 +72,55 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void dropDatabase(String databaseName) {
 
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void dropTable(String tableName) {
 
+    }
+
+    @Override
+    public List<String> getDatabases(View view) {
+
+        List <String> list = new ArrayList<String>();
+
+        String nameDataBase = "CRM";
+        String userName = "postgres";
+        String password = "postgres";
+
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/" +  nameDataBase, userName,
+                    password);//TODO fix this method
+        } catch (SQLException e) {
+            connection = null;
+            System.out.println("Ошибка 54");
+        }
+        try {
+            PreparedStatement ps = connection
+                    .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getString(1));
+            }
+            rs.close();
+            ps.close();
+
+        } catch (Exception e) {
+            System.out.println("Ошибка 764");
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     @Override
@@ -82,6 +159,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void update(String tableName, int id, Object newValue) {
 
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connection != null;
     }
 
 

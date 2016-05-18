@@ -5,12 +5,13 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 /**
  * Created by Admin on 11.05.2016.
  */
-public class Catalog implements Command {
-    private View view;
+public class Catalog extends Command {
 
-    public Catalog(View view) {
-        this.view = view;
-    }
+//    private View view;
+//
+//    public Catalog(View view) {
+//        this.view = view;
+//    }
 
     @Override
     public boolean canProcess(String command) {
@@ -18,7 +19,8 @@ public class Catalog implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process() {
 
     }
+
 }

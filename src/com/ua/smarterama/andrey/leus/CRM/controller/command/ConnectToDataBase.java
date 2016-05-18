@@ -3,8 +3,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-import java.sql.*;
-
 public class ConnectToDataBase extends Command {
 
     User user;
@@ -12,8 +10,8 @@ public class ConnectToDataBase extends Command {
     static String initialUserName = "postgres";
     static String initialPass = "postgres";
 
-    public ConnectToDataBase(View view, DataBaseManager manager) {
-        super(view, manager);
+    public ConnectToDataBase(DataBaseManager manager, View view) {
+        super(manager, view);
     }
 
     @Override
@@ -32,45 +30,25 @@ public class ConnectToDataBase extends Command {
 
                 if (input.equalsIgnoreCase("Y")){
                     user = new User(initialNameDB, initialUserName, initialPass);
-                    connect();
+                    manager.connect(user, view);
                     break;
                 } else if (input.equalsIgnoreCase("N")) {
                     user = new User(null,null,null);
                     view.write("Введите имя базы");
-                    user.database = view.read();
+                    user.database = view.checkExit(view.read());
                     view.write("Введите имя пользователя");
-                    user.userName = view.read();
+                    user.userName = view.checkExit(view.read());
                     view.write("Введите пароль");
-                    user.password = view.read();
-                    connect();
+                    user.password = view.checkExit(view.read());
+                    manager.connect(user, view);
                     break;
                 } else {
-                    view.write("упссс...... что-то не получилось");
+                    view.write("Oops... something wrong");
                 }
             }
     }
 
-    void connect() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Please add jdbc jar to project.", e);
-        }
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/" +  user.getNameDataBase(), user.getUserName(),
-                    user.getPassword());
-            view.write("Connection succeeded to "+ user.database);
-        } catch (SQLException e) {
-            connection = null;
-            throw new RuntimeException(
-                    String.format("Cant get connection for DB:%s; user:%s; pass:%s",
-                            user.getNameDataBase(), user.getUserName(), user.getPassword()),
-                    e);
-        }
-    }
-
-    private class User {
+    public class User {
 
         private String database ;
         private String userName;
@@ -82,15 +60,15 @@ public class ConnectToDataBase extends Command {
             this.password = password;
         }
 
-        private String getNameDataBase(){
+        public String getNameDataBase(){
             return  database;
         }
 
-        private String getUserName (){
+        public String getUserName(){
             return  userName;
         }
 
-        private String getPassword(){
+        public String getPassword(){
             return  password;
         }
 

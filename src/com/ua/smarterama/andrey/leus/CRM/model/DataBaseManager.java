@@ -1,16 +1,22 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
 
+import com.ua.smarterama.andrey.leus.CRM.controller.command.ConnectToDataBase;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
+
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface DataBaseManager {
 
+    View view = null;
+
     void clear(String tableName);
 
     void connect(String databaseName, String user, String password);
+
+    void connect(ConnectToDataBase.User user, View view);
 
     void createDatabase(String databaseName);
 
@@ -22,7 +28,7 @@ public interface DataBaseManager {
 
     void dropTable(String tableName);
 
-//    Set<String> getDatabases();
+    List<String> getDatabases(View view);
 
 //    Set<String> getTableColumns(String tableName);
 
@@ -36,4 +42,6 @@ public interface DataBaseManager {
 
     void update(String tableName, int id, Object newValue);
 
-    }
+    boolean isConnected();
+
+}

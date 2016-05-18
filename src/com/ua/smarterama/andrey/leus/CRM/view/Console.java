@@ -26,4 +26,12 @@ public class Console implements View {
         return "error Console";
     }
 
-}
+    public String checkExit(String input) {
+            if (input.equals("exit")){
+                System.out.println("\nДо скорой встречи!");
+                System.exit(0);
+            }
+            return input;
+        }
+    }
+

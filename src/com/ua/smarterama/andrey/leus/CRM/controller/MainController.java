@@ -2,29 +2,29 @@ package com.ua.smarterama.andrey.leus.CRM.controller;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 public class MainController {
 
 
-    private DataBaseManager manager;
     private View view;
         private Command[] commands;
 
     public MainController(View view, DataBaseManager manager) {
         this.view = view;
-        this.manager = manager;
         this.commands = new Command[]{
-                new ConnectToDataBase(view, manager),
-                new Catalog(view),
+                new ConnectToDataBase(manager, view),
                 new Help(view),
                 new Exit(view),
+                new IsConnected(manager, view),
+                new CreateDatabase(manager, view),
+                new DropDataBase(manager, view),
                 new Report(view),
-                new SelectDataBase(),
+                new SelectDataBase(manager, view),
                 new Store(view),
                 new Writeoff(view),
-                new Unsupported(view)
+                new Unsupported(view),
+                new Catalog(),
         };
     }
 
@@ -32,13 +32,13 @@ public class MainController {
 
     }
 
-    public void run(MainController controller, DataBaseManager manager) throws Exception {
+    public void run() throws Exception {
 
         Help.getHelp();
 
         while (true) {
 
-            view.write("Введите команду: ");
+            view.write("\nВведите команду: ");
 
             String input = view.read();
 

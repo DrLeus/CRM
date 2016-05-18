@@ -5,6 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 public class Help extends Command {
 
 
+
     static String text = "\nДанный модуль позволяет реализовать следующие операции:\n" +
             "- получить список доступных баз данных: команда “list”;\n" +
             "- подключиться к базе данных: команда “connect”;\n" +
@@ -15,7 +16,7 @@ public class Help extends Command {
             "- оприходование товара на склад: команда “store”;\n" +
             "- списание товар со склада: команда “writeoff”;\n" +
             "Для вызова справки введите “help”.\n" +
-            "Команда “exit” позволяет выйти из модуля.\n";
+            "Команда “exit” позволяет выйти из модуля.";
 
     public Help(View view) {
         this.view = view;

@@ -5,7 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 /**
  * Created by Admin on 11.05.2016.
  */
-public class Unsupported implements Command {
+public class Unsupported extends Command {
 
     private View view;
 
@@ -19,7 +19,8 @@ public class Unsupported implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process() {
+        view.write("\nOops...incorrect command");
 
     }
 }

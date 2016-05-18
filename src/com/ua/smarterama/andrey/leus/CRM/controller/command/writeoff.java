@@ -2,10 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-/**
- * Created by Admin on 11.05.2016.
- */
-public class Writeoff implements Command {
+public class Writeoff extends Command {
     private View view;
 
     public Writeoff(View view) {
@@ -19,7 +16,7 @@ public class Writeoff implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process() {
 
     }
 }

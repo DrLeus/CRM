@@ -4,7 +4,10 @@ public interface View {
 
     void write(String message);
 
-    public void error(String message, Exception e);
+    void error(String message, Exception e);
 
     String read();
+
+   String checkExit(String input);
+
 }

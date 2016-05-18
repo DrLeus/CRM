@@ -2,7 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-public class Store implements Command {
+public class Store extends Command {
     private View view;
 
     public Store(View view) {
@@ -15,7 +15,7 @@ public class Store implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process() {
 
     }
 }
