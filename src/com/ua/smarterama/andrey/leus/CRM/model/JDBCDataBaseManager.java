@@ -111,29 +111,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getTableData(String tableName) throws SQLException {
-        int size = getAmountRowTable(tableName);
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName);
-        ResultSetMetaData rsmd = rs.getMetaData();
-        String[] result = new String[size];
-        int index = 0;
-        while (rs.next()) {
-            String str = "\n";
-            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                str += String.format("%-16s", rs.getObject(i));
-                str += "\t\t";
-            }
-            result[index] = str;
-            index++;
-        }
-        rs.close();
-        stmt.close();
-
-        return null;
-    }
-
-    @Override
     public List<String> getTableNames() {
 
         List<String> list = new ArrayList<>();
@@ -170,7 +147,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getCatalog(String tableName) {
+    public List<Object> getTableData(String tableName) {
         List<Object> list = new ArrayList<>();
 
         Statement stmt = null;
@@ -218,6 +195,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         return list;
     }
+
 
     private int getAmountRowTable(String tableName) throws SQLException {
         Statement stmt = connection.createStatement();

@@ -20,6 +20,19 @@ public class DropDataBase extends Command {
     @Override
     public void process() {
 
+        String nameDataBase = getNameDataBase();
+
+        view.write("Please confirm, do you really want to drop '" + nameDataBase + "' database? Y/N");
+
+        if (view.read().equalsIgnoreCase("Y")) {
+            manager.dropDatabase(nameDataBase);
+            view.write("Database '" + nameDataBase +"' dropped");
+        } else {
+            view.write("Your action canceled!");
+        }
+    }
+
+    public String getNameDataBase() {
         String nameDataBase = null;
 
         List<String> list = manager.getDatabases(view);
@@ -33,32 +46,22 @@ public class DropDataBase extends Command {
         }
 
 
-            while (true) {
-                try{
-                    view.write("\nPlease select database for dropping:\n");
+        while (true) {
+            try{
+                view.write("\nPlease select database for dropping:\n");
 
-                    String input = view.checkExit(view.read());
+                String input = view.checkExit(view.read());
 
-                    if ( Integer.parseInt(input) > i || Integer.parseInt(input) < 1 ) {
-                        view.write("Incorrect input, try again");
-                    } else {
-                        nameDataBase = list.get(Integer.parseInt(input)-1);
-                        break;
-                    }
-                } catch (NumberFormatException e) {
+                if ( Integer.parseInt(input) > i || Integer.parseInt(input) < 1 ) {
                     view.write("Incorrect input, try again");
+                } else {
+                    nameDataBase = list.get(Integer.parseInt(input)-1);
+                    break;
                 }
+            } catch (NumberFormatException e) {
+                view.write("Incorrect input, try again");
             }
-
-
-
-        view.write("Please confirm, do you really want to drop '" + nameDataBase + "' database? Y/N");
-
-        if (view.read().equalsIgnoreCase("Y")) {
-            manager.dropDatabase(nameDataBase);
-            view.write("Database '" + nameDataBase +"' dropped");
-        } else {
-            view.write("Your action canceled!");
         }
+        return nameDataBase;
     }
 }

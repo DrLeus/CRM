@@ -32,19 +32,16 @@ public interface DataBaseManager {
 
 //    Set<String> getTableColumns(String tableName);
 
-    List<Object> getTableData(String tableName) throws SQLException;
-
     List<String> getTableNames();
 
     void insert(String tableName, Object input);
-
-//    boolean isConnected();
 
     void update(String tableName, int id, Object newValue);
 
     boolean isConnected();
 
-    List<Object> getCatalog(String view);
+    List<Object> getTableData(String tableName);
 
     List<Object> getColumnNames(String tableName);
+
 }

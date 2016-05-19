@@ -26,7 +26,7 @@ public class ConnectToDataBase extends Command {
 
                 view.write("Желаете подключиться к текущей базе(CRM)? (Y/N)");
 
-                String input = view.read();
+                String input = view.checkExit(view.read());
 
                 if (input.equalsIgnoreCase("Y")){
                     user = new User(initialNameDB, initialUserName, initialPass);
