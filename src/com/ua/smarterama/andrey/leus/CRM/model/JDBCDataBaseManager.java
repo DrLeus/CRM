@@ -3,7 +3,6 @@ package com.ua.smarterama.andrey.leus.CRM.model;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.ConnectToDataBase;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-import java.awt.*;
 import java.sql.*;
 import java.util.*;
 import java.util.List;
@@ -37,7 +36,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         try {
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/" +  user.getNameDataBase(), user.getUserName(),
-                    user.getPassword());
+                    user.getPassword()); //TODO change to abstract object
             view.write("Connection succeeded to "+ user.getNameDataBase());
         } catch (SQLException e) {
             connection = null;
@@ -90,20 +89,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public List<String> getDatabases(View view) {
 
-        List <String> list = new ArrayList<String>();
+        List <String> list = new ArrayList<>();
 
-        String nameDataBase = "CRM";
-        String userName = "postgres";
-        String password = "postgres";
-
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/" +  nameDataBase, userName,
-                    password);//TODO fix this method
-        } catch (SQLException e) {
-            connection = null;
-            System.out.println("Ошибка 54");
-        }
         try {
             PreparedStatement ps = connection
                     .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
@@ -147,8 +134,24 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public Set<String> getTableNames() {
-        return null;
+    public List<String> getTableNames() {
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'");
+            while (rs.next()) {
+               list.add(rs.getString("table_name"));
+            }
+            rs.close();
+            stmt.close();
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            list = null;
+            return list;
+        }
     }
 
     @Override
@@ -166,6 +169,55 @@ public class JDBCDataBaseManager implements DataBaseManager {
         return connection != null;
     }
 
+    @Override
+    public List<Object> getCatalog(String tableName) {
+        List<Object> list = new ArrayList<>();
+
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+
+        ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName );
+
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+            while(rs.next()){
+                for (int index = 1; index <= rsmd.getColumnCount(); index++) {
+                    list.add(rs.getObject(index));
+                }
+            }
+
+        rs.close();
+        stmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public List<Object> getColumnNames(String tableName) {
+        List<Object> list = new ArrayList<>();
+
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName);
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            for (int index = 1; index <= rsmd.getColumnCount(); index++) {
+                list.add(rsmd.getColumnName(index));
+            }
+
+        } catch (SQLException e) {        }
+
+        return list;
+    }
 
     private int getAmountRowTable(String tableName) throws SQLException {
         Statement stmt = connection.createStatement();

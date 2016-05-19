@@ -24,12 +24,12 @@ public class DropDataBase extends Command {
 
         List<String> list = manager.getDatabases(view);
 
-        int i = 1;
+        int i = 0;
 
         view.write("\nThe next data bases avaiilable:\n");
 
         for (String sert: list) {
-            view.write("" + i++ + ": " + sert);
+            view.write("" + ++i + ": " + sert);
         }
 
 

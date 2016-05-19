@@ -19,12 +19,12 @@ public class MainController {
                 new IsConnected(manager, view),
                 new CreateDatabase(manager, view),
                 new DropDataBase(manager, view),
+                new Catalog(manager, view),
                 new Report(view),
                 new SelectDataBase(manager, view),
                 new Store(view),
                 new Writeoff(view),
                 new Unsupported(view),
-                new Catalog(),
         };
     }
 

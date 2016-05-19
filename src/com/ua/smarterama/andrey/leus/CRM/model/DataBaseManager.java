@@ -34,7 +34,7 @@ public interface DataBaseManager {
 
     List<Object> getTableData(String tableName) throws SQLException;
 
-    Set<String> getTableNames();
+    List<String> getTableNames();
 
     void insert(String tableName, Object input);
 
@@ -44,4 +44,7 @@ public interface DataBaseManager {
 
     boolean isConnected();
 
+    List<Object> getCatalog(String view);
+
+    List<Object> getColumnNames(String tableName);
 }
