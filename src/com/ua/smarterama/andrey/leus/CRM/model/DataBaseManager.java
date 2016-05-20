@@ -4,9 +4,7 @@ package com.ua.smarterama.andrey.leus.CRM.model;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.ConnectToDataBase;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 public interface DataBaseManager {
 
@@ -20,7 +18,7 @@ public interface DataBaseManager {
 
     void createDatabase(String databaseName);
 
-    void createTable(String query);
+    void createTable(String query, View view);
 
     void disconnectFromDatabase();
 

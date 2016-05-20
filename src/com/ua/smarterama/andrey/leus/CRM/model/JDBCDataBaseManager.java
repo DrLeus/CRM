@@ -19,7 +19,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
     }
 
-
     @Override
     public void clear(String tableName) {
 
@@ -59,8 +58,55 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void createTable(String query) {
+    public void createTable(String tableName, View view) {
 
+        view.write("\nPlease input name of columns\n" +
+                "The first column = 'id' with auto-increment");
+
+        List <String> listColumn = inputNames(view);
+
+        try  {
+            Statement stmt = connection.createStatement();
+
+            stmt.executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
+
+            stmt.executeUpdate("CREATE TABLE " + tableName +
+                    "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
+                    formatedLine(listColumn));
+            view.write("The table " + tableName + " was created! Success!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String formatedLine(List<String> listColumn) {
+        String result = "";
+
+        for (int i = 0; i <listColumn.size() ; i++) {
+            result += listColumn.get(i) + " TEXT NOT NULL, ";
+        }
+
+        result = result.substring(0, result.length()-18) + ")";
+
+        return result;
+    }
+
+    private List<String> inputNames(View view) {
+
+        List<String> list = new ArrayList<>();
+
+        String input = null;
+        do {
+
+            view.write("\nPlease input name for next column\n");
+
+            input = view.checkExit(view.read());
+
+            list.add(input);
+
+        } while (!input.isEmpty());
+
+        return list;
     }
 
     @Override
