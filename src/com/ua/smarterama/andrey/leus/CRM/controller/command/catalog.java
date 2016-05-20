@@ -20,16 +20,16 @@ public class Catalog extends Command {
     @Override
     public void process() {
 
-        view.write("Avalable operations:\n" +
-                "1. Get table data\n" +
-                "2. Add position\n" +
-                "3. Update position\n" +
-                "4. Delete position\n" +
-                "5. Create table\n" +
-                "6. Remove table\n");
-
         while (true) {
             try{
+                view.write("\nAvalable operations:\n" +
+                        "1. Get table data\n" +
+                        "2. Add position\n" +
+                        "3. Update position\n" +
+                        "4. Delete position\n" +
+                        "5. Create table\n" +
+                        "6. Remove table\n");
+
                 view.write("\nPlease select operation:\n");
 
                 String input = view.checkExit(view.read());
@@ -58,37 +58,6 @@ public class Catalog extends Command {
         }
     }
 
-    private void removeTable() {
-        String tableName = selectTable();
-
-        view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N");
-
-        if (view.read().equalsIgnoreCase("Y")) {
-            manager.dropTable(tableName);
-            view.write("Table '" + tableName +"' removed");
-        } else {
-            view.write("Your action canceled!");
-        }
-    }
-
-    private void createTable() {
-        view.write("\nPlease input table name:\n");
-
-        String input = view.checkExit(view.read());
-
-        manager.createTable(input, view);
-    }
-
-    private void delete() {
-
-    }
-
-    private void update() {
-    }
-
-    private void insert() {
-    }
-
     private void getTableData() {
         String tableName = selectTable();
 
@@ -101,6 +70,66 @@ public class Catalog extends Command {
         outputColumnNames(listColumnName, format);
 
         outputData(listColumnName, listValue, format);
+    }
+
+    private void insert() {
+    }
+
+    private void update() {
+    }
+
+    private void delete() {
+        String tableName = selectTable();
+
+        outputColumnNames(manager.getColumnNames(tableName), getFormat(manager.getColumnNames(tableName), manager.getTableData(tableName))); // TODO duplicate getTableData
+
+        outputData(manager.getColumnNames(tableName), manager.getTableData(tableName), getFormat(manager.getColumnNames(tableName), manager.getTableData(tableName))); //TODO duplicate getTableData
+
+
+        while (true) {
+            try {
+                view.write("Please input 'id' line to delete\n");
+
+                int input = Integer.parseInt(view.checkExit(view.read()));
+
+                view.write("Please confirm, do you really want to remove position id='" + input + "'? Y/N");
+
+                if (view.read().equalsIgnoreCase("Y")) {
+                    manager.delete(input, tableName, view);
+                    view.write("Id '" + input +"' removed");
+                } else {
+                    view.write("Your action canceled!");
+                    break;
+                }
+
+
+                break;
+            } catch (NumberFormatException e) {
+                view.write("Incorrect input, try again");
+            }
+        }
+    }
+
+
+    private void createTable() {
+        view.write("\nPlease input table name:\n");
+
+        String input = view.checkExit(view.read());
+
+        manager.createTable(input, view);
+    }
+
+    private void removeTable() {
+        String tableName = selectTable();
+
+        view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N");
+
+        if (view.read().equalsIgnoreCase("Y")) {
+            manager.dropTable(tableName);
+            view.write("Table '" + tableName +"' removed");
+        } else {
+            view.write("Your action canceled!");
+        }
     }
 
     private void outputData(List<Object> listColumnName, List<Object> listValue, String result) {

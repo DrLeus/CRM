@@ -52,6 +52,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE DATABASE " + databaseName);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,6 +75,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
                     "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
                     formatedLine(listColumn));
             view.write("The table " + tableName + " was created! Success!");
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -121,16 +123,17 @@ public class JDBCDataBaseManager implements DataBaseManager {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void dropTable(String tableName) {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate("DROP TABLE public." + tableName + " CASCADE");
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -153,7 +156,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
             ps.close();
 
         } catch (Exception e) {
-            System.out.println("Ошибка 764");
+            list = null;
             e.printStackTrace();
         }
 
@@ -244,6 +247,18 @@ public class JDBCDataBaseManager implements DataBaseManager {
         } catch (SQLException e) {        }
 
         return list;
+    }
+
+    @Override
+    public void delete(int id, String tableName, View view) {
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id );
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

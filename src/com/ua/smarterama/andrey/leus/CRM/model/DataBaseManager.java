@@ -42,4 +42,5 @@ public interface DataBaseManager {
 
     List<Object> getColumnNames(String tableName);
 
+    void delete(int id, String taleName, View view);
 }
