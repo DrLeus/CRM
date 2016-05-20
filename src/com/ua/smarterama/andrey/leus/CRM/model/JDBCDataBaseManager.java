@@ -129,7 +129,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void dropTable(String tableName) {
-
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate("DROP TABLE public." + tableName + " CASCADE");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
