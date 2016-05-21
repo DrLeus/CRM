@@ -34,7 +34,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     }
 
-    @Override
     public void connect(ConnectToDataBase.User user, View view) {
 
         try {
@@ -220,7 +219,24 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void update(String tableName, int id, View view) {
+    public void update(String tableName, List<Object> columnNames, int id, List<Object> list, View view) {
+
+
+        for (int i = 1; i <columnNames.size(); i++) {
+
+
+            String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) +"='" + list.get(i-1) + "' WHERE id = " + id;
+
+            try {
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.executeUpdate();
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        view.write("\nThe row was updated! Success!");
 
     }
 

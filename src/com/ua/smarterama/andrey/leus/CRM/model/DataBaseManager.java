@@ -14,8 +14,6 @@ public interface DataBaseManager {
 
     void connect(String databaseName, String user, String password);
 
-    void connect(ConnectToDataBase.User user, View view);
-
     void createDatabase(String databaseName);
 
     void createTable(String query, View view);
@@ -34,7 +32,7 @@ public interface DataBaseManager {
 
     void insert(String tableName, List<Object> list, View view);
 
-    void update(String tableName, int id, View view);
+    void update(String tableName, List<Object> columnNames, int id, List<Object> list, View view);
 
     boolean isConnected();
 
@@ -43,4 +41,6 @@ public interface DataBaseManager {
     List<Object> getColumnNames(String tableName);
 
     void delete(int id, String taleName, View view);
+
+    void connect(ConnectToDataBase.User user, View view);
 }

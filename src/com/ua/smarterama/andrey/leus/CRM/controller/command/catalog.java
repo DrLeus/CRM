@@ -6,7 +6,6 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
-import java.util.Objects;
 
 public class Catalog extends Command {
 
@@ -64,22 +63,6 @@ public class Catalog extends Command {
         }
     }
 
-    private void clearTable() {
-
-        view.write("Please select table\n");
-
-        String tableName = selectTable();
-
-                view.write("Please confirm, do you really want to clear table '" + tableName+ "'? Y/N");
-
-                if (view.read().equalsIgnoreCase("Y")) {
-                    manager.clear(tableName);
-                    view.write("Table '" + tableName +"' cleared");
-                } else {
-                    view.write("Your action canceled!");
-                }
-    }
-
     private void getTableData() {
         String tableName = selectTable();
 
@@ -117,6 +100,40 @@ public class Catalog extends Command {
     }
 
     private void update() {
+
+        String tableName = selectTable();
+
+        List<Object> columnNames = manager.getColumnNames(tableName);
+
+        outputColumnNames(columnNames, getFormat(columnNames, manager.getTableData(tableName))); // TODO duplicate getTableData
+
+        outputData(columnNames, manager.getTableData(tableName), getFormat(columnNames, manager.getTableData(tableName))); //TODO duplicate getTableData
+
+        int id;
+
+        while (true) {
+            try {
+                view.write("\nPlease select row id to update: ");
+                id = Integer.parseInt(view.checkExit(view.read()));
+                break;
+            } catch (NumberFormatException e) {
+                view.write("Incorrect input, try again");
+            }
+        }
+
+        List<Object> list = new ArrayList<>();
+
+        for (int i = 1; i <columnNames.size() ; i++) {
+
+            view.write("Please input data for column '" + columnNames.get(i) + "'\n");
+
+            String input = view.checkExit(view.read());
+
+            list.add(input);
+        }
+
+        manager.update(tableName, columnNames, id, list, view);
+
     }
 
     private void delete() {
@@ -142,8 +159,6 @@ public class Catalog extends Command {
                     view.write("Your action canceled!");
                     break;
                 }
-
-
                 break;
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again");
@@ -172,6 +187,22 @@ public class Catalog extends Command {
         }
     }
 
+    private void clearTable() {
+
+        view.write("Please select table\n");
+
+        String tableName = selectTable();
+
+        view.write("Please confirm, do you really want to clear table '" + tableName+ "'? Y/N");
+
+        if (view.read().equalsIgnoreCase("Y")) {
+            manager.clear(tableName);
+            view.write("Table '" + tableName +"' cleared");
+        } else {
+            view.write("Your action canceled!");
+        }
+    }
+
     private void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
        try {
            do {
@@ -181,7 +212,7 @@ public class Catalog extends Command {
                }
 
            } while (listValue.size() != 0);
-       } catch (MissingFormatArgumentException e) {
+       } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
            view.write("\nThe table is empty!");
        }
 
