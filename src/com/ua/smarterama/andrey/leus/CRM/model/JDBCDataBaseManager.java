@@ -22,6 +22,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void clear(String tableName) {
 
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate("DELETE FROM " + tableName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -185,12 +190,37 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName, Object input) {
+    public void insert(String tableName, List<Object> list, View view) {
 
+        List<Object> columnTable = getColumnNames(tableName);
+
+        String columns = " (";
+        for (int i = 1; i < columnTable.size(); i++) {
+            columns += columnTable.get(i)+",";
+        }
+        columns = columns.substring(0, columns.length()-1) + ")";
+
+
+        String data = " (";
+        for (int i = 0; i < list.size(); i++) {
+            data += "'" + list.get(i) + "',";
+        }
+        data = data.substring(0, data.length()-1) + ")";
+
+        try  {
+            Statement stmt = connection.createStatement();
+
+            stmt.executeUpdate("INSERT INTO public." + tableName + columns +
+                "VALUES " + data);
+            view.write("\nThe row was created! Success!");
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void update(String tableName, int id, Object newValue) {
+    public void update(String tableName, int id, View view) {
 
     }
 
@@ -225,7 +255,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
 
         return list;
-
     }
 
     @Override

@@ -32,9 +32,9 @@ public interface DataBaseManager {
 
     List<String> getTableNames();
 
-    void insert(String tableName, Object input);
+    void insert(String tableName, List<Object> list, View view);
 
-    void update(String tableName, int id, Object newValue);
+    void update(String tableName, int id, View view);
 
     boolean isConnected();
 

@@ -3,7 +3,10 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingFormatArgumentException;
+import java.util.Objects;
 
 public class Catalog extends Command {
 
@@ -24,17 +27,18 @@ public class Catalog extends Command {
             try{
                 view.write("\nAvalable operations:\n" +
                         "1. Get table data\n" +
-                        "2. Add position\n" +
-                        "3. Update position\n" +
-                        "4. Delete position\n" +
+                        "2. Insert data (position)\n" +
+                        "3. Update data (position)\n" +
+                        "4. Delete data (position)\n" +
                         "5. Create table\n" +
-                        "6. Remove table\n");
+                        "6. Remove table\n" +
+                        "7. Clear table\n");
 
                 view.write("\nPlease select operation:\n");
 
                 String input = view.checkExit(view.read());
 
-                if ( Integer.parseInt(input) > 6 || Integer.parseInt(input) < 1 ) {
+                if ( Integer.parseInt(input) > 7 || Integer.parseInt(input) < 1 ) {
                     view.write("Incorrect input, try again");
                 } else {
                     switch (Integer.parseInt(input)){
@@ -50,12 +54,30 @@ public class Catalog extends Command {
                             break;
                         case 6: removeTable();
                             break;
+                        case 7: clearTable();
+                            break;
                     }
                 }
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again");
             }
         }
+    }
+
+    private void clearTable() {
+
+        view.write("Please select table\n");
+
+        String tableName = selectTable();
+
+                view.write("Please confirm, do you really want to clear table '" + tableName+ "'? Y/N");
+
+                if (view.read().equalsIgnoreCase("Y")) {
+                    manager.clear(tableName);
+                    view.write("Table '" + tableName +"' cleared");
+                } else {
+                    view.write("Your action canceled!");
+                }
     }
 
     private void getTableData() {
@@ -73,6 +95,25 @@ public class Catalog extends Command {
     }
 
     private void insert() {
+
+        view.write("Please select table\n");
+
+        String tableName = selectTable();
+
+        List<Object> listColumnName = manager.getColumnNames(tableName);
+
+        List<Object> list = new ArrayList<>();
+
+        for (int i = 1; i <listColumnName.size() ; i++) {
+
+            view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
+
+            String input = view.checkExit(view.read());
+
+            list.add(input);
+        }
+
+        manager.insert(tableName, list, view);
     }
 
     private void update() {
@@ -110,7 +151,6 @@ public class Catalog extends Command {
         }
     }
 
-
     private void createTable() {
         view.write("\nPlease input table name:\n");
 
@@ -133,13 +173,18 @@ public class Catalog extends Command {
     }
 
     private void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
-        do {
-            outputColumnNames(listValue, result);
-            for (int i = 0; i < listColumnName.size(); i++) {
-                listValue.remove(0);
-            }
+       try {
+           do {
+               outputColumnNames(listValue, result);
+               for (int i = 0; i < listColumnName.size(); i++) {
+                   listValue.remove(0);
+               }
 
-        } while (listValue.size() != 0);
+           } while (listValue.size() != 0);
+       } catch (MissingFormatArgumentException e) {
+           view.write("\nThe table is empty!");
+       }
+
     }
 
     private void outputColumnNames(List<Object> listColumnName, String result) {
