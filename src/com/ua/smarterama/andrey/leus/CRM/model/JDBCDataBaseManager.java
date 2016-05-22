@@ -38,9 +38,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/" +  user.getNameDataBase(), user.getUserName(),
+                    "jdbc:postgresql://localhost:5432/" + user.getNameDataBase(), user.getUserName(),
                     user.getPassword()); //TODO change to abstract object
-            view.write("Connection succeeded to "+ user.getNameDataBase());
+            view.write("Connection succeeded to " + user.getNameDataBase());
         } catch (SQLException e) {
             connection = null;
             throw new RuntimeException(
@@ -48,6 +48,31 @@ public class JDBCDataBaseManager implements DataBaseManager {
                             user.getNameDataBase(), user.getUserName(), user.getPassword()));
         }
 
+    }
+
+
+    @Override
+    public String getFormatedLine(List<Object> listColumnName, List<Object> listValue) {
+        String result = "";
+
+        for (int i = 0; i < listColumnName.size(); i++) {
+            result += "%-" + getWidthColumn(i, listColumnName, listValue) + "s";
+        }
+        result += "%n";
+        return result;
+    }
+
+    private int getWidthColumn(int i, List<Object> listColumnName, List<Object> listValue) {
+
+        int result = (String.valueOf(listColumnName.get(i))).length();
+
+        int qtyLine = listValue.size()/listColumnName.size();
+
+        for (int j = 0; j < qtyLine; j++) {
+            if (result < (String.valueOf(listValue.get(i+(listColumnName.size()*j)))).length()) {
+                result = (String.valueOf(listValue.get(i+(listColumnName.size()*j)))).length();            }
+        }
+        return result + 2;
     }
 
     @Override
@@ -135,12 +160,38 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void dropTable(String tableName) {
-        try (Statement stmt = connection.createStatement()) {
+        try  {
+            Statement stmt = connection.createStatement();
+            dropSequnce(tableName);
             stmt.executeUpdate("DROP TABLE public." + tableName + " CASCADE");
             stmt.close();
         } catch (SQLException e) {
+            System.out.println("Error drop table");
             e.printStackTrace();
         }
+
+    }
+
+    private void dropSequnce(String tableName) {
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT column_default FROM information_schema.columns WHERE table_name ='" + tableName + "'");
+            rs.next();
+                list.add(rs.getString("column_default"));
+                if (list.get(0).contains(tableName)){
+                    statement.executeUpdate("DROP SEQUENCE public." + tableName + "_seq CASCADE");
+                }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Error drop seq");
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -191,7 +242,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void insert(String tableName, List<Object> list, View view) {
 
-        List<Object> columnTable = getColumnNames(tableName);
+        List<Object> columnTable = getColumnNames(tableName, "");
 
         String columns = " (";
         for (int i = 1; i < columnTable.size(); i++) {
@@ -246,14 +297,19 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getTableData(String tableName) {
-        List<Object> list = new ArrayList<>();
+    public List<Object> getTableData(String tableName, String query) {
+
+        String sql;
+        if (query.isEmpty()) {sql = "SELECT * FROM public." + tableName;}
+        else {sql = query;}
+
+            List<Object> list = new ArrayList<>();
 
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
 
-        ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName );
+        ResultSet rs = stmt.executeQuery(sql);
 
         ResultSetMetaData rsmd = rs.getMetaData();
 
@@ -274,22 +330,29 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getColumnNames(String tableName) {
+    public List<Object> getColumnNames(String tableName, String query) {
+        String sql;
+        if (query.isEmpty()) {sql = "SELECT * FROM public." + tableName;}
+        else {sql = query;}
+
         List<Object> list = new ArrayList<>();
 
-        Statement stmt = null;
         try {
-            stmt = connection.createStatement();
+            Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName);
+            ResultSet rs = stmt.executeQuery(sql);
 
             ResultSetMetaData rsmd = rs.getMetaData();
 
             for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                 list.add(rsmd.getColumnName(index));
             }
+            rs.close();
+            stmt.close();
 
-        } catch (SQLException e) {        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return list;
     }

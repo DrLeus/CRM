@@ -36,11 +36,13 @@ public interface DataBaseManager {
 
     boolean isConnected();
 
-    List<Object> getTableData(String tableName);
+    List<Object> getTableData(String tableName, String query);
 
-    List<Object> getColumnNames(String tableName);
+    List<Object> getColumnNames(String tableName, String query);
 
     void delete(int id, String taleName, View view);
 
     void connect(ConnectToDataBase.User user, View view);
+
+    String getFormatedLine(List<Object> listColumnName, List<Object> listValue);
 }

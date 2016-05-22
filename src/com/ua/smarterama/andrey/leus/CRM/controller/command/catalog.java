@@ -31,13 +31,14 @@ public class Catalog extends Command {
                         "4. Delete data (position)\n" +
                         "5. Create table\n" +
                         "6. Remove table\n" +
-                        "7. Clear table\n");
+                        "7. Clear table\n" +
+                        "8. Return to main menu\n");
 
                 view.write("\nPlease select operation:\n");
 
                 String input = view.checkExit(view.read());
 
-                if ( Integer.parseInt(input) > 7 || Integer.parseInt(input) < 1 ) {
+                if ( Integer.parseInt(input) > 8 || Integer.parseInt(input) < 1 ) {
                     view.write("Incorrect input, try again");
                 } else {
                     switch (Integer.parseInt(input)){
@@ -55,6 +56,7 @@ public class Catalog extends Command {
                             break;
                         case 7: clearTable();
                             break;
+                        case 8: view.checkExit("exit");
                     }
                 }
             } catch (NumberFormatException e) {
@@ -66,11 +68,11 @@ public class Catalog extends Command {
     private void getTableData() {
         String tableName = selectTable();
 
-        List<Object> listColumnName = manager.getColumnNames(tableName);
+        List<Object> listColumnName = manager.getColumnNames(tableName,"");
 
-        List<Object> listValue = manager.getTableData(tableName);
+        List<Object> listValue = manager.getTableData(tableName,"");
 
-        String format = getFormat(listColumnName, listValue);
+        String format = manager.getFormatedLine(listColumnName, listValue);
 
         outputColumnNames(listColumnName, format);
 
@@ -83,7 +85,7 @@ public class Catalog extends Command {
 
         String tableName = selectTable();
 
-        List<Object> listColumnName = manager.getColumnNames(tableName);
+        List<Object> listColumnName = manager.getColumnNames(tableName, "");
 
         List<Object> list = new ArrayList<>();
 
@@ -103,11 +105,11 @@ public class Catalog extends Command {
 
         String tableName = selectTable();
 
-        List<Object> columnNames = manager.getColumnNames(tableName);
+        List<Object> columnNames = manager.getColumnNames(tableName, "");
 
-        outputColumnNames(columnNames, getFormat(columnNames, manager.getTableData(tableName))); // TODO duplicate getTableData
+        outputColumnNames(columnNames, manager.getFormatedLine(columnNames, manager.getTableData(tableName,""))); // TODO duplicate getTableData
 
-        outputData(columnNames, manager.getTableData(tableName), getFormat(columnNames, manager.getTableData(tableName))); //TODO duplicate getTableData
+        outputData(columnNames, manager.getTableData(tableName,""), manager.getFormatedLine(columnNames, manager.getTableData(tableName,""))); //TODO duplicate getTableData
 
         int id;
 
@@ -139,9 +141,9 @@ public class Catalog extends Command {
     private void delete() {
         String tableName = selectTable();
 
-        outputColumnNames(manager.getColumnNames(tableName), getFormat(manager.getColumnNames(tableName), manager.getTableData(tableName))); // TODO duplicate getTableData
+        outputColumnNames(manager.getColumnNames(tableName, ""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName,""))); // TODO duplicate getTableData
 
-        outputData(manager.getColumnNames(tableName), manager.getTableData(tableName), getFormat(manager.getColumnNames(tableName), manager.getTableData(tableName))); //TODO duplicate getTableData
+        outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName,""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName,""))); //TODO duplicate getTableData
 
 
         while (true) {
@@ -181,7 +183,7 @@ public class Catalog extends Command {
 
         if (view.read().equalsIgnoreCase("Y")) {
             manager.dropTable(tableName);
-            view.write("Table '" + tableName +"' removed");
+            view.write("Table '" + tableName +"'was removed! Success!");
         } else {
             view.write("Your action canceled!");
         }
@@ -197,7 +199,7 @@ public class Catalog extends Command {
 
         if (view.read().equalsIgnoreCase("Y")) {
             manager.clear(tableName);
-            view.write("Table '" + tableName +"' cleared");
+            view.write("Table '" + tableName +"' was cleared! Success!");
         } else {
             view.write("Your action canceled!");
         }
@@ -220,16 +222,6 @@ public class Catalog extends Command {
 
     private void outputColumnNames(List<Object> listColumnName, String result) {
         view.write(String.format(result, listColumnName.toArray()));
-    }
-
-    private String getFormat(List<Object> listColumnName, List<Object> listValue) {
-        String result = "";
-
-        for (int i = 0; i < listColumnName.size(); i++) {
-            result += "%-" + getWidthColumn(i, listColumnName, listValue) + "s";
-        }
-        result += "%n";
-        return result;
     }
 
     private String selectTable() {
@@ -263,18 +255,7 @@ public class Catalog extends Command {
         return tableName;
     }
 
-    private int getWidthColumn(int i, List<Object> listColumnName, List<Object> listValue) {
 
-        int result = (String.valueOf(listColumnName.get(i))).length();
-
-        int qtyLine = listValue.size()/listColumnName.size();
-
-        for (int j = 0; j < qtyLine; j++) {
-            if (result < (String.valueOf(listValue.get(i+(listColumnName.size()*j)))).length()) {
-                result = (String.valueOf(listValue.get(i+(listColumnName.size()*j)))).length();            }
-        }
-        return result + 2;
-    }
 
 
 }

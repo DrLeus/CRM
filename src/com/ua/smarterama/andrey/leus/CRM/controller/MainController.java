@@ -20,7 +20,7 @@ public class MainController {
                 new CreateDatabase(manager, view),
                 new DropDataBase(manager, view),
                 new Catalog(manager, view),
-                new Report(view),
+                new Report(manager,view),
                 new SelectDataBase(manager, view),
                 new Store(view),
                 new Writeoff(view),

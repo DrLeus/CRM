@@ -1,6 +1,8 @@
 package com.ua.smarterama.andrey.leus.CRM.view;
 
 
+import com.ua.smarterama.andrey.leus.CRM.controller.Main;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,8 +30,13 @@ public class Console implements View {
 
     public String checkExit(String input) {
             if (input.equals("exit")){
-                System.out.println("\nДо скорой встречи!");
-                System.exit(0);
+                System.out.println("\nReturn to main menu!");
+                try {
+//                    Main.main(new String[0]);
+                    System.exit(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return input;
         }
