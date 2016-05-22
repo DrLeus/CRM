@@ -1,12 +1,13 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
+import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 public class Writeoff extends Command {
     private View view;
 
-    public Writeoff(View view) {
-        this.view = view;
+    public Writeoff(DataBaseManager manager, View view) {
+            super(manager, view);
 
     }
 

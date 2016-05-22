@@ -33,11 +33,6 @@ public class Report extends Command {
         outputColumnNames(listColumnName, format);
 
         outputData(listColumnName, listValue, format);
-
-
-        for (Object ser : listValue) {
-            System.out.println(ser);
-        }
     }
 
     private void outputColumnNames(List<Object> listColumnName, String result) {

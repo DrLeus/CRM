@@ -22,8 +22,8 @@ public class MainController {
                 new Catalog(manager, view),
                 new Report(manager,view),
                 new SelectDataBase(manager, view),
-                new Store(view),
-                new Writeoff(view),
+                new Store(manager,view),
+                new Writeoff(manager,view),
                 new Unsupported(view),
         };
     }

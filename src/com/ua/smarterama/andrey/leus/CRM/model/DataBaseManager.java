@@ -45,4 +45,5 @@ public interface DataBaseManager {
     void connect(ConnectToDataBase.User user, View view);
 
     String getFormatedLine(List<Object> listColumnName, List<Object> listValue);
+
 }
