@@ -32,8 +32,7 @@ public class Console implements View {
             if (input.equals("exit")){
                 System.out.println("\nReturn to main menu!");
                 try {
-//                    Main.main(new String[0]);
-                    System.exit(0);
+                    Main.main(new String[0]);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

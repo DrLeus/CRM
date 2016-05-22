@@ -28,7 +28,6 @@ public class Store extends Command {
         String tableName = "stockbalance";
 
         list.add(0,"");
-//        list.add(1,"");
 
         while (true) {
             try {
