@@ -27,12 +27,12 @@ public class Store extends Command {
 
         String tableName = "stockbalance";
 
-        list.add(0,"");
+        list.add(0, "");
 
         while (true) {
             try {
                 view.write("\nPlease input id of goods:\n");
-                list.add(1,Integer.parseInt(view.checkExit(view.read())));
+                list.add(1, Integer.parseInt(view.checkExit(view.read())));
                 break;
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again");
@@ -42,7 +42,7 @@ public class Store extends Command {
         while (true) {
             try {
                 view.write("\nPlease input quantity of goods:\n");
-                list.set(0,Integer.parseInt(view.checkExit(view.read())));
+                list.set(0, Integer.parseInt(view.checkExit(view.read())));
                 break;
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again");
@@ -54,11 +54,11 @@ public class Store extends Command {
         try {
             List<Object> currentValue = manager.getTableData("", sql);
 
-            list.set(0,(Integer.parseInt(String.valueOf(list.get(0))) + Integer.parseInt(String.valueOf(currentValue.get(1)))));
+            list.set(0, (Integer.parseInt(String.valueOf(list.get(0))) + Integer.parseInt(String.valueOf(currentValue.get(1)))));
 
             int id = (new BigDecimal(String.valueOf(currentValue.get(0)))).intValue();
 
-            manager.update(tableName, manager.getColumnNames(tableName, ""), id, list,  view);
+            manager.update(tableName, manager.getColumnNames(tableName, ""), id, list, view);
 
         } catch (IndexOutOfBoundsException e) {
             manager.insert(tableName, list, view);

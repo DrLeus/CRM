@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.controller;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
+import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
@@ -8,7 +9,7 @@ public class MainController {
 
 
     private View view;
-        private Command[] commands;
+    private Command[] commands;
 
     public MainController(View view, DataBaseManager manager) {
         this.view = view;
@@ -20,10 +21,10 @@ public class MainController {
                 new CreateDatabase(manager, view),
                 new DropDataBase(manager, view),
                 new Catalog(manager, view),
-                new Report(manager,view),
+                new Report(manager, view),
                 new SelectDataBase(manager, view),
-                new Store(manager,view),
-                new Writeoff(manager,view),
+                new Store(manager, view),
+                new Writeoff(manager, view),
                 new Unsupported(view),
         };
     }
@@ -38,7 +39,7 @@ public class MainController {
 
         while (true) {
 
-            view.write("\nВведите команду: ");
+            view.write("\nPlease input command: ");
 
             String input = view.read();
 

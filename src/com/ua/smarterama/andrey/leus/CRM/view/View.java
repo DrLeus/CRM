@@ -1,5 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.view;
 
+import java.util.List;
+
 public interface View {
 
     void write(String message);
@@ -8,6 +10,7 @@ public interface View {
 
     String read();
 
-   String checkExit(String input);
+    String checkExit(String input);
+
 
 }

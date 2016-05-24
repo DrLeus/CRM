@@ -9,13 +9,6 @@ public class IsConnected extends Command {
         super(manager, view);
     }
 
-//    private DataBaseManager manager;
-//    private View view;
-//
-//    public IsConnected(DataBaseManager manager, View view) {
-//        this.manager = manager;
-//        this.view = view;
-//    }
 
     @Override
     public boolean canProcess(String command) {

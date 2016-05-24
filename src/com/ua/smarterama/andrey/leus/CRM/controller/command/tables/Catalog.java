@@ -1,18 +1,16 @@
-package com.ua.smarterama.andrey.leus.CRM.controller.command;
+package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
+import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
 public class Catalog extends Command {
 
-
-    public Catalog(DataBaseManager manager, View view) {
-        super(manager, view);
-    }
 
     @Override
     public boolean canProcess(String command) {
@@ -23,7 +21,7 @@ public class Catalog extends Command {
     public void process() {
 
         while (true) {
-            try{
+            try {
                 view.write("\nAvalable operations:\n" +
                         "1. Get table data\n" +
                         "2. Insert data (position)\n" +
@@ -38,25 +36,34 @@ public class Catalog extends Command {
 
                 String input = view.checkExit(view.read());
 
-                if ( Integer.parseInt(input) > 8 || Integer.parseInt(input) < 1 ) {
+                if (Integer.parseInt(input) > 8 || Integer.parseInt(input) < 1) {
                     view.write("Incorrect input, try again");
                 } else {
-                    switch (Integer.parseInt(input)){
-                        case 1: getTableData();
+                    switch (Integer.parseInt(input)) {
+                        case 1:
+                            GetTable table = new GetTable(manager, view);
+                            table.getTableData();
                             break;
-                        case 2: insert();
+                        case 2:
+                            insert();
                             break;
-                        case 3: update();
+                        case 3:
+                            update();
                             break;
-                        case 4: delete();
+                        case 4:
+                            delete();
                             break;
-                        case 5: createTable();
+                        case 5:
+                            createTable();
                             break;
-                        case 6: removeTable();
+                        case 6:
+                            removeTable();
                             break;
-                        case 7: clearTable();
+                        case 7:
+                            clearTable();
                             break;
-                        case 8: view.checkExit("exit");
+                        case 8:
+                            view.checkExit("exit");
                     }
                 }
             } catch (NumberFormatException e) {
@@ -65,31 +72,18 @@ public class Catalog extends Command {
         }
     }
 
-    private void getTableData() {
-        String tableName = selectTable();
-
-        List<Object> listColumnName = manager.getColumnNames(tableName,"");
-
-        List<Object> listValue = manager.getTableData(tableName,"");
-
-        String format = manager.getFormatedLine(listColumnName, listValue);
-
-        outputColumnNames(listColumnName, format);
-
-        outputData(listColumnName, listValue, format);
-    }
 
     private void insert() {
 
         view.write("Please select table\n");
 
-        String tableName = selectTable();
+        String tableName = manager.selectTable(manager.getTableNames());
 
         List<Object> listColumnName = manager.getColumnNames(tableName, "");
 
         List<Object> list = new ArrayList<>();
 
-        for (int i = 1; i <listColumnName.size() ; i++) {
+        for (int i = 1; i < listColumnName.size(); i++) {
 
             view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
 
@@ -103,13 +97,13 @@ public class Catalog extends Command {
 
     private void update() {
 
-        String tableName = selectTable();
+        String tableName = manager.selectTable(manager.getTableNames());
 
         List<Object> columnNames = manager.getColumnNames(tableName, "");
 
-        outputColumnNames(columnNames, manager.getFormatedLine(columnNames, manager.getTableData(tableName,""))); // TODO duplicate getTableData
+        outputColumnNames(columnNames, manager.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData
 
-        outputData(columnNames, manager.getTableData(tableName,""), manager.getFormatedLine(columnNames, manager.getTableData(tableName,""))); //TODO duplicate getTableData
+        outputData(columnNames, manager.getTableData(tableName, ""), manager.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); //TODO duplicate getTableData
 
         int id;
 
@@ -125,7 +119,7 @@ public class Catalog extends Command {
 
         List<Object> list = new ArrayList<>();
 
-        for (int i = 1; i <columnNames.size() ; i++) {
+        for (int i = 1; i < columnNames.size(); i++) {
 
             view.write("Please input data for column '" + columnNames.get(i) + "'\n");
 
@@ -139,11 +133,11 @@ public class Catalog extends Command {
     }
 
     private void delete() {
-        String tableName = selectTable();
+        String tableName = manager.selectTable(manager.getTableNames());
 
-        outputColumnNames(manager.getColumnNames(tableName, ""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName,""))); // TODO duplicate getTableData
+        outputColumnNames(manager.getColumnNames(tableName, ""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
 
-        outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName,""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName,""))); //TODO duplicate getTableData
+        outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData
 
 
         while (true) {
@@ -156,7 +150,7 @@ public class Catalog extends Command {
 
                 if (view.read().equalsIgnoreCase("Y")) {
                     manager.delete(input, tableName, view);
-                    view.write("Id '" + input +"' removed");
+                    view.write("Id '" + input + "' removed");
                 } else {
                     view.write("Your action canceled!");
                     break;
@@ -177,13 +171,12 @@ public class Catalog extends Command {
     }
 
     private void removeTable() {
-        String tableName = selectTable();
+        String tableName = manager.selectTable(manager.getTableNames());
 
         view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N");
 
         if (view.read().equalsIgnoreCase("Y")) {
             manager.dropTable(tableName);
-            view.write("Table '" + tableName +"'was removed! Success!");
         } else {
             view.write("Your action canceled!");
         }
@@ -193,68 +186,40 @@ public class Catalog extends Command {
 
         view.write("Please select table\n");
 
-        String tableName = selectTable();
+        String tableName = manager.selectTable(manager.getTableNames());
 
-        view.write("Please confirm, do you really want to clear table '" + tableName+ "'? Y/N");
+        view.write("Please confirm, do you really want to clear table '" + tableName + "'? Y/N");
 
         if (view.read().equalsIgnoreCase("Y")) {
-            manager.clear(tableName);
-            view.write("Table '" + tableName +"' was cleared! Success!");
+            try {
+                manager.clear(tableName);
+                view.write("Table '" + tableName + "' was cleared! Success!");
+            } catch (SQLException e) {
+                view.write(String.format("Error clear table in case - %s", e));
+            }
         } else {
             view.write("Your action canceled!");
         }
     }
 
     private void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
-       try {
-           do {
-               outputColumnNames(listValue, result);
-               for (int i = 0; i < listColumnName.size(); i++) {
-                   listValue.remove(0);
-               }
+        try {
+            do {
+                outputColumnNames(listValue, result);
+                for (int i = 0; i < listColumnName.size(); i++) {
+                    listValue.remove(0);
+                }
 
-           } while (listValue.size() != 0);
-       } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
-           view.write("\nThe table is empty!");
-       }
+            } while (listValue.size() != 0);
+        } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
+            view.write("\nThe table is empty!");
+        }
 
     }
 
     private void outputColumnNames(List<Object> listColumnName, String result) {
         view.write(String.format(result, listColumnName.toArray()));
     }
-
-    private String selectTable() {
-        List<String> tables = manager.getTableNames();
-        String tableName = null;
-
-        int numberTable = 0;
-
-        view.write("\n Database has next tables: \n");
-
-        for (String sert: tables) {
-            view.write("" + ++numberTable + ": " + sert);
-        }
-
-        while (true) {
-            try{
-                view.write("\nPlease select number of table:\n");
-
-                String input = view.checkExit(view.read());
-
-                if ( Integer.parseInt(input) > numberTable || Integer.parseInt(input) < 1 ) {
-                    view.write("Incorrect input, try again");
-                } else {
-                    tableName = tables.get(Integer.parseInt(input)-1);
-                    break;
-                }
-            } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
-            }
-        }
-        return tableName;
-    }
-
 
 
 

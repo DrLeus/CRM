@@ -6,6 +6,8 @@ import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.MissingFormatArgumentException;
 import java.util.Scanner;
 
 public class Console implements View {
@@ -29,15 +31,16 @@ public class Console implements View {
     }
 
     public String checkExit(String input) {
-            if (input.equals("exit")){
-                System.out.println("\nReturn to main menu!");
-                try {
-                    Main.main(new String[0]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (input.equals("exit")) {
+            System.out.println("\nReturn to main menu!");
+            try {
+                Main.main(new String[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            return input;
         }
+        return input;
     }
+
+}
 

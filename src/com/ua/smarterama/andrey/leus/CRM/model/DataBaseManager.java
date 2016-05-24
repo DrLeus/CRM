@@ -1,32 +1,32 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
 
-import com.ua.smarterama.andrey.leus.CRM.controller.command.ConnectToDataBase;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DataBaseManager {
 
     View view = null;
 
-    void clear(String tableName);
+    void clear(String tableName) throws SQLException;
 
     void connect(String databaseName, String user, String password);
 
-    void createDatabase(String databaseName);
+    void createDatabase(String databaseName) throws SQLException;
 
     void createTable(String query, View view);
 
     void disconnectFromDatabase();
 
-    void dropDatabase(String databaseName);
+    void dropDatabase(String databaseName) throws SQLException;
 
     void dropTable(String tableName);
 
     List<String> getDatabases(View view);
 
-//    Set<String> getTableColumns(String tableName);
+    public String selectTable(List<String> tables);
 
     List<String> getTableNames();
 

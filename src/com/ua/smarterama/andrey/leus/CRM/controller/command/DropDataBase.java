@@ -3,6 +3,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public class DropDataBase extends Command {
 
     @Override
     public boolean canProcess(String command) {
-            return command.equals("drop");
+        return command.equals("drop");
     }
 
     @Override
@@ -25,8 +26,12 @@ public class DropDataBase extends Command {
         view.write("Please confirm, do you really want to drop '" + nameDataBase + "' database? Y/N");
 
         if (view.read().equalsIgnoreCase("Y")) {
-            manager.dropDatabase(nameDataBase);
-            view.write("Database '" + nameDataBase +"' dropped");
+            try {
+                manager.dropDatabase(nameDataBase);
+                view.write("Database '" + nameDataBase + "' dropped");
+            } catch (SQLException e) {
+                view.write(String.format("Drop database error in case - %s", e));
+            }
         } else {
             view.write("Your action canceled!");
         }
@@ -41,21 +46,21 @@ public class DropDataBase extends Command {
 
         view.write("\nThe next data bases avaiilable:\n");
 
-        for (String sert: list) {
+        for (String sert : list) {
             view.write("" + ++i + ": " + sert);
         }
 
 
         while (true) {
-            try{
+            try {
                 view.write("\nPlease select database for dropping:\n");
 
                 String input = view.checkExit(view.read());
 
-                if ( Integer.parseInt(input) > i || Integer.parseInt(input) < 1 ) {
+                if (Integer.parseInt(input) > i || Integer.parseInt(input) < 1) {
                     view.write("Incorrect input, try again");
                 } else {
-                    nameDataBase = list.get(Integer.parseInt(input)-1);
+                    nameDataBase = list.get(Integer.parseInt(input) - 1);
                     break;
                 }
             } catch (NumberFormatException e) {

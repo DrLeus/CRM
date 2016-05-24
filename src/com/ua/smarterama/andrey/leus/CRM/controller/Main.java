@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] argv) throws Exception {
 
         DataBaseManager manager = new JDBCDataBaseManager();
-        MainController controller = new MainController(new Console(),manager);
+        MainController controller = new MainController(new Console(), manager);
 
         try {
             controller.run();

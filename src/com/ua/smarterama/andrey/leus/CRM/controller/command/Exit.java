@@ -20,7 +20,7 @@ public class Exit extends Command {
 
     @Override
     public void process() {
-        view.write("\nДо скорой встречи!");
+        view.write("\nSee you again!");
         System.exit(0);
     }
 }

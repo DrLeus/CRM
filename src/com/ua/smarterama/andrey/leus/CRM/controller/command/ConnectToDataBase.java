@@ -40,10 +40,13 @@ public class ConnectToDataBase extends Command {
                     String password = view.checkExit(view.read());
                     manager.connect(nameDB, userName, password);
                     view.write("Connection succeeded to " + initialNameDB);
+
                     break;
                 } else {
                     view.write("Oops... something wrong");
                 }
             }
     }
+
+
 }

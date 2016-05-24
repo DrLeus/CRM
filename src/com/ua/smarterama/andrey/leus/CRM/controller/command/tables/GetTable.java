@@ -1,32 +1,36 @@
-package com.ua.smarterama.andrey.leus.CRM.controller.command;
+package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
+import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
-public class Report extends Command {
-
-    public Report(DataBaseManager manager, View view) {
+/**
+ * Created by Admin on 24.05.2016.
+ */
+public class GetTable extends Command {
+    public GetTable(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
     @Override
     public boolean canProcess(String command) {
-        return command.equals("report");
+        return false;
     }
 
     @Override
     public void process() {
+    }
 
-        view.write("\nThe warehouse contains:\n");
 
-        String sql = "SELECT goods.id, code, name, quantity FROM goods, stockbalance WHERE goods.id = stockbalance.id_goods";
+    public void getTableData() {
+        String tableName = manager.selectTable(manager.getTableNames());
 
-        List<Object> listValue = manager.getTableData("", sql);
+        List<Object> listColumnName = manager.getColumnNames(tableName, "");
 
-        List<Object> listColumnName = manager.getColumnNames("", sql);
+        List<Object> listValue = manager.getTableData(tableName, "");
 
         String format = manager.getFormatedLine(listColumnName, listValue);
 
@@ -35,9 +39,6 @@ public class Report extends Command {
         outputData(listColumnName, listValue, format);
     }
 
-    private void outputColumnNames(List<Object> listColumnName, String result) {
-        view.write(String.format(result, listColumnName.toArray()));
-    }
 
     private void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
         try {
@@ -52,6 +53,10 @@ public class Report extends Command {
             view.write("\nThe table is empty!");
         }
 
+    }
+
+    private void outputColumnNames(List<Object> listColumnName, String result) {
+        view.write(String.format(result, listColumnName.toArray()));
     }
 
 }

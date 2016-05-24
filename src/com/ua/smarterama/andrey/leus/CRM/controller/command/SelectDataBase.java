@@ -2,6 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
+
 import java.util.List;
 
 public class SelectDataBase extends Command {
@@ -21,7 +22,7 @@ public class SelectDataBase extends Command {
 
         view.write("The next data bases avaiilable:\n");
 
-        for (String sert: list) {
+        for (String sert : list) {
             view.write(sert);
         }
     }

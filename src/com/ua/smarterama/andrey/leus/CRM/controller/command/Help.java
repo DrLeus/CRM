@@ -5,21 +5,21 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 public class Help extends Command {
 
 
-
-    static String text = "\nДанный модуль позволяет реализовать следующие операции:\n" +
-            "- получить список доступных баз данных: команда “list”;\n" +
-            "- подключиться к базе данных: команда “connect”;\n" +
-            "- создать базу данных: команда “create”;\n" +
-            "- удалить базу данных: команда “drop”;\n" +
-            "- посмотреть содержимое таблиц (к примеру, справочник товаров): команда “catalog”;\n" +
-            "   -- в данном разделе доступно: \n" +
-            "      --- добавить, изменить, удалить позицию (например, товар);\n" +
-            "      --- добавить, удалить, clear таблицу;" +
-            "- получить отчет об остатках на складах: команда “report”;\n" +
-            "- оприходование товара на склад: команда “store”;\n" +
-            "- списание товар со склада: команда “writeoff”;\n\n" +
-            "Для вызова справки введите “help”.\n" +
-            "Команда “exit” позволяет выйти из модуля (or returrn to main menu).";
+    static String text = "\nThis programme allows next commands:\n" +
+            "- “connect” - connect to database\n" +
+            "- “list“ - get list of databases”;\n" +
+            "- “create” - create new database;\n" +
+            "- “drop” - delete the database;\n" +
+            "- “catalog” - get contain of tables (for example information about 'goods';\n" +
+            "   -- in this partition you can: \n" +
+            "      --- add, change or delete line;\n" +
+            "      --- add, delete, clear table;" +
+            "- “report” - get goods balance on warehouse ;\n" +
+            "- “store” - add goods on warehouse;\n" +
+            "- “writeoff” - write off goods from warehouse ;\n" +
+            "\n" +
+            "- “help” - get list of commands.\n" +
+            "- “exit” - escape from programme or return to main menu.";
 
     public Help(View view) {
         this.view = view;
@@ -35,8 +35,8 @@ public class Help extends Command {
         view.write(text);
     }
 
-     public static void getHelp(){ //TODO delete this method, dublicate
-         System.out.println(text);;
- }
+    public static void getHelp() { //TODO delete this method, dublicate
+        System.out.println(text);
+    }
 
 }
