@@ -5,10 +5,9 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 public class ConnectToDataBase extends Command {
 
-    User user;
-    static String initialNameDB = "CRM";
-    static String initialUserName = "postgres";
-    static String initialPass = "postgres";
+    final static String initialNameDB = "CRM";
+    final static String initialUserName = "postgres";
+    final static String initialPass = "postgres";
 
     public ConnectToDataBase(DataBaseManager manager, View view) {
         super(manager, view);
@@ -29,50 +28,22 @@ public class ConnectToDataBase extends Command {
                 String input = view.checkExit(view.read());
 
                 if (input.equalsIgnoreCase("Y")){
-                    user = new User(initialNameDB, initialUserName, initialPass);
-                    manager.connect(user, view);
+                    manager.connect(initialNameDB, initialUserName, initialPass);
+                    view.write("Connection succeeded to " + initialNameDB);
                     break;
                 } else if (input.equalsIgnoreCase("N")) {
-                    user = new User(null,null,null);
                     view.write("Введите имя базы");
-                    user.database = view.checkExit(view.read());
+                    String nameDB = view.checkExit(view.read());
                     view.write("Введите имя пользователя");
-                    user.userName = view.checkExit(view.read());
+                    String userName = view.checkExit(view.read());
                     view.write("Введите пароль");
-                    user.password = view.checkExit(view.read());
-                    manager.connect(user, view);
+                    String password = view.checkExit(view.read());
+                    manager.connect(nameDB, userName, password);
+                    view.write("Connection succeeded to " + initialNameDB);
                     break;
                 } else {
                     view.write("Oops... something wrong");
                 }
             }
     }
-
-    public class User {
-
-        private String database ;
-        private String userName;
-        private String password;
-
-        private User(String database, String userName, String password){
-            this.database = database;
-            this.userName = userName;
-            this.password = password;
-        }
-
-        public String getNameDataBase(){
-            return  database;
-        }
-
-        public String getUserName(){
-            return  userName;
-        }
-
-        public String getPassword(){
-            return  password;
-        }
-
-    }
-
-
 }

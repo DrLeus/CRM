@@ -5,7 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
 
-public class CatalogGoods implements Model {
+public class CatalogGoods {
 
     private View view;
     private MainController controller;

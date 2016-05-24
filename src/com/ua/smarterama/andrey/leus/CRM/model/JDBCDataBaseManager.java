@@ -9,8 +9,6 @@ import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
-    private Connection connection;
-
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -18,6 +16,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
             throw new RuntimeException("Oops.... Please add jdbc jar to project.", e);
         }
     }
+
+    private Connection connection;
 
     @Override
     public void clear(String tableName) {
@@ -31,25 +31,18 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void connect(String databaseName, String user, String password) {
-
-    }
-
-    public void connect(ConnectToDataBase.User user, View view) {
-
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/" + user.getNameDataBase(), user.getUserName(),
-                    user.getPassword()); //TODO change to abstract object
-            view.write("Connection succeeded to " + user.getNameDataBase());
+                    "jdbc:postgresql://localhost:5432/" + databaseName, user,
+                    password);
+
         } catch (SQLException e) {
             connection = null;
             throw new RuntimeException(
                     String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s",
-                            user.getNameDataBase(), user.getUserName(), user.getPassword()));
+                            databaseName, user, password));
         }
-
     }
-
 
     @Override
     public String getFormatedLine(List<Object> listColumnName, List<Object> listValue) {
@@ -78,10 +71,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void createDatabase(String databaseName) {
 
-        try {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate("CREATE DATABASE " + databaseName);
-            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,8 +86,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List <String> listColumn = inputNames(view);
 
-        try  {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
 
             stmt.executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
 
@@ -104,7 +94,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
                     "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
                     formatedLine(listColumn));
             view.write("The table " + tableName + " was created! Success!");
-            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -149,10 +138,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public void dropDatabase(String databaseName) {
 
 
-        try {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
-            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,11 +147,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void dropTable(String tableName) {
-        try  {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
             dropSequnce(tableName);
             stmt.executeUpdate("DROP TABLE public." + tableName + " CASCADE");
-            stmt.close();
         } catch (SQLException e) {
             System.out.println("Error drop table");
             e.printStackTrace();
@@ -176,16 +161,14 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List<String> list = new ArrayList<>();
 
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT column_default FROM information_schema.columns WHERE table_name ='" + tableName + "'");
+         try (Statement stmt = connection.createStatement();
+              ResultSet rs = stmt.executeQuery("SELECT column_default FROM information_schema.columns WHERE table_name ='" + tableName + "'");)
+         {
             rs.next();
                 list.add(rs.getString("column_default"));
                 if (list.get(0).contains(tableName)){
-                    statement.executeUpdate("DROP SEQUENCE public." + tableName + "_seq CASCADE");
+                    stmt.executeUpdate("DROP SEQUENCE public." + tableName + "_seq CASCADE");
                 }
-            rs.close();
-            statement.close();
         } catch (SQLException e) {
             System.out.println("Error drop seq");
             e.printStackTrace();
@@ -199,22 +182,17 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List <String> list = new ArrayList<>();
 
-        try {
-            PreparedStatement ps = connection
-                    .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
-            ResultSet rs = ps.executeQuery();
-
+        try (PreparedStatement ps = connection
+                .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
+             ResultSet rs = ps.executeQuery();)
+        {
             while (rs.next()) {
                 list.add(rs.getString(1));
             }
-            rs.close();
-            ps.close();
-
         } catch (Exception e) {
             list = null;
             e.printStackTrace();
         }
-
         return list;
     }
 
@@ -223,20 +201,18 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List<String> list = new ArrayList<>();
 
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'");
+        try(Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'");)
+        {
             while (rs.next()) {
                list.add(rs.getString("table_name"));
             }
-            rs.close();
-            stmt.close();
-            return list;
         } catch (SQLException e) {
             e.printStackTrace();
             list = null;
             return list;
         }
+        return list;
     }
 
     @Override
@@ -257,13 +233,10 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
         data = data.substring(0, data.length()-1) + ")";
 
-        try  {
-            Statement stmt = connection.createStatement();
-
+        try ( Statement stmt = connection.createStatement();)  {
             stmt.executeUpdate("INSERT INTO public." + tableName + columns +
                 "VALUES " + data);
             view.write("\nThe row was created! Success!");
-            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -272,23 +245,17 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void update(String tableName, List<Object> columnNames, int id, List<Object> list, View view) {
 
-
         for (int i = 1; i <columnNames.size(); i++) {
-
 
             String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) +"='" + list.get(i-1) + "' WHERE id = " + id;
 
-            try {
-                PreparedStatement ps = connection.prepareStatement(sql);
+            try (PreparedStatement ps = connection.prepareStatement(sql);) {
                 ps.executeUpdate();
-                ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
         view.write("\nThe row was updated! Success!");
-
     }
 
     @Override
@@ -305,12 +272,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
             List<Object> list = new ArrayList<>();
 
-        Statement stmt = null;
-        try {
-            stmt = connection.createStatement();
-
-        ResultSet rs = stmt.executeQuery(sql);
-
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql);)
+        {
         ResultSetMetaData rsmd = rs.getMetaData();
 
             while(rs.next()){
@@ -318,14 +282,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
                     list.add(rs.getObject(index));
                 }
             }
-
-        rs.close();
-        stmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return list;
     }
 
@@ -337,49 +296,27 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List<Object> list = new ArrayList<>();
 
-        try {
-            Statement stmt = connection.createStatement();
-
-            ResultSet rs = stmt.executeQuery(sql);
-
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql);)
+        {
             ResultSetMetaData rsmd = rs.getMetaData();
 
             for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                 list.add(rsmd.getColumnName(index));
             }
-            rs.close();
-            stmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return list;
     }
 
     @Override
     public void delete(int id, String tableName, View view) {
-        Statement stmt = null;
-        try {
-            stmt = connection.createStatement();
+
+        try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id );
-            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
-    private int getAmountRowTable(String tableName) throws SQLException {
-        Statement stmt = connection.createStatement();
-
-        ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM public." + tableName);
-        rsCount.next();
-        int size = rsCount.getInt(1);
-        rsCount.close();
-        return size;
-    }
-
-
-
 }

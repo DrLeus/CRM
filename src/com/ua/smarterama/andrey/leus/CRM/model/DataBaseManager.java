@@ -42,8 +42,6 @@ public interface DataBaseManager {
 
     void delete(int id, String taleName, View view);
 
-    void connect(ConnectToDataBase.User user, View view);
-
     String getFormatedLine(List<Object> listColumnName, List<Object> listValue);
 
 }

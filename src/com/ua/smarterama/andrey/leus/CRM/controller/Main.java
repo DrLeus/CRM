@@ -14,7 +14,6 @@ public class Main {
         DataBaseManager manager = new JDBCDataBaseManager();
         MainController controller = new MainController(new Console(),manager);
 
-
         try {
             controller.run();
         } catch (SQLException e) {

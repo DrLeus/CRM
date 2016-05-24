@@ -20,7 +20,7 @@ public class Report extends Command {
     @Override
     public void process() {
 
-        view.write("\nThe warehouse contains:");
+        view.write("\nThe warehouse contains:\n");
 
         String sql = "SELECT goods.id, code, name, quantity FROM goods, stockbalance WHERE goods.id = stockbalance.id_goods";
 

@@ -58,7 +58,6 @@ public class Writeoff extends Command {
 
         String sql = "SELECT * FROM " + tableName + " WHERE id_goods=" + list.get(1);
 
-        try {
             List<Object> currentValue = manager.getTableData("", sql);
 
             Integer newValueGoods = Integer.parseInt(String.valueOf(list.get(0)));
@@ -79,10 +78,5 @@ public class Writeoff extends Command {
             } else{
                 view.write("\n Oops...The quantity of goods on warehaus less thsn you want to writeoff!\n");
             }
-
-        } catch (IndexOutOfBoundsException e) {
-            manager.insert(tableName, list, view);
-        }
-
     }
 }
