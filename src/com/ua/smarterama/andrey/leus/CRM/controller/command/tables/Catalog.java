@@ -2,7 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +11,11 @@ import java.util.MissingFormatArgumentException;
 
 public class Catalog extends Command {
 
+
+
+    public Catalog(DataBaseManager manager, Console view) {
+        super(manager, view);
+    }
 
     @Override
     public boolean canProcess(String command) {
@@ -45,22 +50,28 @@ public class Catalog extends Command {
                             table.getTableData();
                             break;
                         case 2:
-                            insert();
+                            InsertData insert = new InsertData(manager, view);
+                            insert.insertData();
                             break;
                         case 3:
-                            update();
+                            UpdateDate update = new UpdateDate(manager, view);
+                            update.update();
                             break;
                         case 4:
-                            delete();
+                            DeleteData delete = new DeleteData(manager, view);
+                            delete.delete();
                             break;
                         case 5:
-                            createTable();
+                            CreateTable create = new CreateTable(manager, view);
+                            create.createTable();
                             break;
                         case 6:
-                            removeTable();
+                            RemoveTable remove = new RemoveTable(manager, view);
+                            remove.removeTable();
                             break;
                         case 7:
-                            clearTable();
+                            ClearTable clear = new ClearTable(manager, view);
+                            clear.clearTable();
                             break;
                         case 8:
                             view.checkExit("exit");
@@ -73,153 +84,6 @@ public class Catalog extends Command {
     }
 
 
-    private void insert() {
-
-        view.write("Please select table\n");
-
-        String tableName = manager.selectTable(manager.getTableNames());
-
-        List<Object> listColumnName = manager.getColumnNames(tableName, "");
-
-        List<Object> list = new ArrayList<>();
-
-        for (int i = 1; i < listColumnName.size(); i++) {
-
-            view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
-
-            String input = view.checkExit(view.read());
-
-            list.add(input);
-        }
-
-        manager.insert(tableName, list, view);
-    }
-
-    private void update() {
-
-        String tableName = manager.selectTable(manager.getTableNames());
-
-        List<Object> columnNames = manager.getColumnNames(tableName, "");
-
-        outputColumnNames(columnNames, manager.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData
-
-        outputData(columnNames, manager.getTableData(tableName, ""), manager.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); //TODO duplicate getTableData
-
-        int id;
-
-        while (true) {
-            try {
-                view.write("\nPlease select row id to update: ");
-                id = Integer.parseInt(view.checkExit(view.read()));
-                break;
-            } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
-            }
-        }
-
-        List<Object> list = new ArrayList<>();
-
-        for (int i = 1; i < columnNames.size(); i++) {
-
-            view.write("Please input data for column '" + columnNames.get(i) + "'\n");
-
-            String input = view.checkExit(view.read());
-
-            list.add(input);
-        }
-
-        manager.update(tableName, columnNames, id, list, view);
-
-    }
-
-    private void delete() {
-        String tableName = manager.selectTable(manager.getTableNames());
-
-        outputColumnNames(manager.getColumnNames(tableName, ""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
-
-        outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), manager.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData
-
-
-        while (true) {
-            try {
-                view.write("Please input 'id' line to delete\n");
-
-                int input = Integer.parseInt(view.checkExit(view.read()));
-
-                view.write("Please confirm, do you really want to remove position id='" + input + "'? Y/N");
-
-                if (view.read().equalsIgnoreCase("Y")) {
-                    manager.delete(input, tableName, view);
-                    view.write("Id '" + input + "' removed");
-                } else {
-                    view.write("Your action canceled!");
-                    break;
-                }
-                break;
-            } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
-            }
-        }
-    }
-
-    private void createTable() {
-        view.write("\nPlease input table name:\n");
-
-        String input = view.checkExit(view.read());
-
-        manager.createTable(input, view);
-    }
-
-    private void removeTable() {
-        String tableName = manager.selectTable(manager.getTableNames());
-
-        view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N");
-
-        if (view.read().equalsIgnoreCase("Y")) {
-            manager.dropTable(tableName);
-        } else {
-            view.write("Your action canceled!");
-        }
-    }
-
-    private void clearTable() {
-
-        view.write("Please select table\n");
-
-        String tableName = manager.selectTable(manager.getTableNames());
-
-        view.write("Please confirm, do you really want to clear table '" + tableName + "'? Y/N");
-
-        if (view.read().equalsIgnoreCase("Y")) {
-            try {
-                manager.clear(tableName);
-                view.write("Table '" + tableName + "' was cleared! Success!");
-            } catch (SQLException e) {
-                view.write(String.format("Error clear table in case - %s", e));
-            }
-        } else {
-            view.write("Your action canceled!");
-        }
-    }
-
-    private void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
-        try {
-            do {
-                outputColumnNames(listValue, result);
-                for (int i = 0; i < listColumnName.size(); i++) {
-                    listValue.remove(0);
-                }
-
-            } while (listValue.size() != 0);
-        } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
-            view.write("\nThe table is empty!");
-        }
-
-    }
-
-    private void outputColumnNames(List<Object> listColumnName, String result) {
-        view.write(String.format(result, listColumnName.toArray()));
-    }
 
 
 

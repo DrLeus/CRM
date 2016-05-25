@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Writeoff extends Command {
-    private View view = new Console();
 
-    public Writeoff(DataBaseManager manager, View view) {
+    public Writeoff(DataBaseManager manager, Console view) {
         super(manager, view);
     }
 

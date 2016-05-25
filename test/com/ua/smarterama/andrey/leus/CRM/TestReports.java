@@ -41,7 +41,6 @@ public class TestReports {
 
 
     private void getResult(String expected, String input) throws SQLException {
-        MainController test = new MainController();
 
         assertEquals(expected, "");
     }

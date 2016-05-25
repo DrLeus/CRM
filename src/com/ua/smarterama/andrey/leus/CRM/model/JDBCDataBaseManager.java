@@ -1,5 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
@@ -51,6 +52,27 @@ public class JDBCDataBaseManager implements DataBaseManager {
         return result;
     }
 
+    @Override
+    public void outputData(List<Object> listColumnName, List<Object> listValue, String result, Console view) {
+        try {
+            do {
+                outputColumnNames(listValue, result, view);
+                for (int i = 0; i < listColumnName.size(); i++) {
+                    listValue.remove(0);
+                }
+
+            } while (listValue.size() != 0);
+        } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
+            view.write("\nThe table is empty!");
+        }
+
+    }
+
+    @Override
+    public void outputColumnNames(List<Object> listColumnName, String result, Console view) {
+        view.write(String.format(result, listColumnName.toArray()));
+    }
+
     private int getWidthColumn(int i, List<Object> listColumnName, List<Object> listValue) {
 
         int result = (String.valueOf(listColumnName.get(i))).length();
@@ -74,7 +96,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void createTable(String tableName, View view) {
+    public void createTable(String tableName, Console view) {
 
         view.write("\nPlease input name of columns\n" +
                 "The first column = 'id' with auto-increment");
@@ -106,7 +128,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         return result;
     }
 
-    private List<String> inputNames(View view) {
+    private List<String> inputNames(Console view) {
 
         List<String> list = new ArrayList<>();
 
@@ -168,7 +190,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<String> getDatabases(View view) {
+    public List<String> getDatabases(Console view) {
 
         List<String> list = new ArrayList<>();
 
@@ -186,7 +208,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public String selectTable(List<String> tables) {
+    public String selectTable(List<String> tables, Console view) {
 
         String tableName = null;
 
@@ -236,7 +258,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName, List<Object> list, View view) {
+    public void insert(String tableName, List<Object> list, Console view) {
 
         List<Object> columnTable = getColumnNames(tableName, "");
 
@@ -263,7 +285,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void update(String tableName, List<Object> columnNames, int id, List<Object> list, View view) {
+    public void update(String tableName, List<Object> columnNames, int id, List<Object> list, Console view) {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
@@ -335,7 +357,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void delete(int id, String tableName, View view) {
+    public void delete(int id, String tableName, Console view) {
 
         try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id);

@@ -2,13 +2,14 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
 
 public class CreateDatabase extends Command {
-    public CreateDatabase(DataBaseManager manager, View view) {
+    public CreateDatabase(DataBaseManager manager, Console view) {
         super(manager, view);
     }
 

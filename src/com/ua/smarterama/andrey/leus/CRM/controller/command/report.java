@@ -1,14 +1,14 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
 public class Report extends Command {
 
-    public Report(DataBaseManager manager, View view) {
+    public Report(DataBaseManager manager, Console view) {
         super(manager, view);
     }
 

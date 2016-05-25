@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import java.util.Objects;
 
 public class Store extends Command {
 
-    public Store(DataBaseManager manager, View view) {
+    public Store(DataBaseManager manager, Console view) {
         super(manager, view);
     }
 

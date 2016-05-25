@@ -3,15 +3,16 @@ package com.ua.smarterama.andrey.leus.CRM.controller;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 public class MainController {
 
 
-    private View view;
+    private Console view;
     private Command[] commands;
 
-    public MainController(View view, DataBaseManager manager) {
+    public MainController(Console view, DataBaseManager manager) {
         this.view = view;
         this.commands = new Command[]{
                 new ConnectToDataBase(manager, view),
@@ -29,9 +30,6 @@ public class MainController {
         };
     }
 
-    public MainController() {
-
-    }
 
     public void run() throws Exception {
 

@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 public class DropDataBase extends Command {
 
-    public DropDataBase(DataBaseManager manager, View view) {
+    public DropDataBase(DataBaseManager manager, Console view) {
         super(manager, view);
     }
 

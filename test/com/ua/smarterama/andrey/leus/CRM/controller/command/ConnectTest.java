@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +14,12 @@ public class ConnectTest {
 
     private Command command;
     private DataBaseManager manager;
-    private View view;
+    private Console view;
 
     @Before
     public void setup() {
         manager = mock(DataBaseManager.class);
-        view = mock(View.class);
+        view = mock(Console.class);
         command = new ConnectToDataBase(manager, view);
     }
 

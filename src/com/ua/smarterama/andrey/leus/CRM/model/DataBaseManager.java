@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
 
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public interface DataBaseManager {
 
     void createDatabase(String databaseName) throws SQLException;
 
-    void createTable(String query, View view);
+    void createTable(String query, Console view);
 
     void disconnectFromDatabase();
 
@@ -24,15 +25,15 @@ public interface DataBaseManager {
 
     void dropTable(String tableName);
 
-    List<String> getDatabases(View view);
+    List<String> getDatabases(Console view);
 
-    public String selectTable(List<String> tables);
+    public String selectTable(List<String> tables, Console view);
 
     List<String> getTableNames();
 
-    void insert(String tableName, List<Object> list, View view);
+    void insert(String tableName, List<Object> list, Console view);
 
-    void update(String tableName, List<Object> columnNames, int id, List<Object> list, View view);
+    void update(String tableName, List<Object> columnNames, int id, List<Object> list, Console view);
 
     boolean isConnected();
 
@@ -40,8 +41,12 @@ public interface DataBaseManager {
 
     List<Object> getColumnNames(String tableName, String query);
 
-    void delete(int id, String taleName, View view);
+    void delete(int id, String taleName, Console view);
 
     String getFormatedLine(List<Object> listColumnName, List<Object> listValue);
 
+    void outputData(List<Object> listColumnName, List<Object> listValue, String result, Console view);
+
+    void outputColumnNames(List<Object> listColumnName, String result, Console view);
 }
+

@@ -1,7 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 public class ConnectToDataBase extends Command {
 
@@ -9,7 +9,7 @@ public class ConnectToDataBase extends Command {
     final static String initialUserName = "postgres";
     final static String initialPass = "postgres";
 
-    public ConnectToDataBase(DataBaseManager manager, View view) {
+    public ConnectToDataBase(DataBaseManager manager, Console view) {
         super(manager, view);
     }
 
