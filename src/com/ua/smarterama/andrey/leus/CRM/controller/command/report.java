@@ -1,5 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
+import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
@@ -28,7 +29,7 @@ public class Report extends Command {
 
         List<Object> listColumnName = manager.getColumnNames("", sql);
 
-        String format = manager.getFormatedLine(listColumnName, listValue);
+        String format = Assistant.getFormatedLine(listColumnName, listValue);
 
         outputColumnNames(listColumnName, format);
 

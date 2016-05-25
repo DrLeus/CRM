@@ -29,17 +29,17 @@ public class GetTable extends Command {
 
     public void getTableData() {
 
-        String tableName = manager.selectTable(manager.getTableNames(), view);
+        String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
         List<Object> listColumnName = manager.getColumnNames(tableName, "");
 
         List<Object> listValue = manager.getTableData(tableName, "");
 
-        String format = manager.getFormatedLine(listColumnName, listValue);
+        String format = Assistant.getFormatedLine(listColumnName, listValue);
 
-        manager.outputColumnNames(listColumnName, format, view);
+        Assistant.outputColumnNames(listColumnName, format, view);
 
-        manager.outputData(listColumnName, listValue, format, view);
+        Assistant.outputData(listColumnName, listValue, format, view);
     }
 
 }

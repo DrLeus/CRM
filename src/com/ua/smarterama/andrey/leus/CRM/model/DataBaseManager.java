@@ -17,23 +17,19 @@ public interface DataBaseManager {
 
     void createDatabase(String databaseName) throws SQLException;
 
-    void createTable(String query, Console view);
-
-    void disconnectFromDatabase();
+    void createTable(String query, List<String> listColumn) throws SQLException;
 
     void dropDatabase(String databaseName) throws SQLException;
 
-    void dropTable(String tableName);
+    void dropTable(String tableName) throws SQLException;
 
     List<String> getDatabases(Console view);
 
-    public String selectTable(List<String> tables, Console view);
-
     List<String> getTableNames();
 
-    void insert(String tableName, List<Object> list, Console view);
+    void insert(String tableName, String list, String data) throws SQLException;
 
-    void update(String tableName, List<Object> columnNames, int id, List<Object> list, Console view);
+    void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException;
 
     boolean isConnected();
 
@@ -41,12 +37,9 @@ public interface DataBaseManager {
 
     List<Object> getColumnNames(String tableName, String query);
 
-    void delete(int id, String taleName, Console view);
+    void delete(int id, String taleName, Console view) throws SQLException;
 
-    String getFormatedLine(List<Object> listColumnName, List<Object> listValue);
 
-    void outputData(List<Object> listColumnName, List<Object> listValue, String result, Console view);
 
-    void outputColumnNames(List<Object> listColumnName, String result, Console view);
 }
 

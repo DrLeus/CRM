@@ -4,9 +4,9 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
-/**
- * Created by Admin on 25.05.2016.
- */
+import java.sql.SQLException;
+import java.util.List;
+
 public class CreateTable extends Command {
 
 
@@ -21,15 +21,24 @@ public class CreateTable extends Command {
     }
 
     @Override
-    public void process() {
-
-    }
+    public void process() {}
 
     public void createTable() {
         view.write("\nPlease input table name:\n");
 
-        String input = view.checkExit(view.read());
+        String tableName = view.checkExit(view.read());
 
-        manager.createTable(input, view);
+        view.write("\nPlease input name of columns\n" +
+                "The first column = 'id' with auto-increment");
+
+        List<String> listColumn = Assistant.inputNames(view);
+
+
+        try {
+            manager.createTable(tableName, listColumn);
+            view.write("The table " + tableName + " was created! Success!");
+        } catch (SQLException e) {
+            view.write(String.format("Error create table in case - %s", e));
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
 import java.util.*;
@@ -42,52 +41,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public String getFormatedLine(List<Object> listColumnName, List<Object> listValue) {
-        String result = "";
-
-        for (int i = 0; i < listColumnName.size(); i++) {
-            result += "%-" + getWidthColumn(i, listColumnName, listValue) + "s";
-        }
-        result += "%n";
-        return result;
-    }
-
-    @Override
-    public void outputData(List<Object> listColumnName, List<Object> listValue, String result, Console view) {
-        try {
-            do {
-                outputColumnNames(listValue, result, view);
-                for (int i = 0; i < listColumnName.size(); i++) {
-                    listValue.remove(0);
-                }
-
-            } while (listValue.size() != 0);
-        } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
-            view.write("\nThe table is empty!");
-        }
-
-    }
-
-    @Override
-    public void outputColumnNames(List<Object> listColumnName, String result, Console view) {
-        view.write(String.format(result, listColumnName.toArray()));
-    }
-
-    private int getWidthColumn(int i, List<Object> listColumnName, List<Object> listValue) {
-
-        int result = (String.valueOf(listColumnName.get(i))).length();
-
-        int qtyLine = listValue.size() / listColumnName.size();
-
-        for (int j = 0; j < qtyLine; j++) {
-            if (result < (String.valueOf(listValue.get(i + (listColumnName.size() * j)))).length()) {
-                result = (String.valueOf(listValue.get(i + (listColumnName.size() * j)))).length();
-            }
-        }
-        return result + 2;
-    }
-
-    @Override
     public void createDatabase(String databaseName) throws SQLException {
 
         try (Statement stmt = connection.createStatement()) {
@@ -96,12 +49,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void createTable(String tableName, Console view) {
-
-        view.write("\nPlease input name of columns\n" +
-                "The first column = 'id' with auto-increment");
-
-        List<String> listColumn = inputNames(view);
+    public void createTable(String tableName, List<String> listColumn) throws SQLException {
 
         try (Statement stmt = connection.createStatement()) {
 
@@ -110,9 +58,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
             stmt.executeUpdate("CREATE TABLE " + tableName +
                     "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
                     getFormatedLine(listColumn));
-            view.write("The table " + tableName + " was created! Success!");
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -128,29 +73,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
         return result;
     }
 
-    private List<String> inputNames(Console view) {
-
-        List<String> list = new ArrayList<>();
-
-        String input = null;
-        do {
-
-            view.write("\nPlease input name for next column\n");
-
-            input = view.checkExit(view.read());
-
-            list.add(input);
-
-        } while (!input.isEmpty());
-
-        return list;
-    }
-
-    @Override
-    public void disconnectFromDatabase() {
-
-    }
-
     @Override
     public void dropDatabase(String databaseName) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
@@ -159,15 +81,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void dropTable(String tableName) {
+    public void dropTable(String tableName) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             dropSequnce(tableName);
             stmt.executeUpdate("DROP TABLE public." + tableName + " CASCADE");
-            view.write("Table '" + tableName + "'was removed! Success!");
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
 
     private void dropSequnce(String tableName) {
@@ -207,37 +125,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
         return list;
     }
 
-    @Override
-    public String selectTable(List<String> tables, Console view) {
-
-        String tableName = null;
-
-        int numberTable = 0;
-
-        view.write("\n Database has next tables: \n");
-
-        for (String sert : tables) {
-            view.write("" + ++numberTable + ": " + sert);
-        }
-
-        while (true) {
-            try {
-                view.write("\nPlease select number of table:\n");
-
-                String input = view.checkExit(view.read());
-
-                if (Integer.parseInt(input) > numberTable || Integer.parseInt(input) < 1) {
-                    view.write("Incorrect input, try again");
-                } else {
-                    tableName = tables.get(Integer.parseInt(input) - 1);
-                    break;
-                }
-            } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
-            }
-        }
-        return tableName;
-    }
 
     @Override
     public List<String> getTableNames() {
@@ -258,34 +145,15 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName, List<Object> list, Console view) {
-
-        List<Object> columnTable = getColumnNames(tableName, "");
-
-        String columns = " (";
-        for (int i = 1; i < columnTable.size(); i++) {
-            columns += columnTable.get(i) + ",";
-        }
-        columns = columns.substring(0, columns.length() - 1) + ")";
-
-
-        String data = " (";
-        for (int i = 0; i < list.size(); i++) {
-            data += "'" + list.get(i) + "',";
-        }
-        data = data.substring(0, data.length() - 1) + ")";
-
+    public void insert(String tableName, String columns, String data) throws SQLException {
         try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate("INSERT INTO public." + tableName + columns +
                     "VALUES " + data);
-            view.write("\nThe row was created! Success!");
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
-    public void update(String tableName, List<Object> columnNames, int id, List<Object> list, Console view) {
+    public void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
@@ -293,11 +161,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
             try (PreparedStatement ps = connection.prepareStatement(sql);) {
                 ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
-        view.write("\nThe row was updated! Success!");
+
     }
 
     @Override
@@ -333,7 +199,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getColumnNames(String tableName, String query) {
+    public List<Object> getColumnNames(String tableName, String query)  {
         String sql;
         if (query.isEmpty()) {
             sql = "SELECT * FROM public." + tableName;
@@ -350,19 +216,18 @@ public class JDBCDataBaseManager implements DataBaseManager {
             for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                 list.add(rsmd.getColumnName(index));
             }
-        } catch (SQLException e) {
+
+    } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
     @Override
-    public void delete(int id, String tableName, Console view) {
+    public void delete(int id, String tableName, Console view) throws SQLException {
 
         try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

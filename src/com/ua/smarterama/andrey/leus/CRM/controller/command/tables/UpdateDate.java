@@ -4,16 +4,12 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
-/**
- * Created by Admin on 25.05.2016.
- */
 public class UpdateDate extends Command {
-
-
 
     public UpdateDate(DataBaseManager manager, Console view) {
         super(manager, view);
@@ -32,13 +28,13 @@ public class UpdateDate extends Command {
 
     public void update() {
 
-        String tableName = manager.selectTable(manager.getTableNames(),view);
+        String tableName = Assistant.selectTable(manager.getTableNames(),view);
 
         List<Object> columnNames = manager.getColumnNames(tableName, "");
 
-        manager.outputColumnNames(columnNames, manager.getFormatedLine(columnNames, manager.getTableData(tableName, "")), view); // TODO duplicate getTableData
+        Assistant.outputColumnNames(columnNames, Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, "")), view); // TODO duplicate getTableData
 
-        manager.outputData(columnNames, manager.getTableData(tableName, ""), manager.getFormatedLine(columnNames, manager.getTableData(tableName, "")), view); //TODO duplicate getTableData
+        Assistant.outputData(columnNames, manager.getTableData(tableName, ""), Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, "")), view); //TODO duplicate getTableData
 
         int id;
 
@@ -63,7 +59,13 @@ public class UpdateDate extends Command {
             list.add(input);
         }
 
-        manager.update(tableName, columnNames, id, list, view);
+        try {
+            manager.update(tableName, columnNames, id, list);
+            view.write("\nThe row was updated! Success!");
+        } catch (SQLException e) {
+            view.write(String.format("Error update data in case - %s",  e));
+        }
+
 
     }
 

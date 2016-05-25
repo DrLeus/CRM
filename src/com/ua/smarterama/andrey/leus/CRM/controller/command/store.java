@@ -62,7 +62,7 @@ public class Store extends Command {
             manager.update(tableName, manager.getColumnNames(tableName, ""), id, list, view);
 
         } catch (IndexOutOfBoundsException e) {
-            manager.insert(tableName, list, view);
+//            manager.insert(tableName, list, view); //TODO fix it
         }
 
 

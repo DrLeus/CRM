@@ -4,12 +4,12 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
+import java.sql.SQLException;
+
 /**
  * Created by Admin on 25.05.2016.
  */
 public class RemoveTable extends Command {
-
-
 
     public RemoveTable(DataBaseManager manager, Console view) {
         super(manager, view);
@@ -26,12 +26,17 @@ public class RemoveTable extends Command {
     }
 
     public void removeTable() {
-        String tableName = manager.selectTable(manager.getTableNames(), view);
+        String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
         view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N");
 
         if (view.read().equalsIgnoreCase("Y")) {
-            manager.dropTable(tableName);
+            try {
+                manager.dropTable(tableName);
+                view.write("Table '" + tableName + "'was removed! Success!");
+            } catch (SQLException e) {
+                view.write(String.format("Error remove table in case - %s", e));
+            }
         } else {
             view.write("Your action canceled!");
         }
