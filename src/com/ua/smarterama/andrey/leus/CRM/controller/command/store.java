@@ -44,8 +44,13 @@ public class Store extends Command {
 
             view.write("The goods was added! Success!\n");
 
-        } catch (IndexOutOfBoundsException e) {
-//            manager.insert(tableName, list); //TODO fix it
+        } catch (IndexOutOfBoundsException e) {//TODO fix it
+            try {
+                manager.insert(tableName, manager.getColumnNames(tableName,""), list);
+                view.write("The goods was added! Success!\n");
+            } catch (SQLException e1) {
+                view.write(String.format("Error get column names in case - %s",  e1));
+            }
         } catch (SQLException e) {
             view.write(String.format("Error update data in case - %s",  e));
 

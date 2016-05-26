@@ -49,21 +49,9 @@ public class InsertData extends Command {
             view.write(String.format("Error get column names in case - %s", e));
         }
 
-        String columns = " (";
-        for (int i = 1; i < columnTable.size(); i++) {
-            columns += columnTable.get(i) + ",";
-        }
-        columns = columns.substring(0, columns.length() - 1) + ")";
-
-
-        String data = " (";
-        for (int i = 0; i < list.size(); i++) {
-            data += "'" + list.get(i) + "',";
-        }
-        data = data.substring(0, data.length() - 1) + ")";
 
         try {
-            manager.insert(tableName, columns, data);
+            manager.insert(tableName, columnTable, list);
             view.write("\nThe row was created! Success!");
         } catch (SQLException e) {
             view.write(String.format("Error insert data in case - %s", e));

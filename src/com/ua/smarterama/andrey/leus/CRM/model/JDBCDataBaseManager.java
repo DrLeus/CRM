@@ -146,9 +146,24 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName, String data) throws SQLException {
+    public void insert(String tableName,  List<Object> columnTable, List<Object> list) throws SQLException {
+
+
+        String columns = " (";
+        for (int i = 1; i < columnTable.size(); i++) {
+            columns += columnTable.get(i)+",";
+        }
+        columns = columns.substring(0, columns.length()-1) + ")";
+
+
+        String data = " (";
+        for (int i = 0; i < list.size(); i++) {
+            data += "'" + list.get(i) + "',";
+        }
+        data = data.substring(0, data.length()-1) + ")";
+
         try (Statement stmt = connection.createStatement();) {
-            stmt.executeUpdate("INSERT INTO public." + tableName +
+            stmt.executeUpdate("INSERT INTO public." + tableName + columns +
                     "VALUES " + data);
         }
     }

@@ -27,7 +27,7 @@ public interface DataBaseManager {
 
     List<String> getTableNames();
 
-    void insert(String tableName, String data) throws SQLException;
+    void insert(String tableName,  List<Object> columnTable, List<Object> list) throws SQLException;
 
     void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException;
 
