@@ -11,16 +11,16 @@ import java.sql.Connection;
 public abstract class Command {
 
     protected DataBaseManager manager;
-    protected Console view;
+    protected View view;
 
-    public Command(Console view) {
+    public Command(View view) {
         this.view = view;
     }
 
     public Command() {
     }
 
-    public Command(DataBaseManager manager, Console view) {
+    public Command(DataBaseManager manager, View view) {
 
         this.manager = manager;
         this.view = view;

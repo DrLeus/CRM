@@ -1,6 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
 import java.util.*;
@@ -108,7 +109,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<String> getDatabases(Console view) {
+    public List<String> getDatabases() {
 
         List<String> list = new ArrayList<>();
 
@@ -145,9 +146,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName, String columns, String data) throws SQLException {
+    public void insert(String tableName, String data) throws SQLException {
         try (Statement stmt = connection.createStatement();) {
-            stmt.executeUpdate("INSERT INTO public." + tableName + columns +
+            stmt.executeUpdate("INSERT INTO public." + tableName +
                     "VALUES " + data);
         }
     }
@@ -172,7 +173,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getTableData(String tableName, String query) {
+    public List<Object> getTableData(String tableName, String query) throws SQLException {
 
         String sql;
         if (query.isEmpty()) {
@@ -192,14 +193,12 @@ public class JDBCDataBaseManager implements DataBaseManager {
                     list.add(rs.getObject(index));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return list;
     }
 
     @Override
-    public List<Object> getColumnNames(String tableName, String query)  {
+    public List<Object> getColumnNames(String tableName, String query) throws SQLException {
         String sql;
         if (query.isEmpty()) {
             sql = "SELECT * FROM public." + tableName;
@@ -216,18 +215,16 @@ public class JDBCDataBaseManager implements DataBaseManager {
             for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                 list.add(rsmd.getColumnName(index));
             }
-
-    } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    }
         return list;
     }
 
     @Override
-    public void delete(int id, String tableName, Console view) throws SQLException {
+    public void delete(int id, String tableName) throws SQLException {
 
         try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id);
         }
     }
-}
+
+  }

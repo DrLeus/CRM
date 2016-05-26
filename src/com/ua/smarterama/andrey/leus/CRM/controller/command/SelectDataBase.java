@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SelectDataBase extends Command {
 
-    public SelectDataBase(DataBaseManager manager, Console view) {
+    public SelectDataBase(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
@@ -19,7 +19,7 @@ public class SelectDataBase extends Command {
 
     @Override
     public void process() {
-        List<String> list = manager.getDatabases(view);
+        List<String> list = manager.getDatabases();
 
         view.write("The next data bases avaiilable:\n");
 

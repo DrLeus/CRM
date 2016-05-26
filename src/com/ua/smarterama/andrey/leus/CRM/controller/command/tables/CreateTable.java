@@ -2,7 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -11,7 +11,7 @@ public class CreateTable extends Command {
 
 
 
-    public CreateTable(DataBaseManager manager, Console view) {
+    public CreateTable(DataBaseManager manager, View view) {
         super(manager, view);
     }
 

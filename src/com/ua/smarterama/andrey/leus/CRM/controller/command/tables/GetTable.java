@@ -5,6 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
@@ -13,7 +14,7 @@ import java.util.MissingFormatArgumentException;
  */
 public class GetTable extends Command {
 
-    public GetTable(DataBaseManager manager, Console view) {
+    public GetTable(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
@@ -31,9 +32,19 @@ public class GetTable extends Command {
 
         String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
-        List<Object> listColumnName = manager.getColumnNames(tableName, "");
+        List<Object> listColumnName = null;
+        try {
+            listColumnName = manager.getColumnNames(tableName, "");
+        } catch (SQLException e) {
+            view.write(String.format("Error get column names in case - %s", e));
+        }
 
-        List<Object> listValue = manager.getTableData(tableName, "");
+        List<Object> listValue = null;
+        try {
+            listValue = manager.getTableData(tableName, "");
+        } catch (SQLException e) {
+            view.write(String.format("Error get table data in case - %s", e));
+        }
 
         String format = Assistant.getFormatedLine(listColumnName, listValue);
 

@@ -3,13 +3,15 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
 public class Report extends Command {
 
-    public Report(DataBaseManager manager, Console view) {
+    public Report(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
@@ -25,9 +27,19 @@ public class Report extends Command {
 
         String sql = "SELECT goods.id, code, name, quantity FROM goods, stockbalance WHERE goods.id = stockbalance.id_goods";
 
-        List<Object> listValue = manager.getTableData("", sql);
+        List<Object> listValue = null;
+        try {
+            listValue = manager.getTableData("", sql);
+        } catch (SQLException e) {
+            view.write(String.format("Error get table data in case - %s", e));
+        }
 
-        List<Object> listColumnName = manager.getColumnNames("", sql);
+        List<Object> listColumnName = null;
+        try {
+            listColumnName = manager.getColumnNames("", sql);
+        } catch (SQLException e) {
+            view.write(String.format("Error get column names in case - %s", e));
+        }
 
         String format = Assistant.getFormatedLine(listColumnName, listValue);
 

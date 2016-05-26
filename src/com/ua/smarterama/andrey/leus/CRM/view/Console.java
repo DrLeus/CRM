@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.MissingFormatArgumentException;
 import java.util.Scanner;
 
-public class Console /*implements View*/ {
+public class Console implements View {
 
     public void write(String message) {
         System.out.println(message);

@@ -3,6 +3,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
+import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class InsertData extends Command {
 
-    public InsertData(DataBaseManager manager, Console view) {
+    public InsertData(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
@@ -22,20 +23,31 @@ public class InsertData extends Command {
 
         String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
-        List<Object> listColumnName = manager.getColumnNames(tableName, "");
+        List<Object> listColumnName = null;
+        List<Object> columnTable = null;
+        List<Object> list = null;
 
-        List<Object> list = new ArrayList<>();
 
-        for (int i = 1; i < listColumnName.size(); i++) {
+        try {
+            listColumnName = manager.getColumnNames(tableName, "");
 
-            view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
+            list = new ArrayList<>();
 
-            String input = view.checkExit(view.read());
+            for (int i = 1; i < listColumnName.size(); i++) {
 
-            list.add(input);
+                view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
+
+                String input = view.checkExit(view.read());
+
+                list.add(input);
+            }
+
+            columnTable = manager.getColumnNames(tableName, "");
+
+
+        } catch (SQLException e) {
+            view.write(String.format("Error get column names in case - %s", e));
         }
-
-        List<Object> columnTable = manager.getColumnNames(tableName, "");
 
         String columns = " (";
         for (int i = 1; i < columnTable.size(); i++) {
@@ -58,9 +70,6 @@ public class InsertData extends Command {
         }
 
     }
-
-
-
 
 
     @Override

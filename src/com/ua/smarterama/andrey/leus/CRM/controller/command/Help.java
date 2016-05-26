@@ -18,7 +18,7 @@ public class Help extends Command {
             "- “catalog” - get contain of tables (for example information about 'goods';\n" +
             "   -- in this partition you can: \n" +
             "      --- add, change or delete line;\n" +
-            "      --- add, delete, clear table;" +
+            "      --- add, delete, clear table;\n" +
             "- “report” - get goods balance on warehouse ;\n" +
             "- “store” - add goods on warehouse;\n" +
             "- “writeoff” - write off goods from warehouse ;\n" +

@@ -23,23 +23,21 @@ public interface DataBaseManager {
 
     void dropTable(String tableName) throws SQLException;
 
-    List<String> getDatabases(Console view);
+    List<String> getDatabases();
 
     List<String> getTableNames();
 
-    void insert(String tableName, String list, String data) throws SQLException;
+    void insert(String tableName, String data) throws SQLException;
 
     void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException;
 
     boolean isConnected();
 
-    List<Object> getTableData(String tableName, String query);
+    List<Object> getTableData(String tableName, String query) throws SQLException;
 
-    List<Object> getColumnNames(String tableName, String query);
+    List<Object> getColumnNames(String tableName, String query) throws SQLException;
 
-    void delete(int id, String taleName, Console view) throws SQLException;
-
-
+    void delete(int id, String taleName) throws SQLException;
 
 }
 

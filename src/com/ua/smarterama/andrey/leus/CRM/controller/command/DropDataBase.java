@@ -41,7 +41,7 @@ public class DropDataBase extends Command {
     public String getNameDataBase() {
         String nameDataBase = null;
 
-        List<String> list = manager.getDatabases(view);
+        List<String> list = manager.getDatabases();
 
         int i = 0;
 
