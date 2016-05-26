@@ -10,21 +10,21 @@ public class Help extends Command {
         super(view);
     }
 
-    static String text = "\nThis programme allows next commands:\n" +
-            "- “connect” - connect to database\n" +
-            "- “list“ - get list of databases”;\n" +
-            "- “create” - create new database;\n" +
-            "- “drop” - delete the database;\n" +
-            "- “catalog” - get contain of tables (for example information about 'goods';\n" +
+    static String text = "This programme allows next commands:\n" +
+            "- 'connect' - connect to database\n" +
+            "- 'list' - get list of databases;\n" +
+            "- 'create' - create new database;\n" +
+            "- 'drop' - delete the database;\n" +
+            "- 'catalog' - get contain of tables (for example information about 'goods';\n" +
             "   -- in this partition you can: \n" +
             "      --- add, change or delete line;\n" +
             "      --- add, delete, clear table;\n" +
-            "- “report” - get goods balance on warehouse ;\n" +
-            "- “store” - add goods on warehouse;\n" +
-            "- “writeoff” - write off goods from warehouse ;\n" +
+            "- 'report' - get goods balance on warehouse ;\n" +
+            "- 'store' - add goods on warehouse;\n" +
+            "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
-            "- “help” - get list of commands.\n" +
-            "- “exit” - escape from programme or return to main menu.";
+            "- 'help' - get list of commands.\n" +
+            "- 'exit' - escape from programme or return to main menu.\n";
 
     @Override
     public boolean canProcess(String command) {

@@ -35,9 +35,17 @@ public class MainController {
 
         Help.getHelp();
 
+        try {
+            doWork();
+        }catch (ExitException e){
+            // do nothing
+        }
+    }
+
+    public void doWork() {
         while (true) {
 
-            view.write("\nPlease input command: ");
+            view.write("Please input command: \n");
 
             String input = view.read();
 
@@ -48,8 +56,9 @@ public class MainController {
                         break;
                     }
                 } catch (Exception e) {
-                    view.error("Error", e);
-                    break;
+                    if (e instanceof ExitException) {
+                        throw e;}
+                    e.printStackTrace();
                 }
             }
         }
