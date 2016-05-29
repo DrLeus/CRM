@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.List;
 
-public class JDBCDataBaseManager implements DataBaseManager {
+public class JDBCDatabaseManager implements DataBaseManager {
 
     static {
         try {
@@ -27,18 +27,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void connect(String databaseName, String user, String password) {
-        try {
+    public void connect(String databaseName, String user, String password) throws SQLException {
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/" + databaseName, user,
                     password);
 
-        } catch (SQLException e) {
-            connection = null;
-            throw new RuntimeException(
-                    String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s",
-                            databaseName, user, password));
-        }
     }
 
     @Override
@@ -50,26 +43,27 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void createTable(String tableName, List<String> listColumn) throws SQLException {
+    public void createTable(String tableName, List<Object> listColumn) throws SQLException {
 
         try (Statement stmt = connection.createStatement()) {
 
             stmt.executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
 
-            stmt.executeUpdate("CREATE TABLE " + tableName +
+            String sql = "CREATE TABLE " + tableName +
                     "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
-                    getFormatedLine(listColumn));
+                    getFormatedLine(listColumn);
+            stmt.executeUpdate(sql);
         }
     }
 
-    private String getFormatedLine(List<String> listColumn) {
+    private String getFormatedLine(List<Object> listColumn) {
         String result = "";
 
         for (int i = 0; i < listColumn.size(); i++) {
             result += listColumn.get(i) + " TEXT NOT NULL, ";
         }
 
-        result = result.substring(0, result.length() - 18) + ")";
+        result = result.substring(0, result.length() - 2) + ")";
 
         return result;
     }
@@ -97,6 +91,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
              ResultSet rs = stmt.executeQuery("SELECT column_default FROM information_schema.columns WHERE table_name ='" + tableName + "'");) {
             rs.next();
             list.add(rs.getString("column_default"));
+
             if (list.get(0).contains(tableName)) {
                 stmt.executeUpdate("DROP SEQUENCE public." + tableName + "_seq CASCADE");
             }
@@ -146,19 +141,19 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName,  List<Object> columnTable, List<Object> list) throws SQLException {
+    public void insert(String tableName,  List<Object> columnTable, List<Object> value) throws SQLException {
 
 
         String columns = " (";
-        for (int i = 1; i < columnTable.size(); i++) {
+        for (int i =1 ; i < columnTable.size(); i++) {
             columns += columnTable.get(i)+",";
         }
         columns = columns.substring(0, columns.length()-1) + ")";
 
 
         String data = " (";
-        for (int i = 0; i < list.size(); i++) {
-            data += "'" + list.get(i) + "',";
+        for (int i = 0; i < value.size(); i++) {
+            data += "'" + value.get(i) + "',";
         }
         data = data.substring(0, data.length()-1) + ")";
 
@@ -173,7 +168,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
-            String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) + "='" + list.get(i - 1) + "' WHERE id = " + id;
+            String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) + "='" + list.get(i-1) + "' WHERE id = " + id;
 
             try (PreparedStatement ps = connection.prepareStatement(sql);) {
                 ps.executeUpdate();
@@ -242,4 +237,4 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
     }
 
-  }
+}

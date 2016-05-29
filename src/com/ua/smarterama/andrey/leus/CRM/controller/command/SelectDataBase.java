@@ -21,7 +21,7 @@ public class SelectDataBase extends Command {
     public void process() {
         List<String> list = manager.getDatabases();
 
-        view.write("The next data bases avaiilable:\n");
+        view.write("The next data bases available:\n");
 
         for (String sert : list) {
             view.write(sert);

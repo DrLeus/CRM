@@ -52,9 +52,9 @@ public class Assistant {
         return result + 2;
     }
 
-    public static List<String> inputNames(View view) {
+    public static List<Object> inputNames(View view) {
 
-        List<String> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
 
         String input = null;
         do {

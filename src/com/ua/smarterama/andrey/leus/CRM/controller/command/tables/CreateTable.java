@@ -31,7 +31,7 @@ public class CreateTable extends Command {
         view.write("\nPlease input name of columns\n" +
                 "The first column = 'id' with auto-increment");
 
-        List<String> listColumn = Assistant.inputNames(view);
+        List<Object> listColumn = Assistant.inputNames(view);
 
 
         try {

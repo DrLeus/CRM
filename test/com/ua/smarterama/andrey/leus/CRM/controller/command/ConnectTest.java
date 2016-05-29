@@ -6,6 +6,8 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -44,7 +46,7 @@ public class ConnectTest {
     }
 
     @Test
-    public void testProcess() {
+    public void testProcess() throws SQLException {
         //when
 
         //then

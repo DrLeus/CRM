@@ -16,7 +16,7 @@ public class Exit extends Command {
 
     @Override
     public void process() {
-        view.write("\nSee you again!");
-        throw new com.ua.smarterama.andrey.leus.CRM.controller.command.ExitException();
+        view.write("See you again!\n");
+        throw new ExitException();
     }
 }

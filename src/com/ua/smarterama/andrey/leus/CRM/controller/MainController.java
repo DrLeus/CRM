@@ -37,12 +37,13 @@ public class MainController {
 
         try {
             doWork();
-        }catch (ExitException e){
+        } catch (ExitException e) {
             // do nothing
         }
     }
 
     public void doWork() {
+
         while (true) {
 
             view.write("Please input command: \n");
@@ -57,8 +58,10 @@ public class MainController {
                     }
                 } catch (Exception e) {
                     if (e instanceof ExitException) {
-                        throw e;}
+                        throw e;
+                    }
                     e.printStackTrace();
+                    break;
                 }
             }
         }

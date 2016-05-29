@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface DataBaseManager {
 
-    View view = null;
+//    View view = null;
 
     void clear(String tableName) throws SQLException;
 
-    void connect(String databaseName, String user, String password);
+    void connect(String databaseName, String user, String password) throws SQLException;
 
     void createDatabase(String databaseName) throws SQLException;
 
-    void createTable(String query, List<String> listColumn) throws SQLException;
+    void createTable(String tableName, List<Object> listColumn) throws SQLException;
 
     void dropDatabase(String databaseName) throws SQLException;
 
@@ -27,7 +27,7 @@ public interface DataBaseManager {
 
     List<String> getTableNames();
 
-    void insert(String tableName,  List<Object> columnTable, List<Object> list) throws SQLException;
+    void insert(String tableName, List<Object> columnTable, List<Object> value) throws SQLException;
 
     void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException;
 
@@ -38,6 +38,6 @@ public interface DataBaseManager {
     List<Object> getColumnNames(String tableName, String query) throws SQLException;
 
     void delete(int id, String taleName) throws SQLException;
-
 }
+
 
