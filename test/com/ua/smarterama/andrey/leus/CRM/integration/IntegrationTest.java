@@ -4,22 +4,55 @@ import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDatabaseManager;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
 import java.io.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class IntegrationTest {
 
-    private ConfigurableInputStream in;
-    private LogOutputStream out;
-    private DataBaseManager databaseManager;
-    private static final String DB_NAME = "CRM";
+    private final static String DATABASE_NAME = "postgrestest";
+    private final static String DATABASE_NAME_NEW = "postgrestestnew";
     private final static String DB_USER = "postgres";
     private final static String DB_PASSWORD = "postgres";
+    private final static String TABLE_NAME = "test";
+    private final static String NOT_EXIST_TABLE = "notExistTable";
+    private static List<Object> listColumn = new ArrayList<>();
+    private static List<Object> list = new ArrayList<>();
+
+    private static List<Object> newData = new ArrayList<>();
+    private ConfigurableInputStream in;
+    private LogOutputStream out;
+
+    private static DataBaseManager manager;
+
+    @BeforeClass
+    public static void init() throws SQLException {
+        manager = new JDBCDatabaseManager();
+        manager.connect("", DB_USER, DB_PASSWORD);
+        manager.dropDatabase(DATABASE_NAME);
+        manager.dropDatabase(DATABASE_NAME_NEW);
+        manager.createDatabase(DATABASE_NAME);
+        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+    }
+
+    @Before
+    public void setup() {
+
+        manager = new JDBCDatabaseManager();
+        out = new LogOutputStream();
+        in = new ConfigurableInputStream();
+
+        System.setIn(in);
+        System.setOut(new PrintStream(out));
+    }
 
     String greeting = "This programme allows next commands:\n" +
             "- 'connect' - connect to database\n" +
@@ -36,18 +69,6 @@ public class IntegrationTest {
             "\n" +
             "- 'help' - get list of commands.\n" +
             "- 'exit' - escape from programme or return to main menu.\n";
-
-    @Before
-    public void setup() {
-
-        databaseManager = new JDBCDatabaseManager();
-        out = new LogOutputStream();
-        in = new ConfigurableInputStream();
-
-
-        System.setIn(in);
-        System.setOut(new PrintStream(out));
-    }
 
     @Test
     public void testHelp() throws Exception {
@@ -89,6 +110,200 @@ public class IntegrationTest {
     }
 
     @Test
+    public void testUnsupportedAfterConnect() throws Exception {
+        // given
+        in.add("connect");
+        in.add("Y");
+        in.add("unsupported");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Connection succeeded to "+DATABASE_NAME+"\n" +
+                "\r\n" +
+                // unsupported
+                "Please input command: \n\r\n" +
+                "\n" +
+                "Oops...incorrect command!\r\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected, out.getData());
+    }
+
+    @Test
+    public void testConnectToCurrentDatabase() throws Exception {
+        // given
+        in.add("connect");
+        in.add("y");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Connection succeeded to "+DATABASE_NAME+"\n" +
+                "\r\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected, out.getData());
+    }
+
+    @Test
+    public void testConnectToAnotherDatabase() throws Exception {
+        // given
+        in.add("connect");
+        in.add("n");
+        in.add(DATABASE_NAME);
+        in.add(DB_USER);
+        in.add(DB_PASSWORD);
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Please input the database name\r\n" +
+                "Please input user name\r\n" +
+                "Please input password\r\n" +
+                "Connection succeeded to " + DATABASE_NAME +
+                "\r\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected, out.getData());
+    }
+
+    @Test
+    public void testConnectWithErrorPass() throws Exception {
+        // given
+        in.add("connect");
+        in.add("n");
+        in.add(DATABASE_NAME);
+        in.add(DB_USER);
+        in.add("error");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Please input the database name\r\n" +
+                "Please input user name\r\n" +
+                "Please input password\r\n" +
+                "Oops...Cant get connection for DB: "+DATABASE_NAME+
+                "; USER: "+DB_USER+"; PASS: error\r\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected, out.getData());
+    }
+
+    @Test
+    public void testConnectWithError() throws Exception {
+        // given
+        in.add("connect");
+        in.add("error");
+        in.add("N");
+        in.add(DATABASE_NAME);
+        in.add(DB_USER);
+        in.add("error");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Oops... something wrong\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Please input the database name\n" +
+                "Please input user name\n" +
+                "Please input password\n" +
+                "Oops...Cant get connection for DB: "+DATABASE_NAME+
+                "; USER: "+DB_USER+"; PASS: error\r\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected, out.getData());
+    }
+
+
+
+    @Test
+    public void testListAfterConnect() throws Exception {
+        // given
+        in.add("connect");
+        in.add("Y");
+        in.add("list");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Connection succeeded to " + DATABASE_NAME +
+                "\r\n" +
+                "\r\n" +
+                // unsupported
+                "Please input command: \n" +
+                "\r\n" +
+                "The next data bases available:\n" +
+                "\r\n" +
+                "postgres\r\n" +
+                "CRM\r\n" +
+                DATABASE_NAME + "\r\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected, out.getData());
+    }
+
+    @Test
     public void testListWithoutConnect() throws Exception {
         // given
         in.add("list");
@@ -110,11 +325,12 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testUnsupportedAfterConnect() throws Exception {
+    public void testCreateDatabase() throws Exception {
         // given
         in.add("connect");
-        in.add("Y");
-        in.add("unsupported");
+        in.add("y");
+        in.add("create");
+        in.add(DATABASE_NAME_NEW);
         in.add("exit");
 
         // when
@@ -126,61 +342,35 @@ public class IntegrationTest {
                 "\r\n" +
                 "Please input command: \n" +
                 "\r\n" +
-                "Do you want to connect to current database (CRM)? (Y/N)\r\n" +
-                "Connection succeeded to CRM\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Connection succeeded to "+DATABASE_NAME+"\n" +
                 "\r\n" +
-                // unsupported
-                "Please input command: \n\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "\r\n" +
+                "Please input database name for creating:\n" +
                 "\n" +
-                "Oops...incorrect command!\r\n" +
-                // exit
-                "Please input command: \n" +
-                "\r\n" +
-                "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
-    }
-
-    @Test
-    public void testListAfterConnect() throws Exception {
-        // given
-        in.add("connect");
-        in.add("Y");
-        in.add("list");
-        in.add("exit");
-
-        // when
-        Main.main(new String[0]);
-
-        // then
-        String expected = greeting +
-                // connect
-                "\r\n" +
-                "Please input command: \n" +
-                "\r\n" +
-                "Do you want to connect to current database (CRM)? (Y/N)\r\n" +
-                "Connection succeeded to CRM\n" +
-                "\r\n" +
-                // unsupported
-                "Please input command: \n\r\n" +
-                "The next data bases available:\n\r" +
                 "\n" +
-                "postgres\r\n" +
-                "CRM\r\n" +
+                "Databse "+DATABASE_NAME_NEW+" was created" +
                 // exit
+                "\r\n" +
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
         assertEquals(expected, out.getData());
     }
 
+
     @Test
-    public void testConnectWithError() throws Exception {
+    public void testDropDatabase() throws Exception {
         // given
         in.add("connect");
-        in.add("n");
-        in.add("CRM");
-        in.add("postgres");
-        in.add("error");
+        in.add("y");
+        in.add("create");
+        in.add(DATABASE_NAME_NEW);
+        in.add("drop");
+        in.add(DATABASE_NAME_NEW);
+        in.add("y");
         in.add("exit");
 
         // when
@@ -192,12 +382,32 @@ public class IntegrationTest {
                 "\r\n" +
                 "Please input command: \n" +
                 "\r\n" +
-                "Do you want to connect to current database (CRM)? (Y/N)\r\n" +
-                "Please input the database name\r\n" +
-                "Please input user name\r\n" +
-                "Please input password\r\n" +
-                "Oops...Cant get connection for DB: CRM; USER: postgres; PASS: error\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Connection succeeded to "+DATABASE_NAME+"\n" +
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "\r\n" +
+                "Please input database name for creating:\n" +
+                "\n" +
+                "\n" +
+                "Databse "+DATABASE_NAME_NEW+" was created" +
                 // exit
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "\r\n" +
+                "The next data bases avaiilable:\n" +
+                "\r\n" +
+                "1: postgres\n" +
+                "2: CRM\n" +
+                "3: postgrestest\n" +
+                "4: postgrestestnew\n" +
+                "\n" +
+                "Please select database for dropping:\n" +
+                "\n" +
+                "Please confirm, do you really want to drop 'postgrestestnew' database? Y/N\n" +
+                "Database 'postgrestestnew' dropped\n" +
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
@@ -205,53 +415,4 @@ public class IntegrationTest {
     }
 
 
-
-
-    @Test
-    public void testClearWithError() throws Exception {
-        // given
-        in.add("connect|sqlcmd|postgres|postgres");
-        in.add("clear|sadfasd|fsf|fdsf");
-        in.add("exit");
-
-        // when
-        Main.main(new String[0]);
-
-        // then
-        assertEquals("Привет юзер!\n" +
-                "Введи, пожалуйста имя базы данных, имя пользователя и пароль в формате: connect|database|userName|password\n" +
-                // connect
-                "Успех!\n" +
-                "Введи команду (или help для помощи):\n" +
-                // clear|sadfasd|fsf|fdsf
-                "Неудача! по причине: Формат команды 'clear|tableName', а ты ввел: clear|sadfasd|fsf|fdsf\n" +
-                "Повтори попытку.\n" +
-                "Введи команду (или help для помощи):\n" +
-                // exit
-                "До скорой встречи!\n", out.getData());
-    }
-
-    @Test
-    public void testCreateWithErrors() throws Exception {
-        // given
-        in.add("connect|sqlcmd|postgres|postgres");
-        in.add("create|user|error");
-        in.add("exit");
-
-        // when
-        Main.main(new String[0]);
-
-        // then
-        assertEquals("Привет юзер!\n" +
-                "Введи, пожалуйста имя базы данных, имя пользователя и пароль в формате: connect|database|userName|password\n" +
-                // connect
-                "Успех!\n" +
-                "Введи команду (или help для помощи):\n" +
-                // create|user|error
-                "Неудача! по причине: Должно быть четное количество параметров в формате 'create|tableName|column1|value1|column2|value2|...|columnN|valueN', а ты прислал: 'create|user|error'\n" +
-                "Повтори попытку.\n" +
-                "Введи команду (или help для помощи):\n" +
-                // exit
-                "До скорой встречи!\n", out.getData());
-    }
 }

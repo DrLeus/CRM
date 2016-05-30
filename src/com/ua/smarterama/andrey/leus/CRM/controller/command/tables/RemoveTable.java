@@ -6,9 +6,6 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
-/**
- * Created by Admin on 25.05.2016.
- */
 public class RemoveTable extends Command {
 
     public RemoveTable(DataBaseManager manager, View view) {

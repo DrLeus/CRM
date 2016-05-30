@@ -42,6 +42,7 @@ public class JDBCTest {
         listColumn.add("code");
         listColumn.add("name");
         listColumn.add("price");
+        listColumn.add("");
 
         manager.createTable(TABLE_NAME, listColumn);
 

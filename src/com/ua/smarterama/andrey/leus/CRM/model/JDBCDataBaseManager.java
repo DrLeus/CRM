@@ -47,13 +47,17 @@ public class JDBCDatabaseManager implements DataBaseManager {
 
         try (Statement stmt = connection.createStatement()) {
 
-            stmt.executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
+            createSequence(tableName, stmt);
 
             String sql = "CREATE TABLE " + tableName +
                     "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
                     getFormatedLine(listColumn);
             stmt.executeUpdate(sql);
         }
+    }
+
+    public void createSequence(String tableName, Statement stmt) throws SQLException {
+        stmt.executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
     }
 
     private String getFormatedLine(List<Object> listColumn) {
@@ -63,7 +67,7 @@ public class JDBCDatabaseManager implements DataBaseManager {
             result += listColumn.get(i) + " TEXT NOT NULL, ";
         }
 
-        result = result.substring(0, result.length() - 2) + ")";
+        result = result.substring(0, result.length() - 18) + ")";
 
         return result;
     }

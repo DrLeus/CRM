@@ -88,6 +88,12 @@ public class Assistant {
 
                 String input = view.checkExit(view.read());
 
+                for (String sert: tables) {
+                    if (input.equals(sert)){
+                        return sert;
+                    }
+                }
+
                 if (Integer.parseInt(input) > numberTable || Integer.parseInt(input) < 1) {
                     view.write("Incorrect input, try again");
                 } else {

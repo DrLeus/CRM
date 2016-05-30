@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ConnectToDataBase extends Command {
 
-    final static String initialNameDB = "CRM";
+    final static String initialNameDB = "postgrestest";//"CRM";
     final static String initialUserName = "postgres";
     final static String initialPass = "postgres";
 
@@ -25,7 +25,7 @@ public class ConnectToDataBase extends Command {
 
         while (true) {
 
-            view.write("Do you want to connect to current database (CRM)? (Y/N)");
+            view.write("Do you want to connect to current database ("+initialNameDB+")? (Y/N)");
 
             String input = view.checkExit(view.read());
 

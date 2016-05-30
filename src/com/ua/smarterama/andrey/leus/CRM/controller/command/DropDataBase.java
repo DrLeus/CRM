@@ -58,6 +58,12 @@ public class DropDataBase extends Command {
 
                 String input = view.checkExit(view.read());
 
+                for (String sert: list) {
+                    if (input.equals(sert)){
+                        return sert;
+                    }
+                }
+
                 if (Integer.parseInt(input) > i || Integer.parseInt(input) < 1) {
                     view.write("Incorrect input, try again");
                 } else {
