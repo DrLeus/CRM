@@ -13,7 +13,7 @@ public class JDBCTest {
 
     private final static String DB_USER = "postgres";
     private final static String DB_PASSWORD = "postgres";
-    private final static String DATABASE_NAME = "postgrestest";
+    private final static String DATABASE_NAME = "postgrestestnew";
     private final static String TABLE_NAME = "test";
     private final static String NOT_EXIST_TABLE = "notExistTable";
     private final static String SQL_CREATE_TABLE = TABLE_NAME + "(id SERIAL PRIMARY KEY," +

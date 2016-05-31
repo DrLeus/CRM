@@ -22,9 +22,7 @@ public class DeleteData extends Command {
     }
 
     @Override
-    public void process() {
-
-    }
+    public void process() {}
 
 
     public void delete() {

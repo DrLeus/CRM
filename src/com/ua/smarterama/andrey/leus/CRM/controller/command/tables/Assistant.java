@@ -1,6 +1,5 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class Assistant {
 
         while (true) {
             try {
-                view.write("\nPlease select number of table:\n");
+                view.write("\nPlease select table:\n");
 
                 String input = view.checkExit(view.read());
 
@@ -110,7 +109,6 @@ public class Assistant {
     public static List<Object> selectGoodsAndQty(View view) {
 
         List<Object> list = new ArrayList<>();
-
 
         list.add(0, "");
 

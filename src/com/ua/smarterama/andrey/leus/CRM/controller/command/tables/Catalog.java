@@ -1,5 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
+import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
@@ -20,7 +21,7 @@ public class Catalog extends Command {
     public void process() {
 
         while (true) {
-            try {
+//            try {
                 view.write("\nAvalable operations:\n" +
                         "1. Get table data\n" +
                         "2. Insert data (position)\n" +
@@ -35,9 +36,9 @@ public class Catalog extends Command {
 
                 String input = view.checkExit(view.read());
 
-                if (Integer.parseInt(input) > 8 || Integer.parseInt(input) < 1) {
-                    view.write("Incorrect input, try again");
-                } else {
+//                if (Integer.parseInt(input) > 8 || Integer.parseInt(input) < 1) {
+//                    view.write("Incorrect input, try again");
+//                } else {
                     switch (Integer.parseInt(input)) {
                         case 1:
                             GetTable table = new GetTable(manager, view);
@@ -68,17 +69,18 @@ public class Catalog extends Command {
                             clear.clearTable();
                             break;
                         case 8:
-                            view.checkExit("exit");
+                            throw new ExitException();
+                        default:
+                            view.write("Incorrect input, try again");
+//                            try {
+//                                Main.main(new String[0]);//TODO return to main menu
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                     }
-                }
-            } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
-            }
+//            }
+//            } catch (NumberFormatException e) {
+//            }
         }
     }
-
-
-
-
-
 }

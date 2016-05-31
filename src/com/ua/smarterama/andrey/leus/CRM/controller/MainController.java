@@ -6,11 +6,15 @@ import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MainController {
 
 
     private Console view;
     private Command[] commands;
+    private List<String> history = new LinkedList<>();
 
     public MainController(Console view, DataBaseManager manager) {
         this.view = view;
@@ -38,7 +42,7 @@ public class MainController {
         try {
             doWork();
         } catch (ExitException e) {
-            // do nothing
+//            System.exit(0);
         }
     }
 
@@ -54,6 +58,7 @@ public class MainController {
                 try {
                     if (command.canProcess(input)) {
                         command.process();
+                        history.add(input);
                         break;
                     }
                 } catch (Exception e) {

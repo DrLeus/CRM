@@ -24,7 +24,9 @@ public class Help extends Command {
             "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
             "- 'help' - get list of commands.\n" +
-            "- 'exit' - escape from programme or return to main menu.\n";
+            "- 'exit' - escape from programme or return to main menu.\n" +
+            "\n" +
+            "Please connect to database.\n";
 
     @Override
     public boolean canProcess(String command) {

@@ -17,8 +17,7 @@ public abstract class Command {
         this.view = view;
     }
 
-    public Command() {
-    }
+    public Command() {}
 
     public Command(DataBaseManager manager, View view) {
 

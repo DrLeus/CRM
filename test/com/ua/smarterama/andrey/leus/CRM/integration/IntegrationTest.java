@@ -68,7 +68,9 @@ public class IntegrationTest {
             "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
             "- 'help' - get list of commands.\n" +
-            "- 'exit' - escape from programme or return to main menu.\n";
+            "- 'exit' - escape from programme or return to main menu.\n" +
+            "\n" +
+            "Please connect to database.\n";;
 
     @Test
     public void testHelp() throws Exception {
@@ -89,7 +91,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "n"), out.getData().replaceAll("\r\n", "n"));
 
     }
 
@@ -137,7 +139,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "n"), out.getData().replaceAll("\r\n", "n"));
     }
 
     @Test
@@ -163,7 +165,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "n"), out.getData().replaceAll("\r\n", "n"));
     }
 
     @Test
@@ -195,7 +197,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "n"), out.getData().replaceAll("\r\n", "n"));
     }
 
     @Test
@@ -227,7 +229,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
 
     @Test
@@ -262,10 +264,8 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
-
-
 
     @Test
     public void testListAfterConnect() throws Exception {
@@ -300,7 +300,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
 
     @Test
@@ -321,7 +321,7 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "n"), out.getData().replaceAll("\r\n", "n"));
     }
 
     @Test
@@ -357,9 +357,8 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
-
 
     @Test
     public void testDropDatabase() throws Exception {
@@ -411,8 +410,629 @@ public class IntegrationTest {
                 "Please input command: \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
-        assertEquals(expected, out.getData());
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
 
+    @Test
+    public void testReportAfterConnect() throws Exception {
+        // given
+        in.add("connect");
+        in.add("N");
+        in.add("CRM");
+        in.add("postgres");
+        in.add("postgres");
+        in.add("report");
+        in.add("exit");
 
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Please input the database name\n" +
+                "Please input user name\n" +
+                "Please input password\n" +
+                "Connection succeeded to CRM"  +
+                "\r\n" +
+                // store
+                "Please input command: \n" +
+                "\r\n" +
+                "\r\n" +
+                "The warehouse contains:\n" +
+                "\n" +
+                "id  code    name                   quantity  \n" +
+                "\n" +
+                "1   H77435  SEAL SV-25 EPDM CAT 2  55        \n" +
+                "\n" +
+                "3   H77484  SEAL SV-50 EPDM CAT 2  75        \n" +
+                "\n" +
+                "4   H77509  SEAL SV-65 EPDM CAT 2  20        \n" +
+                "\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
+    }
+    @Test
+    public void testStoreANDWriteoffAfterConnect() throws Exception {
+        // given
+        in.add("connect");
+        in.add("N");
+        in.add("CRM");
+        in.add("postgres");
+        in.add("postgres");
+        in.add("store");
+        in.add("error");
+        in.add("1");
+        in.add("error");
+        in.add("10");
+        in.add("writeoff");
+        in.add("1");
+        in.add("10");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Please input the database name\n" +
+                "Please input user name\n" +
+                "Please input password\n" +
+                "Connection succeeded to CRM"  +
+                "\r\n" +
+                // store
+                "Please input command: \n" +
+                "\r\n" +
+                "\r\n" +
+                "Please input id of goods:\n" +
+                "\n" +
+                "Incorrect input, try again\n" +
+                "\n" +
+                "Please input id of goods:\n" +
+                "\n" +
+                "\n" +
+                "Please input quantity of goods:\n" +
+                "\n" +
+                "Incorrect input, try again" +
+                "\n" +
+                "\n" +
+                "Please input quantity of goods:\n" +
+                "\n" +
+                "The goods was added! Success!\n" +
+                "\n" +
+                // writeoff
+                "Please input command: \n" +
+                "\n" +
+                "\n" +
+                "The warehouse contains:\n" +
+                "\n" +
+                "id  code    name                   quantity  \n" +
+                "\n" +
+                "1   H77435  SEAL SV-25 EPDM CAT 2  65        \n" +
+                "\n" +
+                "3   H77484  SEAL SV-50 EPDM CAT 2  75        \n" +
+                "\n" +
+                "4   H77509  SEAL SV-65 EPDM CAT 2  20        \n" +
+                "\n" +
+                "\n" +
+                "Please input id of goods:\n" +
+                "\n" +
+                "\n" +
+                "Please input quantity of goods:\n" +
+                "\n" +
+                "The goods was wrote off! Success!\n" +
+                "\n" +
+                // exit
+                "Please input command: \n" +
+                "\r\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
+    }
+
+    @Test
+    public void testCatalogAfterConnect() throws Exception {
+        // given
+        in.add("connect");
+        in.add("y");
+        in.add("catalog");
+        in.add("9");
+        in.add("5");
+        in.add("test");
+        in.add("code");
+        in.add("price");
+        in.add("");
+        in.add("5");
+        in.add("retro");
+        in.add("name");
+        in.add("qty");
+        in.add("");
+        in.add("1");
+        in.add("3");
+        in.add("error");
+        in.add("test");
+        in.add("2");
+        in.add("1");
+        in.add("H1111");
+        in.add("12,00");
+        in.add("3");
+        in.add("1");
+        in.add("error");
+        in.add("1");
+        in.add("H2222");
+        in.add("24,00");
+        in.add("2");
+        in.add("1");
+        in.add("H333");
+        in.add("100,00");
+        in.add("4");
+        in.add("1");
+        in.add("2");
+        in.add("n");
+        in.add("4");
+        in.add("1");
+        in.add("error");
+        in.add("2");
+        in.add("y");
+        in.add("6");
+        in.add("2");
+        in.add("n");
+        in.add("6");
+        in.add("2");
+        in.add("y");
+        in.add("7");
+        in.add("1");
+        in.add("n");
+        in.add("7");
+        in.add("1");
+        in.add("y");
+        in.add("6");
+        in.add("1");
+        in.add("y");
+        in.add("8");
+
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greeting +
+                // connect
+                "\r\n" +
+                "Please input command: \n" +
+                "\r\n" +
+                "Do you want to connect to current database ("+DATABASE_NAME+")? (Y/N)\r\n" +
+                "Connection succeeded to postgrestest\n" +
+                "\n" +
+                "Please input command: \n" +
+                "\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Incorrect input, try again\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                "Please input table name:\n" +
+                "\n" +
+                "\n" +
+                "Please input name of columns\n" +
+                "The first column = 'id' with auto-increment\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "The table test was created! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                "Please input table name:\n" +
+                "\n" +
+                "\n" +
+                "Please input name of columns\n" +
+                "The first column = 'id' with auto-increment\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "The table retro was created! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Incorrect input, try again\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Incorrect input, try again\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  code  price  \n" +
+                "\n" +
+                "\n" +
+                "The table is empty!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please select table\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please input data for column 'code'\n" +
+                "\n" +
+                "Please input data for column 'price'\n" +
+                "\n" +
+                "\n" +
+                "The row was created! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  code   price  \n" +
+                "\n" +
+                "1   H1111  12,00  \n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "Please select row id to update: \n" +
+                "Incorrect input, try again\n" +
+                "\n" +
+                "\n" +
+                "Please select row id to update: \n" +
+                "Please input data for column 'code'\n" +
+                "\n" +
+                "Please input data for column 'price'\n" +
+                "\n" +
+                "\n" +
+                "The row was updated! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please select table\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please input data for column 'code'\n" +
+                "\n" +
+                "Please input data for column 'price'\n" +
+                "\n" +
+                "\n" +
+                "The row was created! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  code   price   \n" +
+                "\n" +
+                "1   H2222  24,00   \n" +
+                "\n" +
+                "2   H333   100,00  \n" +
+                "\n" +
+                "Please input 'id' line to delete\n" +
+                "\n" +
+                "Please confirm, do you really want to remove position id='2'? Y/N\n" +
+                "Your action canceled!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  code   price   \n" +
+                "\n" +
+                "1   H2222  24,00   \n" +
+                "\n" +
+                "2   H333   100,00  \n" +
+                "\n" +
+                "Please input 'id' line to delete\n" +
+                "\n" +
+                "Incorrect input, try again\n" +
+                "Please input 'id' line to delete\n" +
+                "\n" +
+                "Please confirm, do you really want to remove position id='2'? Y/N\n" +
+                "Id '2' removed\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to remove 'retro' table? Y/N\n" +
+                "Your action canceled!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "2: retro\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to remove 'retro' table? Y/N\n" +
+                "Table 'retro'was removed! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please select table\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to clear table 'test'? Y/N\n" +
+                "Your action canceled!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please select table\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to clear table 'test'? Y/N\n" +
+                "Table 'test' was cleared! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "\n" +
+                " Database has next tables: \n" +
+                "\n" +
+                "1: test\n" +
+                "\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to remove 'test' table? Y/N\n" +
+                "Table 'test'was removed! Success!\n" +
+                "\n" +
+                "Avalable operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n"
+                ;
+//                +
+//                // exit
+//                "Please input command: \n" +
+//                "\r\n" +
+//                "See you again!\n\r\n";
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
+    }
 }

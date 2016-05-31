@@ -18,9 +18,7 @@ public class RemoveTable extends Command {
     }
 
     @Override
-    public void process() {
-
-    }
+    public void process() {}
 
     public void removeTable() {
         String tableName = Assistant.selectTable(manager.getTableNames(), view);

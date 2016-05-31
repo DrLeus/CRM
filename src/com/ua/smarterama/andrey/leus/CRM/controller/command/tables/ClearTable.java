@@ -6,9 +6,6 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
-/**
- * Created by Admin on 25.05.2016.
- */
 public class ClearTable extends Command {
 
 
@@ -23,9 +20,7 @@ public class ClearTable extends Command {
     }
 
     @Override
-    public void process() {
-
-    }
+    public void process() {}
 
     public void clearTable() {
 

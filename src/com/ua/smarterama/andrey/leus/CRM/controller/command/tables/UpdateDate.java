@@ -21,9 +21,7 @@ public class UpdateDate extends Command {
     }
 
     @Override
-    public void process() {
-
-    }
+    public void process() {}
 
 
     public void update() {
@@ -49,7 +47,8 @@ public class UpdateDate extends Command {
 
         while (true) {
             try {
-                view.write("\nPlease select row id to update: ");
+                view.write("\n");
+                view.write("Please select row id to update: ");
                 id = Integer.parseInt(view.checkExit(view.read()));
                 break;
             } catch (NumberFormatException e) {

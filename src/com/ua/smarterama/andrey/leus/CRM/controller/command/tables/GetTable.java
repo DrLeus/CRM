@@ -24,8 +24,7 @@ public class GetTable extends Command {
     }
 
     @Override
-    public void process() {
-    }
+    public void process() {}
 
 
     public void getTableData() {
