@@ -28,17 +28,17 @@ public class ClearTable extends Command {
 
         String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
-        view.write("Please confirm, do you really want to clear table '" + tableName + "'? Y/N");
+        view.write("Please confirm, do you really want to clear table '" + tableName + "'? Y/N\n");
 
         if (view.read().equalsIgnoreCase("Y")) {
             try {
                 manager.clear(tableName);
-                view.write("Table '" + tableName + "' was cleared! Success!");
+                view.write("Table '" + tableName + "' was cleared! Success!\n");
             } catch (SQLException e) {
-                view.write(String.format("Error clear table in case - %s", e));
+                view.write(String.format("Error clear table in case - %s\n", e));
             }
         } else {
-            view.write("Your action canceled!");
+            view.write("Your action canceled!\n");
         }
     }
 

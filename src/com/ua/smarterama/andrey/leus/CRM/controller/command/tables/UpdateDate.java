@@ -32,15 +32,15 @@ public class UpdateDate extends Command {
         try {
             columnNames = manager.getColumnNames(tableName, "");
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s", e));
+            view.write(String.format("Error get column names in case - %s\n", e));
         }
 
 
         try {
-            Assistant.outputColumnNames(columnNames, Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, "")), view); // TODO duplicate getTableData
-            Assistant.outputData(columnNames, manager.getTableData(tableName, ""), Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, "")), view); //TODO duplicate getTableData
+            Assistant.outputColumnNames(columnNames, Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData
+            Assistant.outputData(columnNames, manager.getTableData(tableName, ""), Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); //TODO duplicate getTableData
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s", e));
+            view.write(String.format("Error get table data in case - %s\n", e));
         }
 
         int id;
@@ -48,11 +48,11 @@ public class UpdateDate extends Command {
         while (true) {
             try {
                 view.write("\n");
-                view.write("Please select row id to update: ");
+                view.write("Please select row id to update:\n");
                 id = Integer.parseInt(view.checkExit(view.read()));
                 break;
             } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
+                view.write("Incorrect input, try again\n");
             }
         }
 
@@ -81,9 +81,9 @@ public class UpdateDate extends Command {
 
         try {
             manager.update(tableName, columnNames, id, list);
-            view.write("\nThe row was updated! Success!");
+            view.write("\nThe row was updated! Success!\n");
         } catch (SQLException e) {
-            view.write(String.format("Error update data in case - %s",  e));
+            view.write(String.format("Error update data in case - %s\n",  e));
         }
 
 

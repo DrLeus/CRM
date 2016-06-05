@@ -32,7 +32,7 @@ public class Catalog extends Command {
                         "7. Clear table\n" +
                         "8. Return to main menu\n");
 
-                view.write("\nPlease select operation:\n");
+                view.write("Please select operation:\n");
 
                 String input = view.checkExit(view.read());
 
@@ -71,7 +71,7 @@ public class Catalog extends Command {
                         case 8:
                             throw new ExitException();
                         default:
-                            view.write("Incorrect input, try again");
+                            view.write("Incorrect input, try again\n");
 //                            try {
 //                                Main.main(new String[0]);//TODO return to main menu
 //                            } catch (Exception e) {

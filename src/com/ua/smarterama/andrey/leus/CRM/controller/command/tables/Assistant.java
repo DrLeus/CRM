@@ -8,21 +8,21 @@ import java.util.MissingFormatArgumentException;
 
 public class Assistant {
 
-    public static void outputColumnNames(List<Object> listColumnName, String result, View view) {
-        System.out.println(String.format(result, listColumnName.toArray()));
+    public static void outputColumnNames(List<Object> listColumnName, String formatedLine   ) {
+        System.out.println(String.format(formatedLine, listColumnName.toArray()));
     }
 
-    public static void outputData(List<Object> listColumnName, List<Object> listValue, String result, View view) {
+    public static void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
         try {
             do {
-                outputColumnNames(listValue, result, view);
+                outputColumnNames(listValue, result);
                 for (int i = 0; i < listColumnName.size(); i++) {
                     listValue.remove(0);
                 }
 
             } while (listValue.size() != 0);
         } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
-            System.out.println("\nThe table is empty!");
+            System.out.println("The table is empty!\n");
         }
 
     }
@@ -58,7 +58,7 @@ public class Assistant {
         String input = null;
         do {
 
-            view.write("\nPlease input name for next column\n");
+            view.write("Please input name for next column\n");
 
             input = view.checkExit(view.read());
 
@@ -75,7 +75,7 @@ public class Assistant {
 
         int numberTable = 0;
 
-        view.write("\n Database has next tables: \n");
+        view.write("Database has next tables:\n");
 
         for (String sert : tables) {
             view.write("" + ++numberTable + ": " + sert);
@@ -83,7 +83,7 @@ public class Assistant {
 
         while (true) {
             try {
-                view.write("\nPlease select table:\n");
+                view.write("Please select table:\n");
 
                 String input = view.checkExit(view.read());
 
@@ -94,13 +94,13 @@ public class Assistant {
                 }
 
                 if (Integer.parseInt(input) > numberTable || Integer.parseInt(input) < 1) {
-                    view.write("Incorrect input, try again");
+                    view.write("Incorrect input, try again\n");
                 } else {
                     tableName = tables.get(Integer.parseInt(input) - 1);
                     break;
                 }
             } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
+                view.write("Incorrect input, try again\n");
             }
         }
         return tableName;
@@ -114,21 +114,21 @@ public class Assistant {
 
         while (true) {
             try {
-                view.write("\nPlease input id of goods:\n");
+                view.write("Please input id of goods:\n");
                 list.add(1, Integer.parseInt(view.checkExit(view.read())));
                 break;
             } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
+                view.write("Incorrect input, try again\n");
             }
         }
 
         while (true) {
             try {
-                view.write("\nPlease input quantity of goods:\n");
+                view.write("Please input quantity of goods:\n");
                 list.set(0, Integer.parseInt(view.checkExit(view.read())));
                 break;
             } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
+                view.write("Incorrect input, try again\n");
             }
         }
         return list;

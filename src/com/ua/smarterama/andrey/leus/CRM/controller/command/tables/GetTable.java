@@ -35,21 +35,21 @@ public class GetTable extends Command {
         try {
             listColumnName = manager.getColumnNames(tableName, "");
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s", e));
+            view.write(String.format("Error get column names in case - %s\n", e));
         }
 
         List<Object> listValue = null;
         try {
             listValue = manager.getTableData(tableName, "");
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s", e));
+            view.write(String.format("Error get table data in case - %s\n", e));
         }
 
         String format = Assistant.getFormatedLine(listColumnName, listValue);
 
-        Assistant.outputColumnNames(listColumnName, format, view);
+        Assistant.outputColumnNames(listColumnName, format);
 
-        Assistant.outputData(listColumnName, listValue, format, view);
+        Assistant.outputData(listColumnName, listValue, format);
     }
 
 }

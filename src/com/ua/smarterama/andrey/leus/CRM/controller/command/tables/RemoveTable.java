@@ -23,17 +23,17 @@ public class RemoveTable extends Command {
     public void removeTable() {
         String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
-        view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N");
+        view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N\n");
 
         if (view.read().equalsIgnoreCase("Y")) {
             try {
                 manager.dropTable(tableName);
-                view.write("Table '" + tableName + "'was removed! Success!");
+                view.write("Table '" + tableName + "'was removed! Success!\n");
             } catch (SQLException e) {
-                view.write(String.format("Error remove table in case - %s", e));
+                view.write(String.format("Error remove table in case - %s\n", e));
             }
         } else {
-            view.write("Your action canceled!");
+            view.write("Your action canceled!\n");
         }
     }
 }

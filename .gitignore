@@ -4,4 +4,3 @@ $ cat .gitignore
 target/
 .idea/
 .gitignore/
-pom.xml

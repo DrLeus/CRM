@@ -24,21 +24,21 @@ public class CreateTable extends Command {
     public void process() {}
 
     public void createTable() {
-        view.write("\nPlease input table name:\n");
+        view.write("Please input table name:\n");
 
         String tableName = view.checkExit(view.read());
 
-        view.write("\nPlease input name of columns\n" +
-                "The first column = 'id' with auto-increment");
+        view.write("Please input name of columns\n" +
+                "The first column = 'id' with auto-increment\n");
 
         List<Object> listColumn = Assistant.inputNames(view);
 
 
         try {
             manager.createTable(tableName, listColumn);
-            view.write("The table " + tableName + " was created! Success!");
+            view.write("The table " + tableName + " was created! Success!\n");
         } catch (SQLException e) {
-            view.write(String.format("Error create table in case - %s", e));
+            view.write(String.format("Error create table in case - %s\n", e));
         }
     }
 }
