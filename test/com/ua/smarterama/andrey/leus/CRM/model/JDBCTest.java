@@ -29,7 +29,7 @@ public class JDBCTest {
 
     @BeforeClass
     public static void init() throws SQLException {
-        manager = new JDBCDatabaseManager();
+        manager = new JDBCDataBaseManager();
         manager.connect("", DB_USER, DB_PASSWORD);
         manager.dropDatabase(DATABASE_NAME);
         manager.createDatabase(DATABASE_NAME);

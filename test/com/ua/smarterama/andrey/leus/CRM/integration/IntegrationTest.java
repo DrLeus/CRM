@@ -2,7 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.integration;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.model.JDBCDatabaseManager;
+import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class IntegrationTest {
 
     @BeforeClass
     public static void init() throws SQLException {
-        manager = new JDBCDatabaseManager();
+        manager = new JDBCDataBaseManager();
         manager.connect("", DB_USER, DB_PASSWORD);
         manager.dropDatabase(DATABASE_NAME);
         manager.dropDatabase(DATABASE_NAME_NEW);
@@ -46,7 +46,7 @@ public class IntegrationTest {
     @Before
     public void setup() {
 
-        manager = new JDBCDatabaseManager();
+        manager = new JDBCDataBaseManager();
         out = new LogOutputStream();
         in = new ConfigurableInputStream();
 
@@ -63,8 +63,8 @@ public class IntegrationTest {
             "   -- in this partition you can: \n" +
             "      --- add, change or delete line;\n" +
             "      --- add, delete, clear table;\n" +
-            "- 'report' - get goods balance on warehouse ;\n" +
-            "- 'store' - add goods on warehouse;\n" +
+            "- 'Report' - get goods balance on warehouse ;\n" +
+            "- 'Store' - add goods on warehouse;\n" +
             "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
             "- 'help' - get list of commands.\n" +
@@ -421,7 +421,7 @@ public class IntegrationTest {
         in.add("CRM");
         in.add("postgres");
         in.add("postgres");
-        in.add("report");
+        in.add("Report");
         in.add("exit");
 
         // when
@@ -439,7 +439,7 @@ public class IntegrationTest {
                 "Please input password\n" +
                 "Connection succeeded to CRM"  +
                 "\r\n" +
-                // store
+                // Store
                 "Please input command: \n" +
                 "\r\n" +
                 "\r\n" +
@@ -467,7 +467,7 @@ public class IntegrationTest {
         in.add("CRM");
         in.add("postgres");
         in.add("postgres");
-        in.add("store");
+        in.add("Store");
         in.add("error");
         in.add("1");
         in.add("error");
@@ -492,7 +492,7 @@ public class IntegrationTest {
                 "Please input password\n" +
                 "Connection succeeded to CRM"  +
                 "\r\n" +
-                // store
+                // Store
                 "Please input command: \n" +
                 "\r\n" +
                 "\r\n" +

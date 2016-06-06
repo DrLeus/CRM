@@ -1,24 +1,22 @@
-package com.ua.smarterama.andrey.leus.CRM.controller;
+package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.Report;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.Writeoff;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.Store;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
+import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainController {
+public class MainControllerWarehouse {
 
 
     private Console view;
     private Command[] commands;
     private List<String> history = new LinkedList<>();
 
-    public MainController(Console view, DataBaseManager manager) {
+    public MainControllerWarehouse(Console view, DataBaseManager manager) {
         this.view = view;
         this.commands = new Command[]{
                 new ConnectToDataBase(manager, view),
@@ -28,7 +26,10 @@ public class MainController {
                 new CreateDatabase(manager, view),
                 new DropDataBase(manager, view),
                 new Catalog(manager, view),
+                new Report(manager, view),
                 new SelectDataBase(manager, view),
+                new Store(manager, view),
+                new Writeoff(manager, view),
                 new Unsupported(view),
         };
     }
@@ -36,13 +37,14 @@ public class MainController {
 
     public void run() throws Exception {
 
+        InitialDB_CRM.setupTempDates();
+
         Help.getHelp();
 
         try {
             doWork();
         } catch (ExitException e) {
 //            System.exit(0);
-//            throw new ExitException();
         }
     }
 
@@ -50,7 +52,7 @@ public class MainController {
 
         while (true) {
 
-            view.write("Please input command (or 'help'): \n");
+            view.write("Please input command: \n");
 
             String input = view.read();
 

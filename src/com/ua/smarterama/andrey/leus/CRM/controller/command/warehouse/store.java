@@ -1,5 +1,6 @@
-package com.ua.smarterama.andrey.leus.CRM.controller.command;
+package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
+import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
@@ -20,7 +21,7 @@ public class Store extends Command {
 
     @Override
     public boolean canProcess(String command) {
-        return command.equals("store");
+        return command.equals("Store");
     }
 
     @Override

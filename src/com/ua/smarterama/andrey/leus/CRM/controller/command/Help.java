@@ -19,8 +19,8 @@ public class Help extends Command {
             "   -- in this partition you can: \n" +
             "      --- add, change or delete line;\n" +
             "      --- add, delete, clear table;\n" +
-            "- 'report' - get goods balance on warehouse ;\n" +
-            "- 'store' - add goods on warehouse;\n" +
+            "- 'Report' - get goods balance on warehouse ;\n" +
+            "- 'Store' - add goods on warehouse;\n" +
             "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
             "- 'help' - get list of commands.\n" +

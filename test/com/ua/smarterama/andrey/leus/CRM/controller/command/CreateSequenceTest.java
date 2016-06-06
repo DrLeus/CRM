@@ -1,7 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
-import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.model.JDBCDatabaseManager;
+import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Before;
@@ -18,12 +17,12 @@ import static org.mockito.Mockito.verify;
 public class CreateSequenceTest {
 
     private Command command;
-    private JDBCDatabaseManager manager = new JDBCDatabaseManager();
+    private JDBCDataBaseManager manager = new JDBCDataBaseManager();
     private Console view;
 
     @Before
     public void setup() {
-        manager = mock(JDBCDatabaseManager.class);
+        manager = mock(JDBCDataBaseManager.class);
         view = mock(Console.class);
         command = new ConnectToDataBase(manager, view);
     }

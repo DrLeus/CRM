@@ -1,18 +1,26 @@
-package com.ua.smarterama.andrey.leus.CRM.model;
+package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class InitialDB {
+public class InitialDB_CRM {
 
-    public void setupTempDates(Connection connection) throws ClassNotFoundException, SQLException {
+    public static void setupTempDates() throws ClassNotFoundException, SQLException {
+
+        Connection connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/CRM/postgres/postgres");
+
 
         // insert table goods
         Statement stmt = connection.createStatement();
 
-        stmt.executeUpdate("DROP SEQUENCE public.goods_seq CASCADE");
+        stmt.executeUpdate("DROP DATABASE IF EXISTS CRM");
+
+        stmt.executeUpdate("CREATE DATABASE CRM");
+
+//        stmt.executeUpdate("DROP SEQUENCE public.goods_seq CASCADE");
 
         stmt.executeUpdate("CREATE SEQUENCE public.goods_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
 
@@ -20,7 +28,6 @@ public class InitialDB {
 
         stmt.executeUpdate("CREATE TABLE goods(" +
                 "id NUMERIC NOT NULL DEFAULT nextval('goods_seq'::regclass), CONSTRAINT id_pk PRIMARY KEY(id)," +
-//                "id NUMERIC PRIMARY KEY," +
                 "code TEXT UNIQUE NOT NULL, " +
                 "codeprevious TEXT UNIQUE NOT NULL, " +
                 "name TEXT NOT NULL, " +
@@ -38,11 +45,8 @@ public class InitialDB {
         stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
                 "VALUES ('H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
 
-        //
-
-
         // create table suppliers
-        stmt.executeUpdate("DROP TABLE public.suppliers CASCADE");
+//        stmt.executeUpdate("DROP TABLE public.suppliers CASCADE");
         stmt.executeUpdate("CREATE TABLE suppliers(" +
                 "id NUMERIC PRIMARY KEY," +
                 "name TEXT UNIQUE NOT NULL, " +
@@ -62,7 +66,7 @@ public class InitialDB {
 
 
         // create table transport_operators
-        stmt.executeUpdate("DROP TABLE public.transport CASCADE");
+//        stmt.executeUpdate("DROP TABLE public.transport CASCADE");
         stmt.executeUpdate("CREATE TABLE transport(" +
                 "id NUMERIC PRIMARY KEY," +
                 "name TEXT UNIQUE NOT NULL, " +
@@ -80,7 +84,7 @@ public class InitialDB {
 
 
         // create table Employee
-        stmt.executeUpdate("DROP TABLE public.employee CASCADE");
+//        stmt.executeUpdate("DROP TABLE public.employee CASCADE");
         stmt.executeUpdate("CREATE TABLE employee(" +
                 "id NUMERIC PRIMARY KEY," +
                 "name TEXT UNIQUE NOT NULL, " +
@@ -98,7 +102,7 @@ public class InitialDB {
                 "VALUES (4, 'Yana', 'Pavlik', 'assistance', '-', '+38 050 444 44 44')");
 
         // create table ListIncomingInvoice
-        stmt.executeUpdate("DROP TABLE public.ListIncomingOrders CASCADE");
+//        stmt.executeUpdate("DROP TABLE public.ListIncomingOrders CASCADE");
         stmt.executeUpdate("CREATE TABLE ListIncomingOrders(" +
                 "id NUMERIC PRIMARY KEY UNIQUE NOT NULL," +
                 "name TEXT REFERENCES suppliers(name), " +
@@ -114,7 +118,7 @@ public class InitialDB {
 
 
         // create table goods for IncomingInvoice
-        stmt.executeUpdate("DROP TABLE public.IncomingGoods CASCADE");
+//        stmt.executeUpdate("DROP TABLE public.IncomingGoods CASCADE");
         stmt.executeUpdate("CREATE TABLE IncomingGoods(" +
                 "id NUMERIC PRIMARY KEY," +
                 "code TEXT REFERENCES goods(code)," +
@@ -128,5 +132,6 @@ public class InitialDB {
 
 
         stmt.close();
+        connection.close();
     }
 }

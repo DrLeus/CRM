@@ -7,13 +7,16 @@ import java.sql.*;
 import java.util.*;
 import java.util.List;
 
-public class JDBCDatabaseManager implements DataBaseManager {
+public class JDBCDataBaseManager implements DataBaseManager {
 
     static {
         try {
+//            DriverManager.registerDriver(new org.postgresql.Driver());
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Oops.... Please add jdbc jar to project.", e);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
         }
     }
 

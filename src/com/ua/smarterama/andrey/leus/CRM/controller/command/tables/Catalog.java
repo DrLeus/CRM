@@ -21,8 +21,8 @@ public class Catalog extends Command {
     public void process() {
 
         while (true) {
-//            try {
-                view.write("\nAvalable operations:\n" +
+            try {
+                view.write("\nAvailable operations:\n" +
                         "1. Get table data\n" +
                         "2. Insert data (position)\n" +
                         "3. Update data (position)\n" +
@@ -36,9 +36,6 @@ public class Catalog extends Command {
 
                 String input = view.checkExit(view.read());
 
-//                if (Integer.parseInt(input) > 8 || Integer.parseInt(input) < 1) {
-//                    view.write("Incorrect input, try again");
-//                } else {
                     switch (Integer.parseInt(input)) {
                         case 1:
                             GetTable table = new GetTable(manager, view);
@@ -69,18 +66,13 @@ public class Catalog extends Command {
                             clear.clearTable();
                             break;
                         case 8:
-                            throw new ExitException();
+                            return;
                         default:
                             view.write("Incorrect input, try again\n");
-//                            try {
-//                                Main.main(new String[0]);//TODO return to main menu
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
                     }
-//            }
-//            } catch (NumberFormatException e) {
-//            }
+            } catch (NumberFormatException e) {
+                view.write("Incorrect input, try again\n");
+            }
         }
     }
 }
