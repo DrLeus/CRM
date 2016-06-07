@@ -23,7 +23,7 @@ public class Writeoff extends Command {
     @Override
     public void process() {
 
-        Report Report = new Report(manager, view);
+        report Report = new report(manager, view);
 
         Report.process();
 

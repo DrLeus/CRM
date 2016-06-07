@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
-public class Report extends Command {
+public class report extends Command {
 
-    public Report(DataBaseManager manager, View view) {
+    public report(DataBaseManager manager, View view) {
         super(manager, view);
     }
 

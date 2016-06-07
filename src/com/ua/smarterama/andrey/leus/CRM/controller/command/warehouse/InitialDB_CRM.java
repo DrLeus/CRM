@@ -9,22 +9,29 @@ public class InitialDB_CRM {
 
     public static void setupTempDates() throws ClassNotFoundException, SQLException {
 
+        Class.forName("org.postgresql.Driver");
         Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/CRM/postgres/postgres");
+                "jdbc:postgresql://localhost:5432/", "postgres",
+                "postgres");
 
 
         // insert table goods
         Statement stmt = connection.createStatement();
 
-        stmt.executeUpdate("DROP DATABASE IF EXISTS CRM");
+        stmt.executeUpdate("DROP DATABASE IF EXISTS crm");
 
-        stmt.executeUpdate("CREATE DATABASE CRM");
+        stmt.executeUpdate("CREATE DATABASE crm");
+
+        connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/crm", "postgres",
+                "postgres");
+        stmt = connection.createStatement();
 
 //        stmt.executeUpdate("DROP SEQUENCE public.goods_seq CASCADE");
 
         stmt.executeUpdate("CREATE SEQUENCE public.goods_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
 
-        stmt.executeUpdate("DROP TABLE public.goods CASCADE");
+//        stmt.executeUpdate("DROP TABLE public.goods CASCADE");
 
         stmt.executeUpdate("CREATE TABLE goods(" +
                 "id NUMERIC NOT NULL DEFAULT nextval('goods_seq'::regclass), CONSTRAINT id_pk PRIMARY KEY(id)," +

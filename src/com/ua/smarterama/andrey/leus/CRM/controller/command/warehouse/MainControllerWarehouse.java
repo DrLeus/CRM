@@ -5,7 +5,6 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
-import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,9 +25,9 @@ public class MainControllerWarehouse {
                 new CreateDatabase(manager, view),
                 new DropDataBase(manager, view),
                 new Catalog(manager, view),
-                new Report(manager, view),
+                new report(manager, view),
                 new SelectDataBase(manager, view),
-                new Store(manager, view),
+                new store(manager, view),
                 new Writeoff(manager, view),
                 new Unsupported(view),
         };

@@ -2,9 +2,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.Report;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.Writeoff;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.Store;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 

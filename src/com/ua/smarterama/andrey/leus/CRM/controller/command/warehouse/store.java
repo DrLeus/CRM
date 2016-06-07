@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Store extends Command {
+public class store extends Command {
 
-    public Store(DataBaseManager manager, View view) {
+    public store(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
