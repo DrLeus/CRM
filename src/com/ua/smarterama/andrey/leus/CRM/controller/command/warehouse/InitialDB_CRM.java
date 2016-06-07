@@ -1,9 +1,13 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
+import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InitialDB_CRM {
 
@@ -16,145 +20,210 @@ public class InitialDB_CRM {
             " - 'store' - add goods on warehouse +\n" +
             " - 'writeoff' - write off goods from warehouse ;\n";
 
-    public static void setupTempDates() throws ClassNotFoundException, SQLException {
+    public static void setupTempDates(DataBaseManager manager) throws ClassNotFoundException, SQLException {
 
-        Class.forName("org.postgresql.Driver");
-        Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/", "postgres",
-                "postgres");
+        manager.connect("","postgres","postgres");
 
-        Statement stmt = connection.createStatement();
+        manager.dropDatabase("\"CRM\"");
 
-        stmt.executeUpdate("DROP DATABASE IF EXISTS \"CRM\"");
+        manager.createDatabase("\"CRM\"");
 
-        stmt.executeUpdate("CREATE DATABASE \"CRM\"");
+        manager.connect("CRM","postgres","postgres");
 
-        connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/CRM", "postgres",
-                "postgres");
-        stmt = connection.createStatement();
+        manager.dropTable("goods");
 
-        stmt.executeUpdate("DROP SEQUENCE IF EXISTS public.goods_seq CASCADE");
+        // create table GOODS with date
 
-        stmt.executeUpdate("CREATE SEQUENCE public.goods_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
+        List<Object> listColumns = new ArrayList<>();
 
-        // create table goods, insert data
-        stmt.executeUpdate("CREATE TABLE goods(" +
-                "id NUMERIC NOT NULL DEFAULT nextval('goods_seq'::regclass), CONSTRAINT id_pk PRIMARY KEY(id)," +
-                "code TEXT UNIQUE NOT NULL, " +
-                "codeprevious TEXT UNIQUE NOT NULL, " +
-                "name TEXT NOT NULL, " +
-                "net_price TEXT NOT NULL, " +
-                "customer_price TEXT NOT NULL, " +
-                "id_groups TEXT /*PRIMARY KEY*/ NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
-                "VALUES ('H77435', '583327893', 'SEAL SV-25 EPDM CAT 2', '2,04', '22,88', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
-                "VALUES ('H77459', '583337893', 'SEAL SV-40 EPDM CAT 2', '2,35', '25,27', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
-                "VALUES ('H77484', '583342893', 'SEAL SV-50 EPDM CAT 2', '2,50', '27,75', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
-                "VALUES ('H77509', '583347893', 'SEAL SV-65 EPDM CAT 2', '4,00', '30,59', '1')");
-        stmt.executeUpdate("INSERT INTO public.goods (code, codeprevious, name, net_price, customer_price, id_groups)" +
-                "VALUES ('H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
+        listColumns.add("code TEXT");
+        listColumns.add("name TEXT");
+        listColumns.add("net_price TEXT");
+        listColumns.add("customer_price TEXT");
+        listColumns.add("");
+        manager.createTable("goods", listColumns);
 
-        // create table suppliers
-        stmt.executeUpdate("CREATE TABLE suppliers(" +
-                "id NUMERIC PRIMARY KEY," +
-                "name TEXT UNIQUE NOT NULL, " +
-                "respon_persone TEXT NOT NULL, " +
-                "phone TEXT UNIQUE NOT NULL, " +
-                "address TEXT NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
-                "VALUES (1, 'SPX Kolding', 'Niels Raevsager', '+48 3300 000 000', 'Denmark, Kolding')");
-        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
-                "VALUES (2, 'SPX Silkiborg', 'Conni Dones', '+48 430 000 000', 'Denmark, Silkiborg')");
-        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
-                "VALUES (3, 'SPX Unna', 'Isabelle Teillere', '+44 00 000 000', 'Germany, Unna')");
-        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
-                "VALUES (4, 'SPX Bydgosh', 'Katarzyna Drozden', '+42 00 000 000', 'Poland, Bydgosh')");
-        stmt.executeUpdate("INSERT INTO public.suppliers (id, name, respon_persone, phone, address)" +
-                "VALUES (5, 'SPX Hungary', 'Molnar Mols', '+45 00 000 000', 'Hungary, Budapesht')");
+        List<Object> value = new ArrayList<>();
+        value.add("H77435");
+        value.add("SEAL SV-25 EPDM CAT 2");
+        value.add("2,04");
+        value.add("22,88");
+        manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 1
 
+        value.clear();
+        value.add("H77459");
+        value.add("SEAL SV-40 EPDM CAT 2");
+        value.add("2,35");
+        value.add("25,57");
+         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 2
+
+        value.clear();
+        value.add("H77484");
+        value.add("SEAL SV-50 EPDM CAT 2");
+        value.add("2,50");
+        value.add("27,75");
+         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 3
+
+        value.clear();
+        value.add("H77509");
+        value.add("SEAL SV-65 EPDM CAT 2");
+        value.add("4,00");
+        value.add("30,59");
+         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 4
+
+        value.clear();
+        value.add("H77539");
+        value.add("SEAL SV-80 EPDM CAT 2");
+        value.add("5,99");
+        value.add("42,56");
+         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 5
+        
+        
+        // create table STOCKBALANCE with data
+        
+        manager.dropTable("stockbalance");
+
+        listColumns.clear();
+        listColumns.add("quantity TEXT");
+        listColumns.add("id_goods NUMERIC REFERENCES goods(id)");
+        listColumns.add("");
+        manager.createTable("stockbalance",listColumns);
+
+        value.clear();
+        value.add("50");
+        value.add(1);
+        manager.insert("stockbalance", manager.getColumnNames("stockbalance",""), value);
+
+        value.clear();
+        value.add("20");
+        value.add(2);
+        manager.insert("stockbalance", manager.getColumnNames("stockbalance",""), value);
+
+
+        // create table SUPPLIERS with data
+
+        manager.dropTable("suppliers");
+
+        listColumns.clear();
+        listColumns.add("name TEXT");
+        listColumns.add("respon_person TEXT");
+        listColumns.add("phone TEXT");
+        listColumns.add("address TEXT");
+        listColumns.add("");
+        manager.createTable("suppliers",listColumns);
+
+        value.clear();
+        value.add("SPX Kolding");
+        value.add("Niels Raevsager");
+        value.add("+48 3300 000 000");
+        value.add("Denmark, Kolding");
+        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+
+        value.clear();
+        value.add("SPX Silkiborg");
+        value.add("Conni Dones");
+        value.add("+48 430 000 000");
+        value.add("Denmark, Silkiborg");
+        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+
+        value.clear();
+        value.add("SPX Unna");
+        value.add("Isabelle Teillere");
+        value.add("+44 00 000 000");
+        value.add("Germany, Unna");
+        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+
+        value.clear();
+        value.add("SPX Bydgosh");
+        value.add("Katarzyna Drozden");
+        value.add("+42 00 000 000");
+        value.add("Poland, Bydgosh");
+        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+
+        value.clear();
+        value.add("SPX Hungary");
+        value.add("Molnar Mols");
+        value.add("+45 00 000 000");
+        value.add("Hungary, Budapesht");
+        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
 
         // create table transport_operators
-        stmt.executeUpdate("CREATE TABLE transport(" +
-                "id NUMERIC PRIMARY KEY," +
-                "name TEXT UNIQUE NOT NULL, " +
-                "respon_persone TEXT NOT NULL, " +
-                "phone TEXT NOT NULL, " +
-                "address TEXT NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
-                "VALUES (1, 'CAT', 'Alan Juret', '+38 044 111 11 11', 'Kiev, Borshchagovka')");
-        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
-                "VALUES (2, 'Nova Pochta', 'Alex Dumin', '+38 044 222 22 22', 'Kiev, Solomenka')");
-        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
-                "VALUES (3, 'TNT', 'Inna Krug', '+38 044 333 33 33', 'Kiev, Darnica')");
-        stmt.executeUpdate("INSERT INTO public.transport (id, name, respon_persone, phone, address)" +
-                "VALUES (4, 'Auto Lux', 'Katerina Strogonova', '+38 044 444 44 44', 'Kiev region, Borispol')");
 
+        manager.dropTable("transport");
+
+        listColumns.clear();
+        listColumns.add("name TEXT");
+        listColumns.add("respon_person TEXT");
+        listColumns.add("phone TEXT");
+        listColumns.add("address TEXT");
+        listColumns.add("");
+        manager.createTable("transport",listColumns);
+
+        value.clear();
+        value.add("Nova Pochta");
+        value.add("Alex Dumin");
+        value.add("+38 044 111 11 11");
+        value.add("Kiev, Solomenka");
+        manager.insert("transport", manager.getColumnNames("transport",""), value);
+
+
+        value.clear();
+        value.add("TNT");
+        value.add("Inna Krug");
+        value.add("+38 044 333 33 33");
+        value.add("Kiev, Darnica");
+        manager.insert("transport", manager.getColumnNames("transport",""), value);
+
+        value.clear();
+        value.add("SAT");
+        value.add("Alan Juret");
+        value.add("+38 044 222 22 22");
+        value.add("Kiev, Borshchagovka");
+        manager.insert("transport", manager.getColumnNames("transport",""), value);
 
         // create table Employee
-        stmt.executeUpdate("CREATE TABLE employee(" +
-                "id NUMERIC PRIMARY KEY," +
-                "name TEXT UNIQUE NOT NULL, " +
-                "surname TEXT UNIQUE NOT NULL, " +
-                "position TEXT UNIQUE NOT NULL, " +
-                "past_position TEXT NOT NULL, " +
-                "phone TEXT UNIQUE NOT NULL)");
-        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
-                "VALUES (1, 'Elena', 'Tupota', 'director', 'accounter', '+38 050 111 11 11')");
-        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
-                "VALUES (2, 'Inna', 'Voinova', 'chief account', 'accounter', '+38 050 222 22 22')");
-        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
-                "VALUES (3, 'Valentin', 'Korop', 'service manager', '-', '+38 050 333 33 33')");
-        stmt.executeUpdate("INSERT INTO public.employee (id, name, surname, position, past_position, phone)" +
-                "VALUES (4, 'Yana', 'Pavlik', 'assistance', '-', '+38 050 444 44 44')");
 
-        // create table ListIncomingInvoice
-        stmt.executeUpdate("CREATE TABLE ListIncomingOrders(" +
-                "id NUMERIC PRIMARY KEY UNIQUE NOT NULL," +
-                "name TEXT REFERENCES suppliers(name), " +
-                "data timestamp NOT NULL, " +
-                "transport TEXT REFERENCES transport(name), " +
-                "response_person TEXT REFERENCES employee(surname))");
-        stmt.executeUpdate("INSERT INTO public.ListIncomingOrders (id, name, data, transport, response_person)" +
-                "VALUES (1, 'SPX Kolding', '2015-10-19 10:23:54', 'TNT', 'Tupota')");
-        stmt.executeUpdate("INSERT INTO public.ListIncomingOrders (id, name, data, transport, response_person)" +
-                "VALUES (2, 'SPX Unna', '2015-11-29 11:23:54', 'TNT', 'Korop')");
-        stmt.executeUpdate("INSERT INTO public.ListIncomingOrders (id, name, data, transport, response_person)" +
-                "VALUES (3, 'SPX Silkiborg', '2015-12-09 15:23:54', 'TNT', 'Pavlik')");
+        manager.dropTable("employee");
 
+        listColumns.clear();
+        listColumns.add("name TEXT");
+        listColumns.add("surname TEXT");
+        listColumns.add("position TEXT");
+        listColumns.add("past_position TEXT");
+        listColumns.add("phone TEXT");
+        listColumns.add("");
+        manager.createTable("employee",listColumns);
 
-        // create table goods for IncomingInvoice
-        stmt.executeUpdate("CREATE TABLE IncomingGoods(" +
-                "id NUMERIC PRIMARY KEY," +
-                "code TEXT REFERENCES goods(code)," +
-                "id_incomingOrder NUMERIC REFERENCES ListIncomingOrders(id))");
-        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
-                "VALUES (1, 'H77435', 1)");
-        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
-                "VALUES (2, 'H77509', 1)");
-        stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
-                "VALUES (3, 'H77435', 1)");
+        value.clear();
+        value.add("Elena");
+        value.add("Tupota");
+        value.add("director");
+        value.add("accountant");
+        value.add("+38 050 111 11 11");
+        manager.insert("employee", manager.getColumnNames("employee",""), value);
 
+        value.clear();
+        value.add("Inna");
+        value.add("Voinova");
+        value.add("chief account");
+        value.add("accountant");
+        value.add("+38 050 222 22 22");
+        manager.insert("employee", manager.getColumnNames("employee",""), value);
 
-        // drop, create sequence and create table stockbalance
-        stmt.executeUpdate("DROP SEQUENCE IF EXISTS public.stockbalance_seq CASCADE");
+        value.clear();
+        value.add("Valentin");
+        value.add("Korop");
+        value.add("service manager");
+        value.add("-");
+        value.add("+38 050 333 33 33");
+        manager.insert("employee", manager.getColumnNames("employee",""), value);
 
-        stmt.executeUpdate("CREATE SEQUENCE public.stockbalance_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
-
-        stmt.executeUpdate("CREATE TABLE stockbalance(" +
-                "id NUMERIC NOT NULL DEFAULT nextval('stockbalance_seq'::regclass), CONSTRAINT id_goods_pk PRIMARY KEY(id)," +
-                "quantity TEXT NOT NULL," +
-                "id_goods NUMERIC REFERENCES goods(id))");
-        stmt.executeUpdate("INSERT INTO public.stockbalance (quantity, id_goods)" +
-                "VALUES ('50', 1)");
-        stmt.executeUpdate("INSERT INTO public.stockbalance (quantity, id_goods)" +
-                "VALUES ('20', 2)");
-
-
-        stmt.close();
-        connection.close();
+        value.clear();
+        value.add("Yana");
+        value.add("Pavlik");
+        value.add("assistance");
+        value.add("-");
+        value.add("+38 050 444 44 44");
+        manager.insert("employee", manager.getColumnNames("employee",""), value);
     }
 }

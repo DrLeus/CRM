@@ -9,7 +9,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-public class JDBCTest {
+public class JDBCDataBaseManagerTest {
 
     private final static String DB_USER = "postgres";
     private final static String DB_PASSWORD = "postgres";

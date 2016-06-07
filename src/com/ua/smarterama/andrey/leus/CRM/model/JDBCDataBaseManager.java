@@ -67,10 +67,10 @@ public class JDBCDataBaseManager implements DataBaseManager {
         String result = "";
 
         for (int i = 0; i < listColumn.size(); i++) {
-            result += listColumn.get(i) + " TEXT NOT NULL, ";
+            result += listColumn.get(i) + " NOT NULL, ";
         }
 
-        result = result.substring(0, result.length() - 18) + ")";
+        result = result.substring(0, result.length() - 13) + ")";
 
         return result;
     }
@@ -86,13 +86,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public void dropTable(String tableName) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             dropSequnce(tableName);
-            stmt.executeUpdate("DROP TABLE public." + tableName + " CASCADE");
+            stmt.executeUpdate("DROP TABLE IF EXISTS public." + tableName + " CASCADE");
         }
     }
 
     private void dropSequnce(String tableName) {
-
-        List<String> list = new ArrayList<>();
 
         try (Statement stmt = connection.createStatement()){
                 stmt.executeUpdate("DROP SEQUENCE IF EXISTS public." + tableName + "_seq CASCADE");
