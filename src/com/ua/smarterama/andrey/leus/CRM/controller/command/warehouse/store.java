@@ -3,15 +3,11 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Store extends Command {
 
@@ -47,14 +43,13 @@ public class Store extends Command {
 
         } catch (IndexOutOfBoundsException e) {//TODO fix it
             try {
-                manager.insert(tableName, manager.getColumnNames(tableName,""), list);
+                manager.insert(tableName, manager.getColumnNames(tableName, ""), list);
                 view.write("The goods was added! Success!\n");
             } catch (SQLException e1) {
-                view.write(String.format("Error get column names in case - %s",  e1));
+                view.write(String.format("Error get column names in case - %s", e1));
             }
         } catch (SQLException e) {
-            view.write(String.format("Error update data in case - %s",  e));
-
+            view.write(String.format("Error update data in case - %s", e));
         }
     }
 }

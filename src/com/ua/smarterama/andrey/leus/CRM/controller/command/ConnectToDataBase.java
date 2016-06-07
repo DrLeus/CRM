@@ -7,10 +7,6 @@ import java.sql.SQLException;
 
 public class ConnectToDataBase extends Command {
 
-    final static String initialNameDB = "CRM";
-    final static String initialUserName = "postgres";
-    final static String initialPass = "postgres";
-
     public ConnectToDataBase(DataBaseManager manager, Console view) {
         super(manager, view);
     }
@@ -23,32 +19,23 @@ public class ConnectToDataBase extends Command {
     @Override
     public void process() {
 
-//        try {
-//            manager.connect(initialNameDB, initialUserName, initialPass);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        view.write("\nConnection succeeded to '" + initialNameDB + "'\n");
-
         while (true) {
 
-                view.write("Please input the database name");
-                String nameDB = view.checkExit(view.read());
-                view.write("Please input user name");
-                String userName = view.checkExit(view.read());
-                view.write("Please input password");
-                String password = view.checkExit(view.read());
-                try {
-                    manager.connect(nameDB, userName, password);
-                    view.write("\n");
-                    view.write("Connection succeeded to '" + nameDB + "'\n");
-                    break;
-                } catch (SQLException e) {
-                    view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s \n",
-                                nameDB, userName, password /*+ " in case " + e*/));
-                }
+            view.write("Please input the database name");
+            String nameDB = view.checkExit(view.read());
+            view.write("Please input user name");
+            String userName = view.checkExit(view.read());
+            view.write("Please input password");
+            String password = view.checkExit(view.read());
+            try {
+                manager.connect(nameDB, userName, password);
+                view.write("\n");
+                view.write("Connection succeeded to '" + nameDB + "'\n");
+                break;
+            } catch (SQLException e) {
+                view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s \n",
+                        nameDB, userName, password /*+ " in case " + e*/));
             }
         }
     }
-
-
+}

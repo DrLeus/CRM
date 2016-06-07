@@ -9,6 +9,8 @@ import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
+    public static final String JDBC_POSTGRESQL_LOCALHOST = "jdbc:postgresql://localhost:5432/";
+
     static {
         try {
 //            DriverManager.registerDriver(new org.postgresql.Driver());
@@ -31,10 +33,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void connect(String databaseName, String user, String password) throws SQLException {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/" + databaseName, user,
-                    password);
-
+        connection = DriverManager.getConnection(
+                JDBC_POSTGRESQL_LOCALHOST + databaseName, user, password);
     }
 
     @Override
@@ -94,20 +94,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List<String> list = new ArrayList<>();
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT column_default FROM information_schema.columns WHERE table_name ='" + tableName + "'");) {
-            rs.next();
-            list.add(rs.getString("column_default"));
-
-            if (list.get(0).contains(tableName)) {
-                stmt.executeUpdate("DROP SEQUENCE public." + tableName + "_seq CASCADE");
-            }
+        try (Statement stmt = connection.createStatement()){
+                stmt.executeUpdate("DROP SEQUENCE IF EXISTS public." + tableName + "_seq CASCADE");
         } catch (SQLException e) {
-            System.out.println("Error drop seq");
-            e.printStackTrace();
+            System.out.println("Error drop seq in case:" + e.getMessage());
         }
-
-
     }
 
     @Override
@@ -148,21 +139,19 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName,  List<Object> columnTable, List<Object> value) throws SQLException {
-
+    public void insert(String tableName, List<Object> columnTable, List<Object> value) throws SQLException {
 
         String columns = " (";
-        for (int i =1 ; i < columnTable.size(); i++) {
-            columns += columnTable.get(i)+",";
+        for (int i = 1; i < columnTable.size(); i++) {
+            columns += columnTable.get(i) + ",";
         }
-        columns = columns.substring(0, columns.length()-1) + ")";
-
+        columns = columns.substring(0, columns.length() - 1) + ")";
 
         String data = " (";
         for (int i = 0; i < value.size(); i++) {
             data += "'" + value.get(i) + "',";
         }
-        data = data.substring(0, data.length()-1) + ")";
+        data = data.substring(0, data.length() - 1) + ")";
 
         try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate("INSERT INTO public." + tableName + columns +
@@ -175,13 +164,12 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
-            String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) + "='" + list.get(i-1) + "' WHERE id = " + id;
+            String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) + "='" + list.get(i - 1) + "' WHERE id = " + id;
 
             try (PreparedStatement ps = connection.prepareStatement(sql);) {
                 ps.executeUpdate();
             }
         }
-
     }
 
     @Override
@@ -232,7 +220,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
             for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                 list.add(rsmd.getColumnName(index));
             }
-    }
+        }
         return list;
     }
 
@@ -243,5 +231,4 @@ public class JDBCDataBaseManager implements DataBaseManager {
             stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id);
         }
     }
-
 }

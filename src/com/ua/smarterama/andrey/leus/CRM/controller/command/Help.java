@@ -1,16 +1,14 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 public class Help extends Command {
-
 
     public Help(Console view) {
         super(view);
     }
 
-    static String text = "This programme allows next commands:\n" +
+    static String text = "This programme provides next commands:\n" +
             "- 'connect' - connect to database\n" +
             "- 'list' - get list of databases;\n" +
             "- 'create' - create new database;\n" +
@@ -19,16 +17,15 @@ public class Help extends Command {
             "   -- in this partition you can: \n" +
             "      --- add, update or delete rows and columns;\n" +
             "      --- add, delete, clear table;\n" +
-            "- 'report' - get goods balance on warehouse ;\n" +
-            "- 'store' - add goods on warehouse;\n" +
-            "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
             "- 'help' - get list of commands.\n" +
             "- 'exit' - escape from programme or return to main menu.\n";
 
     static String connect =
-    "\n" +
-            "Please connect to database.\n";
+            "\n" +
+                    "Please connect to database.\n";
+
+
 
     @Override
     public boolean canProcess(String command) {
@@ -43,6 +40,7 @@ public class Help extends Command {
     public static void getHelp() { //TODO delete this method, dublicate
         System.out.println(text);
     }
+
     public static void getConnect() { //TODO delete this method, dublicate
         System.out.println(connect);
     }

@@ -1,9 +1,7 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
-import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
@@ -29,7 +27,7 @@ public class CreateDatabase extends Command {
             manager.createDatabase(nameDataBase);
             view.write("\nDatabse " + nameDataBase + " was created");
         } catch (SQLException e) {
-                view.write(String.format("Create table, error in case - %s", e));
+            view.write(String.format("Create table, error in case - %s", e));
         }
     }
 }

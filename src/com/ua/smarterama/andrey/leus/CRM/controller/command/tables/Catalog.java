@@ -1,6 +1,5 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
-import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
@@ -22,7 +21,7 @@ public class Catalog extends Command {
 
         while (true) {
             try {
-                view.write("\nAvailable operations:\n" +
+                view.write("Available operations:\n" +
                         "1. Get table data\n" +
                         "2. Insert data (position)\n" +
                         "3. Update data (position)\n" +
@@ -66,6 +65,7 @@ public class Catalog extends Command {
                             clear.clearTable();
                             break;
                         case 8:
+                            view.write("Return to main menu!\n");
                             return;
                         default:
                             view.write("Incorrect input, try again\n");

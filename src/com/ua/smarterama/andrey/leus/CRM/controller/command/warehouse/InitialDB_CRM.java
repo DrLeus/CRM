@@ -7,6 +7,15 @@ import java.sql.Statement;
 
 public class InitialDB_CRM {
 
+    public static void getAddComands() {
+        System.out.println(addComands);
+    }
+
+    static String addComands = "Additional commands\n" +
+            " - 'report' - get goods balance on warehouse ;\n" +
+            " - 'store' - add goods on warehouse +\n" +
+            " - 'writeoff' - write off goods from warehouse ;\n";
+
     public static void setupTempDates() throws ClassNotFoundException, SQLException {
 
         Class.forName("org.postgresql.Driver");
@@ -29,8 +38,7 @@ public class InitialDB_CRM {
 
         stmt.executeUpdate("CREATE SEQUENCE public.goods_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
 
-        // insert table goods
-
+        // create table goods, insert data
         stmt.executeUpdate("CREATE TABLE goods(" +
                 "id NUMERIC NOT NULL DEFAULT nextval('goods_seq'::regclass), CONSTRAINT id_pk PRIMARY KEY(id)," +
                 "code TEXT UNIQUE NOT NULL, " +
@@ -131,6 +139,7 @@ public class InitialDB_CRM {
                 "VALUES (3, 'H77435', 1)");
 
 
+        // drop, create sequence and create table stockbalance
         stmt.executeUpdate("DROP SEQUENCE IF EXISTS public.stockbalance_seq CASCADE");
 
         stmt.executeUpdate("CREATE SEQUENCE public.stockbalance_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
@@ -143,8 +152,6 @@ public class InitialDB_CRM {
                 "VALUES ('50', 1)");
         stmt.executeUpdate("INSERT INTO public.stockbalance (quantity, id_goods)" +
                 "VALUES ('20', 2)");
-
-
 
 
         stmt.close();

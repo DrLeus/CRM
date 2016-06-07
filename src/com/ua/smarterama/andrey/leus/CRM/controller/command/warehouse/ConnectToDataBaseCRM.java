@@ -24,14 +24,13 @@ public class ConnectToDataBaseCRM extends Command {
     @Override
     public void process() {
 
-
-                try {
-                    manager.connect(initialNameDB, initialUserName, initialPass);
-                    view.write("Connection succeeded to " + initialNameDB + "\n");
-                } catch (SQLException e) {
-                    view.write(String.format("Oops...Cant get connection to current database  in case " + e));
-            }
+        try {
+            manager.connect(initialNameDB, initialUserName, initialPass);
+            view.write("Connection succeeded to " + initialNameDB + "\n");
+        } catch (SQLException e) {
+            view.write(String.format("Oops...Cant get connection to current database  in case " + e));
         }
     }
+}
 
 

@@ -1,12 +1,10 @@
 package com.ua.smarterama.andrey.leus.CRM.controller;
 
-
 import com.sun.javaws.exceptions.ExitException;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.MainControllerWarehouse;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
@@ -51,8 +49,8 @@ public class Main {
                     throw new com.ua.smarterama.andrey.leus.CRM.controller.command.ExitException();
                 }
             }
-        }catch (ExitException e){
-        // do nothing
+        } catch (ExitException e) {
+            // do nothing
         }
     }
 }

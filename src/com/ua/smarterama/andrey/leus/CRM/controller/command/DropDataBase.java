@@ -2,11 +2,9 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 public class DropDataBase extends Command {
 
@@ -58,8 +56,8 @@ public class DropDataBase extends Command {
 
                 String input = view.checkExit(view.read());
 
-                for (String sert: list) {
-                    if (input.equals(sert)){
+                for (String sert : list) {
+                    if (input.equals(sert)) {
                         return sert;
                     }
                 }

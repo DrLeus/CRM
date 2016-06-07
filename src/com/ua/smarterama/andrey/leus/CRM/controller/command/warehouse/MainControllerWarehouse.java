@@ -46,6 +46,8 @@ public class MainControllerWarehouse {
         }
 
         Help.getHelp();
+        InitialDB_CRM.getAddComands();
+
 
         try {
             doWork();
@@ -57,8 +59,6 @@ public class MainControllerWarehouse {
     public void doWork() {
 
         while (true) {
-
-
             view.write("Please input command (or 'help'): \n");
 
             String input = view.read();

@@ -1,15 +1,9 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
-
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
-
 import java.sql.SQLException;
 import java.util.List;
 
 public interface DataBaseManager {
-
-//    View view = null;
 
     void clear(String tableName) throws SQLException;
 

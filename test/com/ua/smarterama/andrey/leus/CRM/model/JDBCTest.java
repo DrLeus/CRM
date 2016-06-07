@@ -16,14 +16,9 @@ public class JDBCTest {
     private final static String DATABASE_NAME = "postgrestestnew";
     private final static String TABLE_NAME = "test";
     private final static String NOT_EXIST_TABLE = "notExistTable";
-    private final static String SQL_CREATE_TABLE = TABLE_NAME + "(id SERIAL PRIMARY KEY," +
-            " username VARCHAR (50) UNIQUE NOT NULL," +
-            " password VARCHAR (50) NOT NULL)";
     private static List<Object> listColumn = new ArrayList<>();
     private static List<Object> list = new ArrayList<>();
     private static List<Object> newData = new ArrayList<>();
-
-
 
     private static DataBaseManager manager;
 
@@ -66,12 +61,11 @@ public class JDBCTest {
 //        manager.dropDatabase(DATABASE_NAME);
     }
 
-    @Test //+
+    @Test 
     public void testClear() throws SQLException {
 
         //given
         List<Object> expected = new ArrayList<>();
-//        List<Object> list = manager.getColumnNames(TABLE_NAME,"");
 
         manager.insert(TABLE_NAME, list, newData);
 
@@ -83,13 +77,13 @@ public class JDBCTest {
         assertEquals(expected, tests);
     }
 
-    @Test(expected = PSQLException.class) //+
+    @Test(expected = PSQLException.class) 
     public void testClearNotExistTable() throws SQLException {
         //when
         manager.clear(NOT_EXIST_TABLE);
     }
 
-    @Test(expected = PSQLException.class) //+
+    @Test(expected = PSQLException.class) 
     public void testConnectToNotExistDatabase() throws SQLException {
         //when
         try {
@@ -102,7 +96,7 @@ public class JDBCTest {
         }
     }
 
-    @Test(expected = PSQLException.class) //+
+    @Test(expected = PSQLException.class) 
     public void testConnectToDatabaseWhenIncorrectUserAndPassword() throws SQLException {
         //when
         try {
@@ -115,7 +109,7 @@ public class JDBCTest {
         }
     }
 
-    @Test(expected = PSQLException.class) //+
+    @Test(expected = PSQLException.class) 
     public void testConnectToServerWhenIncorrectUserAndPassword() throws SQLException {
         //when
         try {
@@ -128,7 +122,7 @@ public class JDBCTest {
         }
     }
 
-    @Test //+
+    @Test 
     public void testCreateDatabase() throws SQLException {
         //given
         String newDatabase = "createdatabasetest";
@@ -144,7 +138,7 @@ public class JDBCTest {
         manager.dropDatabase(newDatabase);
     }
 
-    @Test //+
+    @Test 
     public void testCreateTable() throws SQLException {
         //given
         List<String> expected = new ArrayList<>(Collections.singletonList(TABLE_NAME));
@@ -158,7 +152,7 @@ public class JDBCTest {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = PSQLException.class) //+
+    @Test(expected = PSQLException.class) 
     public void testCreateTableWrongQuery() throws SQLException {
         //given
         String query = "testTable(qwerty)";
@@ -168,7 +162,7 @@ public class JDBCTest {
         manager.createTable(query, list);
     }
 
-    @Test //+
+    @Test 
     public void testDropDatabase() throws SQLException {
         //given
         String newDatabase = "dropdatabasetest";
@@ -200,7 +194,7 @@ public class JDBCTest {
         assertEquals(expected, actual);
     }
 
-    @Test //+
+    @Test 
     public void testGetDatabases() {
         //given
         //when
@@ -210,7 +204,7 @@ public class JDBCTest {
         assertNotNull(actual);
     }
 
-    @Test //+
+    @Test 
     public void testGetTableColumns() throws SQLException {
         //given
         List<String> expected = new ArrayList<>(Arrays.asList("id","code", "name", "price"));
@@ -222,7 +216,7 @@ public class JDBCTest {
         assertEquals(expected, actual);
     }
 
-    @Test //+
+    @Test 
     public void testGetTableNames() {
         //given
         List<String> expected = new ArrayList<>(Collections.singletonList(TABLE_NAME));
@@ -234,7 +228,7 @@ public class JDBCTest {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = PSQLException.class) //+
+    @Test(expected = PSQLException.class) 
     public void testInsertNotExistTable() throws SQLException {
         //given
         //when
@@ -242,24 +236,25 @@ public class JDBCTest {
         manager.insert(NOT_EXIST_TABLE, newData, listColumn);
     }
 
-//    @Test
-//    public void testInsertWithId() throws SQLException {
-//        //given
-//        List<Object> newData = new ArrayList<>();
-//        newData.add("username");
-//        newData.add("password");
-//        newData.add("id");
-//        List<Object> list = new ArrayList<>();
-//
-//        //when
-//        manager.insert(TABLE_NAME, newData, list);
-//
-//        //then
-//        List<Object> user = manager.getTableData(TABLE_NAME, "");
-//        assertEquals(newData, user);
-//    }
+    @Test
+    public void testDeleteData() throws SQLException { 
+        //given
+        List<Object> newData = new ArrayList<>();
+        newData.add("username");
+        newData.add("password");
+        newData.add("id");
+        newData.clear();
 
-    @Test //+
+        //when
+        manager.delete(1, TABLE_NAME);
+//        manager.insert(TABLE_NAME, newData, list);
+
+        //then
+        List<Object> user = manager.getTableData(TABLE_NAME, "");
+        assertEquals(newData, user);
+    }
+
+    @Test 
     public void testUpdate() throws SQLException {
         //given
         List<Object> expected = new ArrayList<>();
@@ -284,25 +279,4 @@ public class JDBCTest {
         List<Object> user = manager.getTableData(TABLE_NAME, "");
         assertEquals(expected, user);
     }
-
-//    @Test(expected = DatabaseManagerException.class)
-//    public void testUpdateNotExistTable() throws SQLException {
-//        //when
-//        List<Object> newData = new ArrayList<>();
-//        newData.add("username");
-//        newData.add("password");
-//        newData.add("id");
-//        List<Object> list = new ArrayList<>();
-//
-//        manager.insert(TABLE_NAME, newData, list);
-//
-//        //when
-//        List<Object> updateData = new ArrayList<>();
-//        updateData.add("Bill");
-//        updateData.add("qwerty");
-//        updateData.add(1);
-//
-//        //then
-//        manager.update(NOT_EXIST_TABLE, updateData, 1, newData);
-//    }
 }

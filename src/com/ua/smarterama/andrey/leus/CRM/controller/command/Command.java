@@ -1,12 +1,9 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 
-import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-import java.sql.Connection;
 
 public abstract class Command {
 
@@ -17,7 +14,8 @@ public abstract class Command {
         this.view = view;
     }
 
-    public Command() {}
+    public Command() {
+    }
 
     public Command(DataBaseManager manager, View view) {
 

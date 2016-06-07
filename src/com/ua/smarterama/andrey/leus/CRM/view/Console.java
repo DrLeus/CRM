@@ -1,14 +1,8 @@
 package com.ua.smarterama.andrey.leus.CRM.view;
 
-
-import com.ua.smarterama.andrey.leus.CRM.controller.Main;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.MissingFormatArgumentException;
-import java.util.Scanner;
 
 public class Console implements View {
 
@@ -44,8 +38,5 @@ public class Console implements View {
         }
         return input;
     }
-
-
-
 }
 
