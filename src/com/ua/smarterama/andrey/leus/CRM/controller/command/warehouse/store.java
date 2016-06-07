@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class store extends Command {
+public class Store extends Command {
 
-    public store(DataBaseManager manager, View view) {
+    public Store(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
     @Override
     public boolean canProcess(String command) {
-        return command.equals("Store");
+        return command.equals("store");
     }
 
     @Override

@@ -18,16 +18,16 @@ public class MainControllerWarehouse {
     public MainControllerWarehouse(Console view, DataBaseManager manager) {
         this.view = view;
         this.commands = new Command[]{
-                new ConnectToDataBase(manager, view),
+                new ConnectToDataBaseCRM(manager, view),
                 new Help(view),
                 new Exit(view),
                 new IsConnected(manager, view),
                 new CreateDatabase(manager, view),
                 new DropDataBase(manager, view),
                 new Catalog(manager, view),
-                new report(manager, view),
+                new Report(manager, view),
                 new SelectDataBase(manager, view),
-                new store(manager, view),
+                new Store(manager, view),
                 new Writeoff(manager, view),
                 new Unsupported(view),
         };
@@ -37,6 +37,13 @@ public class MainControllerWarehouse {
     public void run() throws Exception {
 
         InitialDB_CRM.setupTempDates();
+
+        for (Command command : commands) {
+            if (command.canProcess("connectCRM")) {
+                command.process();
+                break;
+            }
+        }
 
         Help.getHelp();
 
@@ -51,7 +58,8 @@ public class MainControllerWarehouse {
 
         while (true) {
 
-            view.write("Please input command: \n");
+
+            view.write("Please input command (or 'help'): \n");
 
             String input = view.read();
 

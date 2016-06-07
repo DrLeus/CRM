@@ -34,6 +34,7 @@ public class MainController {
     public void run() throws Exception {
 
         Help.getHelp();
+        Help.getConnect();
 
         try {
             doWork();
@@ -47,6 +48,7 @@ public class MainController {
 
         while (true) {
 
+            view.write("\n");
             view.write("Please input command (or 'help'): \n");
 
             String input = view.read();

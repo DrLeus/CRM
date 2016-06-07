@@ -18,35 +18,20 @@ public class ConnectToDataBaseCRM extends Command {
 
     @Override
     public boolean canProcess(String command) {
-        return command.equals("connect");
+        return command.equals("connectCRM");
     }
 
     @Override
     public void process() {
 
-        while (true) {
 
-            view.write("Do you want to initialize and to connect to database CRM " +
-                    "for showing all abilities of module? (Y/N)");
-
-            String input = view.checkExit(view.read());
-
-            if (input.equalsIgnoreCase("Y")) {
                 try {
                     manager.connect(initialNameDB, initialUserName, initialPass);
                     view.write("Connection succeeded to " + initialNameDB + "\n");
                 } catch (SQLException e) {
-                    view.write(String.format("Oops...Cant get connection to current database" /* in case " + e*/));
-                }
-
-                break;
-            } else if (input.equalsIgnoreCase("N")) {
-                break;
-            } else {
-                view.write("Oops... something wrong");
+                    view.write(String.format("Oops...Cant get connection to current database  in case " + e));
             }
         }
     }
 
 
-}

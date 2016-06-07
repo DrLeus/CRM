@@ -9,15 +9,15 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
-public class report extends Command {
+public class Report extends Command {
 
-    public report(DataBaseManager manager, View view) {
+    public Report(DataBaseManager manager, View view) {
         super(manager, view);
     }
 
     @Override
     public boolean canProcess(String command) {
-        return command.equals("Report");
+        return command.equals("report");
     }
 
     @Override

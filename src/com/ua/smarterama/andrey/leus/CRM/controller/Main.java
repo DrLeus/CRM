@@ -21,13 +21,14 @@ public class Main {
         try {
 
             while (true) {
-                view.write("Do you want to initialize and connect to database CRM (Y) " +
-                        "or connect to your database (N)");
+                view.write("Do you want to initialize and than connect to database CRM for showing all abilities of module? (Y) " +
+                        "or connect to your database (N)?;\n");
 
                 try {
                     String read = view.read();
                     if (read.equalsIgnoreCase("Y")) {
                         MainControllerWarehouse controller = new MainControllerWarehouse(new Console(), manager);
+                        view.write("Please wait!\n");
                         controller.run();
                         break;
                     } else if (read.equalsIgnoreCase("N")) {

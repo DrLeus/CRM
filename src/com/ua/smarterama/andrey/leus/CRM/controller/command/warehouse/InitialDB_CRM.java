@@ -14,24 +14,22 @@ public class InitialDB_CRM {
                 "jdbc:postgresql://localhost:5432/", "postgres",
                 "postgres");
 
-
-        // insert table goods
         Statement stmt = connection.createStatement();
 
-        stmt.executeUpdate("DROP DATABASE IF EXISTS crm");
+        stmt.executeUpdate("DROP DATABASE IF EXISTS \"CRM\"");
 
-        stmt.executeUpdate("CREATE DATABASE crm");
+        stmt.executeUpdate("CREATE DATABASE \"CRM\"");
 
         connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/crm", "postgres",
+                "jdbc:postgresql://localhost:5432/CRM", "postgres",
                 "postgres");
         stmt = connection.createStatement();
 
-//        stmt.executeUpdate("DROP SEQUENCE public.goods_seq CASCADE");
+        stmt.executeUpdate("DROP SEQUENCE IF EXISTS public.goods_seq CASCADE");
 
         stmt.executeUpdate("CREATE SEQUENCE public.goods_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
 
-//        stmt.executeUpdate("DROP TABLE public.goods CASCADE");
+        // insert table goods
 
         stmt.executeUpdate("CREATE TABLE goods(" +
                 "id NUMERIC NOT NULL DEFAULT nextval('goods_seq'::regclass), CONSTRAINT id_pk PRIMARY KEY(id)," +
@@ -53,7 +51,6 @@ public class InitialDB_CRM {
                 "VALUES ('H77539', '583352893', 'SEAL SV-80 EPDM CAT 2', '2,99', '42,56', '1')");
 
         // create table suppliers
-//        stmt.executeUpdate("DROP TABLE public.suppliers CASCADE");
         stmt.executeUpdate("CREATE TABLE suppliers(" +
                 "id NUMERIC PRIMARY KEY," +
                 "name TEXT UNIQUE NOT NULL, " +
@@ -73,7 +70,6 @@ public class InitialDB_CRM {
 
 
         // create table transport_operators
-//        stmt.executeUpdate("DROP TABLE public.transport CASCADE");
         stmt.executeUpdate("CREATE TABLE transport(" +
                 "id NUMERIC PRIMARY KEY," +
                 "name TEXT UNIQUE NOT NULL, " +
@@ -91,7 +87,6 @@ public class InitialDB_CRM {
 
 
         // create table Employee
-//        stmt.executeUpdate("DROP TABLE public.employee CASCADE");
         stmt.executeUpdate("CREATE TABLE employee(" +
                 "id NUMERIC PRIMARY KEY," +
                 "name TEXT UNIQUE NOT NULL, " +
@@ -109,7 +104,6 @@ public class InitialDB_CRM {
                 "VALUES (4, 'Yana', 'Pavlik', 'assistance', '-', '+38 050 444 44 44')");
 
         // create table ListIncomingInvoice
-//        stmt.executeUpdate("DROP TABLE public.ListIncomingOrders CASCADE");
         stmt.executeUpdate("CREATE TABLE ListIncomingOrders(" +
                 "id NUMERIC PRIMARY KEY UNIQUE NOT NULL," +
                 "name TEXT REFERENCES suppliers(name), " +
@@ -125,7 +119,6 @@ public class InitialDB_CRM {
 
 
         // create table goods for IncomingInvoice
-//        stmt.executeUpdate("DROP TABLE public.IncomingGoods CASCADE");
         stmt.executeUpdate("CREATE TABLE IncomingGoods(" +
                 "id NUMERIC PRIMARY KEY," +
                 "code TEXT REFERENCES goods(code)," +
@@ -136,6 +129,22 @@ public class InitialDB_CRM {
                 "VALUES (2, 'H77509', 1)");
         stmt.executeUpdate("INSERT INTO public.IncomingGoods (id, code, id_incomingOrder)" +
                 "VALUES (3, 'H77435', 1)");
+
+
+        stmt.executeUpdate("DROP SEQUENCE IF EXISTS public.stockbalance_seq CASCADE");
+
+        stmt.executeUpdate("CREATE SEQUENCE public.stockbalance_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
+
+        stmt.executeUpdate("CREATE TABLE stockbalance(" +
+                "id NUMERIC NOT NULL DEFAULT nextval('stockbalance_seq'::regclass), CONSTRAINT id_goods_pk PRIMARY KEY(id)," +
+                "quantity TEXT NOT NULL," +
+                "id_goods NUMERIC REFERENCES goods(id))");
+        stmt.executeUpdate("INSERT INTO public.stockbalance (quantity, id_goods)" +
+                "VALUES ('50', 1)");
+        stmt.executeUpdate("INSERT INTO public.stockbalance (quantity, id_goods)" +
+                "VALUES ('20', 2)");
+
+
 
 
         stmt.close();

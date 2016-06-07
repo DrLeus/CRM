@@ -17,15 +17,17 @@ public class Help extends Command {
             "- 'drop' - delete the database;\n" +
             "- 'catalog' - get contain of tables (for example information about 'goods';\n" +
             "   -- in this partition you can: \n" +
-            "      --- add, change or delete line;\n" +
+            "      --- add, update or delete rows and columns;\n" +
             "      --- add, delete, clear table;\n" +
-            "- 'Report' - get goods balance on warehouse ;\n" +
-            "- 'Store' - add goods on warehouse;\n" +
+            "- 'report' - get goods balance on warehouse ;\n" +
+            "- 'store' - add goods on warehouse;\n" +
             "- 'writeoff' - write off goods from warehouse ;\n" +
             "\n" +
             "- 'help' - get list of commands.\n" +
-            "- 'exit' - escape from programme or return to main menu.\n" +
-            "\n" +
+            "- 'exit' - escape from programme or return to main menu.\n";
+
+    static String connect =
+    "\n" +
             "Please connect to database.\n";
 
     @Override
@@ -40,6 +42,9 @@ public class Help extends Command {
 
     public static void getHelp() { //TODO delete this method, dublicate
         System.out.println(text);
+    }
+    public static void getConnect() { //TODO delete this method, dublicate
+        System.out.println(connect);
     }
 
 }
