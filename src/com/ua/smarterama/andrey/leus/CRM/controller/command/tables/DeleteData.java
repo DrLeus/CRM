@@ -2,18 +2,13 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.MissingFormatArgumentException;
-
 
 public class DeleteData extends Command {
 
-    public DeleteData(DataBaseManager manager, View view) {
-        super(manager, view);
+    public DeleteData(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override

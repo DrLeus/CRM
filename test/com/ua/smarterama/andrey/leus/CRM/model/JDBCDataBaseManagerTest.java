@@ -34,9 +34,9 @@ public class JDBCDataBaseManagerTest {
     @Before
     public void  setup() throws SQLException {
         listColumn.clear();
-        listColumn.add("code");
-        listColumn.add("name");
-        listColumn.add("price");
+        listColumn.add("code TEXT");
+        listColumn.add("name TEXT");
+        listColumn.add("price TEXT");
         listColumn.add("");
 
         manager.createTable(TABLE_NAME, listColumn);

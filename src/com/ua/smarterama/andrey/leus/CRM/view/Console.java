@@ -11,7 +11,7 @@ public class Console implements View {
     }
 
     public void error(String message, Exception e) {
-        System.err.println(String.format(message + e));
+        System.err.println(message + e);
     }
 
     public String read() {
@@ -37,6 +37,16 @@ public class Console implements View {
             }
         }
         return input;
+    }
+
+    private static Console  instance = null;
+
+    private Console() {}
+
+    public static synchronized Console getInstance() {
+        if ( instance == null)
+            instance = new Console();
+        return instance;
     }
 }
 

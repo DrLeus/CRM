@@ -1,14 +1,13 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 
 public class ConnectToDataBase extends Command {
 
-    public ConnectToDataBase(DataBaseManager manager, Console view) {
-        super(manager, view);
+    public ConnectToDataBase(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override

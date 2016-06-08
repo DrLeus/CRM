@@ -3,7 +3,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -11,8 +10,8 @@ import java.util.List;
 
 public class Store extends Command {
 
-    public Store(DataBaseManager manager, View view) {
-        super(manager, view);
+    public Store(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override

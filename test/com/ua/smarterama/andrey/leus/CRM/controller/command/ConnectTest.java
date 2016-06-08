@@ -23,7 +23,7 @@ public class ConnectTest {
     public void setup() {
         manager = mock(DataBaseManager.class);
         view = mock(Console.class);
-        command = new ConnectToDataBase(manager, view);
+        command = new ConnectToDataBase(manager);
     }
 
     @Ignore

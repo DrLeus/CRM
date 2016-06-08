@@ -9,9 +9,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-/**
- * Created by indigo on 01.09.2015.
- */
+
 public class ExitWithMockitoTest {
 
     private Console view = Mockito.mock(Console.class);
@@ -19,7 +17,7 @@ public class ExitWithMockitoTest {
     @Test
     public void testCanProcessExitString() {
         // given
-        Command command = new Exit(view);
+        Command command = new Exit();
 
         // when
         boolean canProcess = command.canProcess("exit");
@@ -31,7 +29,7 @@ public class ExitWithMockitoTest {
     @Test
     public void testCantProcessQweString() {
         // given
-        Command command = new Exit(view);
+        Command command = new Exit();
 
         // when
         boolean canProcess = command.canProcess("qwe");
@@ -43,7 +41,7 @@ public class ExitWithMockitoTest {
     @Test
     public void testProcessExitCommand_thowsExitException() {
         // given
-        Command command = new Exit(view);
+        Command command = new Exit();
 
         // when
         try {

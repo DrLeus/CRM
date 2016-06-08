@@ -14,7 +14,7 @@ public class Main {
 
         DataBaseManager manager = new JDBCDataBaseManager();
 
-        Console view = new Console();
+        Console view = Console.getInstance();
 
         try {
 
@@ -24,12 +24,12 @@ public class Main {
 
                 String read = view.read();
                 if (read.equalsIgnoreCase("Y")) {
-                    MainControllerWarehouse controller = new MainControllerWarehouse(new Console(), manager);
+                    MainControllerWarehouse controller = new MainControllerWarehouse(manager);
                     view.write("Please wait!\n");
                     controller.run(manager);
                     break;
                 } else if (read.equalsIgnoreCase("N")) {
-                    MainController controller = new MainController(new Console(), manager);
+                    MainController controller = new MainController(manager);
                     controller.run();
                     break;
                 } else if (read.equalsIgnoreCase("exit")) {

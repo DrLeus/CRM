@@ -1,11 +1,10 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 public class IsConnected extends Command {
-    public IsConnected(DataBaseManager manager, Console view) {
-        super(manager, view);
+    public IsConnected(DataBaseManager manager) {
+                super(manager);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -11,8 +10,8 @@ import java.util.List;
 
 public class Writeoff extends Command {
 
-    public Writeoff(DataBaseManager manager, View view) {
-        super(manager, view);
+    public Writeoff(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override
@@ -23,7 +22,7 @@ public class Writeoff extends Command {
     @Override
     public void process() {
 
-        Report Report = new Report(manager, view);
+        Report Report = new Report(manager);
 
         Report.process();
 

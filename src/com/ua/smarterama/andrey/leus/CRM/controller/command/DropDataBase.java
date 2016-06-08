@@ -1,15 +1,14 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class DropDataBase extends Command {
 
-    public DropDataBase(DataBaseManager manager, Console view) {
-        super(manager, view);
+    public DropDataBase(DataBaseManager manager) {
+                super(manager);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class DropDataBase extends Command {
     }
 
     public String getNameDataBase() {
-        String nameDataBase = null;
+        String nameDataBase;
 
         List<String> list = manager.getDatabases();
 

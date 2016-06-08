@@ -2,25 +2,22 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 
 public abstract class Command {
 
     protected DataBaseManager manager;
-    protected View view;
-
-    public Command(View view) {
-        this.view = view;
-    }
+    protected Console view;
 
     public Command() {
+        this.view = Console.getInstance();
     }
 
-    public Command(DataBaseManager manager, View view) {
+    public Command(DataBaseManager manager) {
 
         this.manager = manager;
-        this.view = view;
+        this.view = Console.getInstance();
     }
 
     public abstract boolean canProcess(String command);

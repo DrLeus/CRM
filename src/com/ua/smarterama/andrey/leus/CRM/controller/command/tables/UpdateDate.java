@@ -2,17 +2,15 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateDate extends Command {
 
-    public UpdateDate(DataBaseManager manager, View view) {
-        super(manager, view);
+    public UpdateDate(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override
@@ -34,7 +32,6 @@ public class UpdateDate extends Command {
         } catch (SQLException e) {
             view.write(String.format("Error get column names in case - %s\n", e));
         }
-
 
         try {
             Assistant.outputColumnNames(columnNames, Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData

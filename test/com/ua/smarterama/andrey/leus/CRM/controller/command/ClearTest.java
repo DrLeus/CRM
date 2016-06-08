@@ -14,9 +14,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by indigo on 01.09.2015.
- */
 public class ClearTest {
 
     private DataBaseManager manager;
@@ -28,7 +25,7 @@ public class ClearTest {
     public void setup() {
         manager = mock(DataBaseManager.class);
         view = mock(View.class);
-        command = new ClearTable(manager, view);
+        command = new ClearTable(manager);
     }
 
     @Ignore

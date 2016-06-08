@@ -1,12 +1,9 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
-
-
 public class Unsupported extends Command {
 
-    public Unsupported(Console view) {
-        super(view);
+    public Unsupported() {
+        super();
     }
 
     @Override

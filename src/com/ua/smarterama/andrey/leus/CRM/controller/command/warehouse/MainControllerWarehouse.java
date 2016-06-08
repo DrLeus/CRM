@@ -10,33 +10,31 @@ import java.util.List;
 
 public class MainControllerWarehouse {
 
-
     private Console view;
     private Command[] commands;
     private List<String> history = new LinkedList<>();
 
-    public MainControllerWarehouse(Console view, DataBaseManager manager) {
-        this.view = view;
+    public MainControllerWarehouse(DataBaseManager manager) {
+        this.view = Console.getInstance();
         this.commands = new Command[]{
-                new ConnectToDataBaseCRM(manager, view),
-                new Help(view),
-                new Exit(view),
-                new IsConnected(manager, view),
-                new CreateDatabase(manager, view),
-                new DropDataBase(manager, view),
-                new Catalog(manager, view),
-                new Report(manager, view),
-                new SelectDataBase(manager, view),
-                new Store(manager, view),
-                new Writeoff(manager, view),
-                new Unsupported(view),
+                new ConnectToDataBaseCRM(manager),
+                new Help(),
+                new Exit(),
+                new IsConnected(manager),
+                new CreateDatabase(manager),
+                new DropDataBase(manager),
+                new Catalog(manager),
+                new Report(manager),
+                new SelectDataBase(manager),
+                new Store(manager),
+                new Writeoff(manager),
+                new Unsupported(),
         };
     }
 
-
     public void run(DataBaseManager manager) throws Exception {
 
-        InitialDB_CRM.setupTempDates(manager);
+//        InitialDB_CRM.setupTempDates(manager);
 
         for (Command command : commands) {
             if (command.canProcess("connectCRM")) {
@@ -48,12 +46,9 @@ public class MainControllerWarehouse {
         Help.getHelp();
         InitialDB_CRM.getAddComands();
 
-
         try {
             doWork();
-        } catch (ExitException e) {
-//            System.exit(0);
-        }
+        } catch (ExitException e) { }
     }
 
     public void doWork() {

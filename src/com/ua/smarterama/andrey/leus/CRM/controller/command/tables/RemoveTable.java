@@ -2,14 +2,13 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
 public class RemoveTable extends Command {
 
-    public RemoveTable(DataBaseManager manager, View view) {
-        super(manager, view);
+    public RemoveTable(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override

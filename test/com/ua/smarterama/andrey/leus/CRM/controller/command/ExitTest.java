@@ -7,9 +7,6 @@ import com.ua.smarterama.andrey.leus.CRM.view.View;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
 
-/**
- * Created by indigo on 01.09.2015.
- */
 public class ExitTest {
 
     private DataBaseManager manager;
@@ -18,7 +15,7 @@ public class ExitTest {
     @Test
     public void testCanProcessExitString() {
         // given
-        Command command = new Exit(view);
+        Command command = new Exit();
 
         // when
         boolean canProcess = command.canProcess("exit");
@@ -30,7 +27,7 @@ public class ExitTest {
     @Test
     public void testCantProcessQweString() {
         // given
-        Command command = new Exit(view);
+        Command command = new Exit();
 
         // when
         boolean canProcess = command.canProcess("qwe");
@@ -42,7 +39,7 @@ public class ExitTest {
     @Test
     public void testProcessExitCommand_thowsExitException() {
         // given
-        Command command = new Exit(view);
+        Command command = new Exit();
 
         // when
         try {

@@ -8,10 +8,8 @@ import java.sql.SQLException;
 
 public class ClearTable extends Command {
 
-
-
-    public ClearTable(DataBaseManager manager, View view) {
-        super(manager, view);
+    public ClearTable(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override

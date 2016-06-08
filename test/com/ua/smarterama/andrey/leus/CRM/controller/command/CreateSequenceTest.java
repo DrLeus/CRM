@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by Admin on 29.05.2016.
- */
 public class CreateSequenceTest {
 
     private Command command;
@@ -24,7 +21,7 @@ public class CreateSequenceTest {
     public void setup() {
         manager = mock(JDBCDataBaseManager.class);
         view = mock(Console.class);
-        command = new ConnectToDataBase(manager, view);
+        command = new ConnectToDataBase(manager);
     }
 
     @Ignore

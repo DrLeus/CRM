@@ -15,18 +15,18 @@ public class MainController {
     private Command[] commands;
     private List<String> history = new LinkedList<>();
 
-    public MainController(Console view, DataBaseManager manager) {
-        this.view = view;
+    public MainController(DataBaseManager manager) {
+        this.view = Console.getInstance();
         this.commands = new Command[]{
-                new ConnectToDataBase(manager, view),
-                new Help(view),
-                new Exit(view),
-                new IsConnected(manager, view),
-                new CreateDatabase(manager, view),
-                new DropDataBase(manager, view),
-                new Catalog(manager, view),
-                new SelectDataBase(manager, view),
-                new Unsupported(view),
+                new ConnectToDataBase(manager),
+                new Help(),
+                new Exit(),
+                new IsConnected(manager),
+                new CreateDatabase(manager),
+                new DropDataBase(manager),
+                new Catalog(manager),
+                new SelectDataBase(manager),
+                new Unsupported(),
         };
     }
 

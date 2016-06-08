@@ -2,20 +2,14 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.MissingFormatArgumentException;
 
-/**
- * Created by Admin on 24.05.2016.
- */
 public class GetTable extends Command {
 
-    public GetTable(DataBaseManager manager, View view) {
-        super(manager, view);
+    public GetTable(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override
@@ -25,7 +19,6 @@ public class GetTable extends Command {
 
     @Override
     public void process() {}
-
 
     public void getTableData() {
 
@@ -51,5 +44,4 @@ public class GetTable extends Command {
 
         Assistant.outputData(listColumnName, listValue, format);
     }
-
 }

@@ -1,11 +1,10 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 public class Help extends Command {
 
-    public Help(Console view) {
-        super(view);
+    public Help() {
+        super();
     }
 
     static String text = "This programme provides next commands:\n" +
@@ -24,8 +23,6 @@ public class Help extends Command {
     static String connect =
             "\n" +
                     "Please connect to database.\n";
-
-
 
     @Override
     public boolean canProcess(String command) {

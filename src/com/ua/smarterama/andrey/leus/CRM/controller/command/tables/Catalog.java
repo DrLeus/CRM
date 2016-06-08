@@ -2,13 +2,11 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 public class Catalog extends Command {
 
-
-    public Catalog(DataBaseManager manager, Console view) {
-        super(manager, view);
+    public Catalog(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override
@@ -37,31 +35,31 @@ public class Catalog extends Command {
 
                     switch (Integer.parseInt(input)) {
                         case 1:
-                            GetTable table = new GetTable(manager, view);
+                            GetTable table = new GetTable(manager);
                             table.getTableData();
                             break;
                         case 2:
-                            InsertData insert = new InsertData(manager, view);
+                            InsertData insert = new InsertData(manager);
                             insert.insertData();
                             break;
                         case 3:
-                            UpdateDate update = new UpdateDate(manager, view);
+                            UpdateDate update = new UpdateDate(manager);
                             update.update();
                             break;
                         case 4:
-                            DeleteData delete = new DeleteData(manager, view);
+                            DeleteData delete = new DeleteData(manager);
                             delete.delete();
                             break;
                         case 5:
-                            CreateTable create = new CreateTable(manager, view);
+                            CreateTable create = new CreateTable(manager);
                             create.createTable();
                             break;
                         case 6:
-                            RemoveTable remove = new RemoveTable(manager, view);
+                            RemoveTable remove = new RemoveTable(manager);
                             remove.removeTable();
                             break;
                         case 7:
-                            ClearTable clear = new ClearTable(manager, view);
+                            ClearTable clear = new ClearTable(manager);
                             clear.clearTable();
                             break;
                         case 8:

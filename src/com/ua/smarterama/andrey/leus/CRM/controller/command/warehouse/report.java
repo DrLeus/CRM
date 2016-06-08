@@ -3,7 +3,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.MissingFormatArgumentException;
 
 public class Report extends Command {
 
-    public Report(DataBaseManager manager, View view) {
-        super(manager, view);
+    public Report(DataBaseManager manager) {
+        super(manager);
     }
 
     @Override
@@ -64,7 +63,5 @@ public class Report extends Command {
         } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
             view.write("\nThe table is empty!");
         }
-
     }
-
 }
