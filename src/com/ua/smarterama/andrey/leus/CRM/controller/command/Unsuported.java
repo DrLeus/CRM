@@ -1,8 +1,8 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
-public class Unsupported extends Command {
+public class Unsuported extends Command {
 
-    public Unsupported() {
+    public Unsuported() {
         super();
     }
 
@@ -13,6 +13,6 @@ public class Unsupported extends Command {
 
     @Override
     public void process() {
-        view.write("\nOops...incorrect command!");
+        view.write("Oops...incorrect command!\n");
     }
 }

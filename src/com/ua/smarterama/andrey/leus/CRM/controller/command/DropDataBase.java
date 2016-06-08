@@ -31,7 +31,7 @@ public class DropDataBase extends Command {
             if (view.read().equalsIgnoreCase("Y")) {
                 try {
                     manager.dropDatabase(nameDataBase);
-                    view.write("Database '" + nameDataBase + "' dropped/n");
+                    view.write("Database '" + nameDataBase + "' dropped\n");
                 } catch (SQLException e) {
                     view.write(String.format("Drop database error in case - %s\n", e));
                 }

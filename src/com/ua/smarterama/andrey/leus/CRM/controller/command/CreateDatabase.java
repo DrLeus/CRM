@@ -30,7 +30,7 @@ public class CreateDatabase extends Command {
 
         try {
             manager.createDatabase(nameDataBase);
-            view.write("Databse " + nameDataBase + " was created\n");
+            view.write("Database " + nameDataBase + " was created\n");
         } catch (SQLException e) {
             view.write(String.format("Create table, error in case - %s\n", e));
         }

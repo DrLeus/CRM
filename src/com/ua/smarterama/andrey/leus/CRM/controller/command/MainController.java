@@ -1,6 +1,5 @@
-package com.ua.smarterama.andrey.leus.CRM.controller;
+package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
-import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
@@ -26,13 +25,13 @@ public class MainController {
                 new DropDataBase(manager),
                 new Catalog(manager),
                 new SelectDataBase(manager),
-                new Unsupported(),
+                new Unsuported(),
         };
     }
 
     public void run() throws Exception {
 
-        Help.getHelp();
+        view.write(Help.getHelp());
         Help.getConnect();
 
         try {

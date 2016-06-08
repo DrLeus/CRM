@@ -24,5 +24,6 @@ public class SelectDataBase extends Command {
         for (String sert : list) {
             view.write(sert);
         }
+        view.write("\n");
     }
 }

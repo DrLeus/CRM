@@ -20,7 +20,7 @@ public class ConnectToDataBase extends Command {
 
         while (true) {
 
-            view.write("Please input the database name\n");
+            view.write("Please input the database name");
             String nameDB = view.read();
             if (view.checkExitB(nameDB)) {
                 view.write("Return to main menu!\n");
@@ -48,7 +48,7 @@ public class ConnectToDataBase extends Command {
                 view.write("Connection succeeded to '" + nameDB + "'\n");
                 break;
             } catch (SQLException e) {
-                view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s \n",
+                view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s\n",
                         nameDB, userName, password /*+ " in case " + e*/));
             }
         }

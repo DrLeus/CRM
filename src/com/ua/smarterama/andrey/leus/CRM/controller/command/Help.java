@@ -34,8 +34,8 @@ public class Help extends Command {
         view.write(text);
     }
 
-    public static void getHelp() { //TODO delete this method, dublicate
-        System.out.println(text);
+    public static String getHelp() { //TODO delete this method, dublicate
+       return text;
     }
 
     public static void getConnect() { //TODO delete this method, dublicate

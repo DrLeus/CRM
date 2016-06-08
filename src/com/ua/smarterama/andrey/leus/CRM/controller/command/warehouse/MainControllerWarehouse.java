@@ -28,7 +28,7 @@ public class MainControllerWarehouse {
                 new SelectDataBase(manager),
                 new Store(manager),
                 new Writeoff(manager),
-                new Unsupported(),
+                new Unsuported(),
         };
     }
 
@@ -43,7 +43,7 @@ public class MainControllerWarehouse {
             }
         }
 
-        Help.getHelp();
+        view.write(Help.getHelp());
         InitialDB_CRM.getAddComands();
 
         try {
