@@ -19,15 +19,20 @@ public class CreateDatabase extends Command {
     @Override
     public void process() {
 
-        view.write("\nPlease input database name for creating:\n");
+        view.write("Please input database name for creating:\n");
 
-        String nameDataBase = view.checkExit(view.read());
+        String nameDataBase = view.read();
+
+        if (view.checkExitB(nameDataBase)) {
+            view.write("Return to main menu!\n");
+            return;
+        }
 
         try {
             manager.createDatabase(nameDataBase);
-            view.write("\nDatabse " + nameDataBase + " was created");
+            view.write("Databse " + nameDataBase + " was created\n");
         } catch (SQLException e) {
-            view.write(String.format("Create table, error in case - %s", e));
+            view.write(String.format("Create table, error in case - %s\n", e));
         }
     }
 }

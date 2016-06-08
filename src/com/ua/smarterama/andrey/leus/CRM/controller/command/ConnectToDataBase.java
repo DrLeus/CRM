@@ -20,12 +20,28 @@ public class ConnectToDataBase extends Command {
 
         while (true) {
 
-            view.write("Please input the database name");
-            String nameDB = view.checkExit(view.read());
+            view.write("Please input the database name\n");
+            String nameDB = view.read();
+            if (view.checkExitB(nameDB)) {
+                view.write("Return to main menu!\n");
+                return;
+            }
+
             view.write("Please input user name");
-            String userName = view.checkExit(view.read());
+
+            String userName = view.read();
+            if (view.checkExitB(userName)) {
+                view.write("Return to main menu!\n");
+                return;
+            }
+
             view.write("Please input password");
-            String password = view.checkExit(view.read());
+            String password = view.read();
+            if (view.checkExitB(password)) {
+                view.write("Return to main menu!\n");
+                return;
+            }
+
             try {
                 manager.connect(nameDB, userName, password);
                 view.write("\n");

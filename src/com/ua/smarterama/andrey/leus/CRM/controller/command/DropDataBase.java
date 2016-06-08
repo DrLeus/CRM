@@ -21,28 +21,35 @@ public class DropDataBase extends Command {
 
         String nameDataBase = getNameDataBase();
 
-        view.write("Please confirm, do you really want to drop '" + nameDataBase + "' database? Y/N");
-
-        if (view.read().equalsIgnoreCase("Y")) {
-            try {
-                manager.dropDatabase(nameDataBase);
-                view.write("Database '" + nameDataBase + "' dropped");
-            } catch (SQLException e) {
-                view.write(String.format("Drop database error in case - %s", e));
-            }
+        if (nameDataBase.isEmpty()){
+            view.write("Nothing to do!\n");
+            view.write("Return to main menu!\n");
         } else {
-            view.write("Your action canceled!");
+
+            view.write("Please confirm, do you really want to drop '" + nameDataBase + "' database? Y/N\n");
+
+            if (view.read().equalsIgnoreCase("Y")) {
+                try {
+                    manager.dropDatabase(nameDataBase);
+                    view.write("Database '" + nameDataBase + "' dropped/n");
+                } catch (SQLException e) {
+                    view.write(String.format("Drop database error in case - %s\n", e));
+                }
+            } else {
+                view.write("Your action canceled!\n");
+            }
         }
     }
 
     public String getNameDataBase() {
-        String nameDataBase;
+
+        String nameDataBase = "";
 
         List<String> list = manager.getDatabases();
 
         int i = 0;
 
-        view.write("\nThe next data bases avaiilable:\n");
+        view.write("The next data bases avaiilable:\n");
 
         for (String sert : list) {
             view.write("" + ++i + ": " + sert);
@@ -51,9 +58,11 @@ public class DropDataBase extends Command {
 
         while (true) {
             try {
-                view.write("\nPlease select database for dropping:\n");
+                view.write("Please select database for dropping:\n");
 
-                String input = view.checkExit(view.read());
+                String input = (view.read());
+
+                if (view.checkExitB(input)) {return nameDataBase; };
 
                 for (String sert : list) {
                     if (input.equals(sert)) {
@@ -62,13 +71,13 @@ public class DropDataBase extends Command {
                 }
 
                 if (Integer.parseInt(input) > i || Integer.parseInt(input) < 1) {
-                    view.write("Incorrect input, try again");
+                    view.write("Incorrect input, try again\n");
                 } else {
                     nameDataBase = list.get(Integer.parseInt(input) - 1);
                     break;
                 }
             } catch (NumberFormatException e) {
-                view.write("Incorrect input, try again");
+                view.write("Incorrect input, try again\n");
             }
         }
         return nameDataBase;

@@ -33,7 +33,12 @@ public class InsertData extends Command {
 
                 view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
 
-                String input = view.checkExit(view.read());
+                String input = view.read();
+
+                if (view.checkExitB(input)) {
+                    view.write("Return to main menu!\n");
+                    return;
+                }
 
                 list.add(input);
             }

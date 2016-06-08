@@ -1,5 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class Assistant {
         return result + 2;
     }
 
-    public static List<Object> inputNames(View view) {
+    public static List<Object> inputNames(Console view) {
 
         List<Object> list = new ArrayList<>();
 

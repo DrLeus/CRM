@@ -23,9 +23,14 @@ public class CreateTable extends Command {
     public void createTable() {
         view.write("Please input table name:\n");
 
-        String tableName = view.checkExit(view.read());
+        String tableName = view.read();
 
-        view.write("Please input name of columns and type (for ex. TEXT, for column 'name' must be 'name TEXT')\n" +
+        if (view.checkExitB(tableName)) {
+            view.write("Return to main menu!\n");
+            return;
+        }
+
+        view.write("Please input name of columns and type (for ex. TEXT; for column 'name' must be 'name TEXT')\n" +
                 "The first column = 'id' with auto-increment\n");
 
         List<Object> listColumn = Assistant.inputNames(view);

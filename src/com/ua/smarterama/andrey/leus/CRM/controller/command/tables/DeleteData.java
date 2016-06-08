@@ -19,7 +19,6 @@ public class DeleteData extends Command {
     @Override
     public void process() {}
 
-
     public void delete() {
         String tableName = Assistant.selectTable(manager.getTableNames(), view);
 
@@ -34,7 +33,14 @@ public class DeleteData extends Command {
             try {
                 view.write("Please input 'id' line to delete\n");
 
-                int input = Integer.parseInt(view.checkExit(view.read()));
+                String line = view.read();
+
+                if (view.checkExitB(line)) {
+                    view.write("Return to main menu!\n");
+                    return;
+                }
+
+                int input = Integer.parseInt(line);
 
                 view.write("Please confirm, do you really want to remove position id='" + input + "'? Y/N\n");
 

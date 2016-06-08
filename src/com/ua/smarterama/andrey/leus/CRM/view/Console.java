@@ -25,18 +25,14 @@ public class Console implements View {
     }
 
     public String checkExit(String input) {
-        if (input.equals("exit")) {
-//            System.out.println("\nReturn to main menu!");
-            System.out.println("\n");
-            System.out.println("See you again!");
-            try {
-                System.exit(0);
-//                Main.main(new String[0]);//TODO return to main menu
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         return input;
+    }
+
+    public boolean checkExitB(String input) {
+        if (input.equals("exit") | input.equals("return")) {
+            return true;
+        }
+        return false;
     }
 
     private static Console  instance = null;

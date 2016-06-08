@@ -46,7 +46,15 @@ public class UpdateDate extends Command {
             try {
                 view.write("\n");
                 view.write("Please select row id to update:\n");
-                id = Integer.parseInt(view.checkExit(view.read()));
+
+                String input = view.read();
+
+                if (view.checkExitB(input)) {
+                    view.write("Return to main menu!\n");
+                    return;
+                }
+
+                id = Integer.parseInt(input);
                 break;
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again\n");
@@ -59,7 +67,12 @@ public class UpdateDate extends Command {
 
             view.write("Please input data for column '" + columnNames.get(i) + "'\n");
 
-            String input = view.checkExit(view.read());
+            String input = view.read();
+
+            if (view.checkExitB(input)) {
+                view.write("Return to main menu!\n");
+                return;
+            }
 
 //            if( input.isEmpty()) {
 //
@@ -78,13 +91,9 @@ public class UpdateDate extends Command {
 
         try {
             manager.update(tableName, columnNames, id, list);
-            view.write("\nThe row was updated! Success!\n");
+            view.write("The row was updated! Success!\n");
         } catch (SQLException e) {
             view.write(String.format("Error update data in case - %s\n",  e));
         }
-
-
     }
-
-
 }

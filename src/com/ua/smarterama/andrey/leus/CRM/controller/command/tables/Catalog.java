@@ -31,7 +31,12 @@ public class Catalog extends Command {
 
                 view.write("Please select operation:\n");
 
-                String input = view.checkExit(view.read());
+                String input = view.read();
+
+                if (view.checkExitB(input)) {
+                    view.write("Return to main menu!\n");
+                    return;
+                }
 
                     switch (Integer.parseInt(input)) {
                         case 1:
