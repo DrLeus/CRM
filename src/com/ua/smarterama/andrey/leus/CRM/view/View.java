@@ -8,5 +8,5 @@ public interface View {
 
     String read();
 
-    String checkExit(String input);
+    boolean checkExit(String input);
 }

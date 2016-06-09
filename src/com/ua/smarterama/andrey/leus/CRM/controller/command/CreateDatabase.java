@@ -23,7 +23,7 @@ public class CreateDatabase extends Command {
 
         String nameDataBase = view.read();
 
-        if (view.checkExitB(nameDataBase)) {
+        if (view.checkExit(nameDataBase)) {
             view.write("Return to main menu!\n");
             return;
         }
@@ -32,7 +32,7 @@ public class CreateDatabase extends Command {
             manager.createDatabase(nameDataBase);
             view.write("Database " + nameDataBase + " was created\n");
         } catch (SQLException e) {
-            view.write(String.format("Create table, error in case - %s\n", e));
+            view.write(String.format("Create database, error in case - %s\n", e));
         }
     }
 }

@@ -18,28 +18,37 @@ public class CreateTable extends Command {
     }
 
     @Override
-    public void process() {}
+    public void process() {
+    }
 
     public void createTable() {
         view.write("Please input table name:\n");
 
         String tableName = view.read();
 
-        if (view.checkExitB(tableName)) {
+        if (view.checkExit(tableName)) {
             view.write("Return to main menu!\n");
             return;
         }
 
         view.write("Please input name of columns and type (for ex. TEXT; for column 'name' must be 'name TEXT')\n" +
-                "The first column = 'id' with auto-increment\n");
+                "The first column = 'id' with auto-increment\n"); //TODO check parameter TEXT
 
         List<Object> listColumn = Assistant.inputNames(view);
+
+        if (listColumn.isEmpty()) {return;}
 
         try {
             manager.createTable(tableName, listColumn);
             view.write("The table " + tableName + " was created! Success!\n");
         } catch (SQLException e) {
+            try {
+                manager.dropTable(tableName);
+            } catch (SQLException e1) {
+                view.write(String.format("Error drop table in case - %s\n", e1));
+            }
             view.write(String.format("Error create table in case - %s\n", e));
+
         }
     }
 }

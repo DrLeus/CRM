@@ -24,11 +24,7 @@ public class Console implements View {
         return "error Console";
     }
 
-    public String checkExit(String input) {
-        return input;
-    }
-
-    public boolean checkExitB(String input) {
+    public boolean checkExit(String input) {
         if (input.equals("exit") | input.equals("return")) {
             return true;
         }

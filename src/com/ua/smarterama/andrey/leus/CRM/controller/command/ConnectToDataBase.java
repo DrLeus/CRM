@@ -22,7 +22,7 @@ public class ConnectToDataBase extends Command {
 
             view.write("Please input the database name");
             String nameDB = view.read();
-            if (view.checkExitB(nameDB)) {
+            if (view.checkExit(nameDB)) {
                 view.write("Return to main menu!\n");
                 return;
             }
@@ -30,14 +30,14 @@ public class ConnectToDataBase extends Command {
             view.write("Please input user name");
 
             String userName = view.read();
-            if (view.checkExitB(userName)) {
+            if (view.checkExit(userName)) {
                 view.write("Return to main menu!\n");
                 return;
             }
 
             view.write("Please input password");
             String password = view.read();
-            if (view.checkExitB(password)) {
+            if (view.checkExit(password)) {
                 view.write("Return to main menu!\n");
                 return;
             }

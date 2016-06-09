@@ -22,7 +22,7 @@ public class Report extends Command {
     @Override
     public void process() {
 
-        view.write("\nThe warehouse contains:\n");
+        view.write("The warehouse contains:\n");
 
         String sql = "SELECT goods.id, code, name, quantity FROM goods, stockbalance WHERE goods.id = stockbalance.id_goods";
 
@@ -30,14 +30,14 @@ public class Report extends Command {
         try {
             listValue = manager.getTableData("", sql);
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s", e));
+            view.write(String.format("Error get table data in case - %s\n", e));
         }
 
         List<Object> listColumnName = null;
         try {
             listColumnName = manager.getColumnNames("", sql);
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s", e));
+            view.write(String.format("Error get column names in case - %s\n", e));
         }
 
         String format = Assistant.getFormatedLine(listColumnName, listValue);
@@ -61,7 +61,7 @@ public class Report extends Command {
 
             } while (listValue.size() != 0);
         } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
-            view.write("\nThe table is empty!");
+            view.write("The table is empty!\n");
         }
     }
 }

@@ -62,7 +62,7 @@ public class DropDataBase extends Command {
 
                 String input = (view.read());
 
-                if (view.checkExitB(input)) {return nameDataBase; };
+                if (view.checkExit(input)) {return nameDataBase; };
 
                 for (String sert : list) {
                     if (input.equals(sert)) {

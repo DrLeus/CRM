@@ -180,9 +180,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         String sql;
         if (query.isEmpty()) {
-            sql = "SELECT * FROM public." + tableName;
+            sql = "SELECT * FROM public." + tableName + " ORDER BY id";
         } else {
-            sql = query;
+            sql = query + " ORDER BY id";
         }
 
         List<Object> list = new ArrayList<>();

@@ -1,7 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +55,16 @@ public class Assistant {
 
         List<Object> list = new ArrayList<>();
 
-        String input = null;
+        String input;
         do {
 
             view.write("Please input name for next column\n");
 
-            input = view.checkExit(view.read());
+            input = (view.read());
+
+            if (view.checkExit(input)) {
+                list.clear();
+                return list; }
 
             list.add(input);
 
@@ -70,9 +73,9 @@ public class Assistant {
         return list;
     }
 
-    public static String selectTable(List<String> tables, View view) {
+    public static String selectTable(List<String> tables, Console view) {
 
-        String tableName = null;
+        String tableName;
 
         int numberTable = 0;
 
@@ -86,7 +89,7 @@ public class Assistant {
             try {
                 view.write("Please select table:\n");
 
-                String input = view.checkExit(view.read());
+                String input = view.read();
 
                 for (String sert: tables) {
                     if (input.equals(sert)){
@@ -107,7 +110,7 @@ public class Assistant {
         return tableName;
     }
 
-    public static List<Object> selectGoodsAndQty(View view) {
+    public static List<Object> selectGoodsAndQty(Console view) {
 
         List<Object> list = new ArrayList<>();
 
@@ -116,7 +119,14 @@ public class Assistant {
         while (true) {
             try {
                 view.write("Please input id of goods:\n");
-                list.add(1, Integer.parseInt(view.checkExit(view.read())));
+
+                String input = (view.read());
+
+                if (view.checkExit(input)) {
+                    list.clear();
+                    return list; }
+
+                list.add(1, Integer.parseInt(input));
                 break;
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again\n");
@@ -126,7 +136,13 @@ public class Assistant {
         while (true) {
             try {
                 view.write("Please input quantity of goods:\n");
-                list.set(0, Integer.parseInt(view.checkExit(view.read())));
+
+                String input = (view.read());
+
+                if (view.checkExit(input)) {  list.clear();
+                    return list;  }
+
+                list.set(0, Integer.parseInt(input));
                 break;
             } catch (NumberFormatException e) {
                 view.write("Incorrect input, try again\n");

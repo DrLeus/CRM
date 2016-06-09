@@ -35,7 +35,7 @@ public class DeleteData extends Command {
 
                 String line = view.read();
 
-                if (view.checkExitB(line)) {
+                if (view.checkExit(line)) {
                     view.write("Return to main menu!\n");
                     return;
                 }

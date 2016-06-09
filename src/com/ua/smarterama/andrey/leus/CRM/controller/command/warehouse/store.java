@@ -26,6 +26,8 @@ public class Store extends Command {
 
         List<Object> list = Assistant.selectGoodsAndQty(view);
 
+        if (list.isEmpty()) {return;}
+
 
         String sql = "SELECT * FROM " + tableName + " WHERE id_goods=" + list.get(1);
 
@@ -45,10 +47,10 @@ public class Store extends Command {
                 manager.insert(tableName, manager.getColumnNames(tableName, ""), list);
                 view.write("The goods was added! Success!\n");
             } catch (SQLException e1) {
-                view.write(String.format("Error get column names in case - %s", e1));
+                view.write(String.format("Error get column names in case - %s\n", e1));
             }
         } catch (SQLException e) {
-            view.write(String.format("Error update data in case - %s", e));
+            view.write(String.format("Error update data in case - %s\n", e));
         }
     }
 }

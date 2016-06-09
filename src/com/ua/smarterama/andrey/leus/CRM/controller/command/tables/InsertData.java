@@ -35,7 +35,7 @@ public class InsertData extends Command {
 
                 String input = view.read();
 
-                if (view.checkExitB(input)) {
+                if (view.checkExit(input)) {
                     view.write("Return to main menu!\n");
                     return;
                 }

@@ -88,12 +88,12 @@ public class InitialDB_CRM {
 
         value.clear();
         value.add("50");
-        value.add(1);
+        value.add(3);
         manager.insert("stockbalance", manager.getColumnNames("stockbalance",""), value);
 
         value.clear();
         value.add("20");
-        value.add(2);
+        value.add(4);
         manager.insert("stockbalance", manager.getColumnNames("stockbalance",""), value);
 
 

@@ -5,6 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.Help;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -74,7 +75,7 @@ public class IntegrationTest {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws SQLException {
 
         manager = new JDBCDataBaseManager();
         out = new LogOutputStream();
@@ -82,6 +83,13 @@ public class IntegrationTest {
 
         System.setIn(in);
         System.setOut(new PrintStream(out));
+    }
+
+    @AfterClass
+    public static void clearAfterAllTests() throws SQLException {
+        manager.connect("", DB_USER, DB_PASSWORD);
+//        manager.dropDatabase(DATABASE_NAME);
+        manager.dropDatabase(DATABASE_NAME_NEW);
     }
 
     @Test
@@ -195,33 +203,33 @@ public class IntegrationTest {
         Main.main(new String[0]);
 
         // then
-        String expected ="Do you want to initialize and than connect to database CRM for showing all abilities of module? (Y) or connect to your database (N)?;" +
-                        "\n\n" +
-                        Help.getHelp() +
-                        "\n\n" +
-                        "Please connect to database.\n\n" +
-                        "Please input command (or 'help'): \n" +
-                        "\n" +
-                        "Please input the database name\n" +
-                        "Please input user name\n" +
-                        "Please input password\n" +
-                        "Oops...Cant get connection for DB: " + DATABASE_NAME +
-                        "; USER: " + DB_USER + "; PASS: error\n\n" +
-                        "Please input the database name\n" +
-                        "Please input user name\n" +
-                        "Please input password\n" +
-                        "Oops...Cant get connection for DB: error" +
-                        "; USER: " + DB_USER + "; PASS: " + DB_PASSWORD + "\n\n" +
-                        "Please input the database name\n" +
-                        "Please input user name\n" +
-                        "Please input password\n" +
-                        "Oops...Cant get connection for DB: " + DATABASE_NAME +
-                        "; USER: error; PASS: " + DB_PASSWORD + "\n\n" +
-                        "Please input the database name\n" +
-                        "Return to main menu!\n\n" +
-                        "Please input command (or 'help'): \n" +
-                        "\n" +
-                        "See you again!\n\n";
+        String expected = "Do you want to initialize and than connect to database CRM for showing all abilities of module? (Y) or connect to your database (N)?;" +
+                "\n\n" +
+                Help.getHelp() +
+                "\n\n" +
+                "Please connect to database.\n\n" +
+                "Please input command (or 'help'): \n" +
+                "\n" +
+                "Please input the database name\n" +
+                "Please input user name\n" +
+                "Please input password\n" +
+                "Oops...Cant get connection for DB: " + DATABASE_NAME +
+                "; USER: " + DB_USER + "; PASS: error\n\n" +
+                "Please input the database name\n" +
+                "Please input user name\n" +
+                "Please input password\n" +
+                "Oops...Cant get connection for DB: error" +
+                "; USER: " + DB_USER + "; PASS: " + DB_PASSWORD + "\n\n" +
+                "Please input the database name\n" +
+                "Please input user name\n" +
+                "Please input password\n" +
+                "Oops...Cant get connection for DB: " + DATABASE_NAME +
+                "; USER: error; PASS: " + DB_PASSWORD + "\n\n" +
+                "Please input the database name\n" +
+                "Return to main menu!\n\n" +
+                "Please input command (or 'help'): \n" +
+                "\n" +
+                "See you again!\n\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     } //+
 
@@ -245,8 +253,8 @@ public class IntegrationTest {
                 "The next data bases available:\n" +
                 "\r\n" +
                 "postgres\r\n" +
-                "CRM\n\n\n" +
-                DATABASE_NAME + "\r\n" +
+                "CRM\n" +
+                DATABASE_NAME + "\n\n\n" +
                 // exit
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
@@ -309,7 +317,7 @@ public class IntegrationTest {
                 "\r\n" +
                 "1: postgres\n" +
                 "2: CRM\n" +
-                "3: " + DATABASE_NAME+"\n" +
+                "3: " + DATABASE_NAME + "\n" +
                 "4: " + DATABASE_NAME_NEW + "\n" +
                 "Please select database for dropping:\n" +
                 "\n" +
@@ -321,16 +329,11 @@ public class IntegrationTest {
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     } //+
 
-    @Ignore
     @Test
-    public void testReportAfterConnect() throws Exception {
+    public void testConnectToCRMDatabase() throws Exception {
+
         // given
-        in.add("connect");
-        in.add("N");
-        in.add("CRM");
-        in.add("postgres");
-        in.add("postgres");
-        in.add("Report");
+        in.add("y");
         in.add("exit");
 
         // when
@@ -338,27 +341,27 @@ public class IntegrationTest {
 
         // then
         String expected = greetingCRM +
-                // connect
-                "\r\n" +
-                "Please input command (or 'help'): \n" +
-                "\r\n" +
-                "Do you want to connect to current database (" + DATABASE_NAME + ")? (Y/N)\r\n" +
-                "Please input the database name\n" +
-                "Please input user name\n" +
-                "Please input password\n" +
-                "Connection succeeded to CRM" +
-                "\r\n" +
-                // Store
-                "Please input command (or 'help'): \n" +
-                "\r\n" +
-                "\r\n" +
+                "See you again!\n\n";
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
+    } //+
+
+    @Test
+    public void testReportAfterConnectCRM() throws Exception {
+        // given
+        in.add("y");
+        in.add("report");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greetingCRM +
                 "The warehouse contains:\n" +
                 "\n" +
                 "id  code    name                   quantity  \n" +
                 "\n" +
-                "1   H77435  SEAL SV-25 EPDM CAT 2  55        \n" +
-                "\n" +
-                "3   H77484  SEAL SV-50 EPDM CAT 2  75        \n" +
+                "3   H77484  SEAL SV-50 EPDM CAT 2  50        \n" +
                 "\n" +
                 "4   H77509  SEAL SV-65 EPDM CAT 2  20        \n" +
                 "\n" +
@@ -368,22 +371,18 @@ public class IntegrationTest {
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
-    @Ignore
+
     @Test
     public void testStoreANDWriteoffAfterConnect() throws Exception {
         // given
-        in.add("connect");
-        in.add("N");
-        in.add("CRM");
-        in.add("postgres");
-        in.add("postgres");
-        in.add("Store");
+        in.add("y");
+        in.add("store");
         in.add("error");
-        in.add("1");
+        in.add("3");
         in.add("error");
         in.add("10");
         in.add("writeoff");
-        in.add("1");
+        in.add("3");
         in.add("10");
         in.add("exit");
 
@@ -392,32 +391,16 @@ public class IntegrationTest {
 
         // then
         String expected = greetingCRM +
-                // connect
-                "\r\n" +
-                "Please input command (or 'help'): \n" +
-                "\r\n" +
-                "Do you want to connect to current database (" + DATABASE_NAME + ")? (Y/N)\r\n" +
-                "Please input the database name\n" +
-                "Please input user name\n" +
-                "Please input password\n" +
-                "Connection succeeded to CRM" +
-                "\r\n" +
-                // Store
-                "Please input command (or 'help'): \n" +
-                "\r\n" +
-                "\r\n" +
                 "Please input id of goods:\n" +
                 "\n" +
                 "Incorrect input, try again\n" +
                 "\n" +
                 "Please input id of goods:\n" +
                 "\n" +
-                "\n" +
                 "Please input quantity of goods:\n" +
                 "\n" +
                 "Incorrect input, try again" +
-                "\n" +
-                "\n" +
+                "\n\n" +
                 "Please input quantity of goods:\n" +
                 "\n" +
                 "The goods was added! Success!\n" +
@@ -425,20 +408,15 @@ public class IntegrationTest {
                 // writeoff
                 "Please input command (or 'help'): \n" +
                 "\n" +
-                "\n" +
                 "The warehouse contains:\n" +
                 "\n" +
                 "id  code    name                   quantity  \n" +
                 "\n" +
-                "1   H77435  SEAL SV-25 EPDM CAT 2  65        \n" +
-                "\n" +
-                "3   H77484  SEAL SV-50 EPDM CAT 2  75        \n" +
+                "3   H77484  SEAL SV-50 EPDM CAT 2  60        \n" +
                 "\n" +
                 "4   H77509  SEAL SV-65 EPDM CAT 2  20        \n" +
                 "\n" +
-                "\n" +
                 "Please input id of goods:\n" +
-                "\n" +
                 "\n" +
                 "Please input quantity of goods:\n" +
                 "\n" +
@@ -450,8 +428,280 @@ public class IntegrationTest {
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
-    @Ignore
+
     @Test
+    public void testCreateInsertClearDropTableDBTest() throws Exception {
+        // given
+        in.add("n");
+        in.add("connect");
+        in.add(DATABASE_NAME);
+        in.add(DB_USER);
+        in.add(DB_PASSWORD);
+        in.add("create");
+        in.add(DATABASE_NAME_NEW);
+        in.add("catalog");
+        in.add("5");
+        in.add("exit");
+        in.add("5");
+        in.add(TABLE_NAME);
+        in.add("name TEXT");
+        in.add("price TEXT");
+        in.add("");
+        in.add("1");
+        in.add("1");
+        in.add("2");
+        in.add("1");
+        in.add("sv");
+        in.add("22");
+        in.add("1");
+        in.add("1");
+        in.add("7");
+        in.add("1");
+        in.add("y");
+        in.add("1");
+        in.add("1");
+        in.add("6");
+        in.add("1");
+//        in.add("error");
+//        in.add("1");
+        in.add("y");
+        in.add("89");
+        in.add("8");
+        in.add("drop");
+        in.add("4");
+        in.add("y");
+        in.add("exit");
+
+        // when
+        Main.main(new String[0]);
+
+        // then
+        String expected = greetingTest +
+                "Please input database name for creating:\n" +
+                "\n" +
+                "Database postgrestestnew was created\n" +
+                "\n" +
+                "Please input command (or 'help'): \n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please input table name:\n" +
+                "\n" +
+                "Return to main menu!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please input table name:\n" +
+                "\n" +
+                "Please input name of columns and type (for ex. TEXT; for column 'name' must be 'name TEXT')\n" +
+                "The first column = 'id' with auto-increment\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "Please input name for next column\n" +
+                "\n" +
+                "The table test was created! Success!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Database has next tables:\n" +
+                "\n" +
+                "1: test\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  name  price  \n" +
+                "\n" +
+                "The table is empty!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please select table\n" +
+                "\n" +
+                "Database has next tables:\n" +
+                "\n" +
+                "1: test\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please input data for column 'name'\n" +
+                "\n" +
+                "Please input data for column 'price'\n" +
+                "\n" +
+                "The row was created! Success!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Database has next tables:\n" +
+                "\n" +
+                "1: test\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  name  price  \n" +
+                "\n" +
+                "1   sv    22     \n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Please select table\n" +
+                "\n" +
+                "Database has next tables:\n" +
+                "\n" +
+                "1: test\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to clear table 'test'? Y/N\n" +
+                "\n" +
+                "Table 'test' was cleared! Success!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Database has next tables:\n" +
+                "\n" +
+                "1: test\n" +
+                "Please select table:\n" +
+                "\n" +
+                "id  name  price  \n" +
+                "\n" +
+                "The table is empty!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Database has next tables:\n" +
+                "\n" +
+                "1: test\n" +
+                "Please select table:\n" +
+                "\n" +
+                "Please confirm, do you really want to remove 'test' table? Y/N\n" +
+                "\n" +
+                "Table 'test'was removed! Success!\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Incorrect input, try again\n" +
+                "\n" +
+                "Available operations:\n" +
+                "1. Get table data\n" +
+                "2. Insert data (position)\n" +
+                "3. Update data (position)\n" +
+                "4. Delete data (position)\n" +
+                "5. Create table\n" +
+                "6. Remove table\n" +
+                "7. Clear table\n" +
+                "8. Return to main menu\n" +
+                "\n" +
+                "Please select operation:\n" +
+                "\n" +
+                "Return to main menu!\n\n" +
+                "Please input command (or 'help'): \n" +
+                "\r\n" +
+                "The next data bases avaiilable:\n" +
+                "\n" +
+                "1: postgres\n" +
+                "2: CRM\n" +
+                "3: postgrestest\n" +
+                "4: postgrestestnew\n" +
+                "Please select database for dropping:\n" +
+                "\n" +
+                "Please confirm, do you really want to drop 'postgrestestnew' database? Y/N\n" +
+                "\n" +
+                "Database 'postgrestestnew' dropped\n" +
+                "\n" +
+                "Please input command (or 'help'): \n\n" +
+                "See you again!\n\r\n";
+        assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
+    }
+
     public void testCatalogAfterConnect() throws Exception {
         // given
         in.add("connect");
@@ -944,30 +1194,7 @@ public class IntegrationTest {
 //                "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
-    @Ignore
-    @Test
-    public void testL() throws Exception {
-        // given
-        in.add("list");
-        in.add("exit");
 
-        // when
-        Main.main(new String[0]);
-
-        // then
-        String expected = greetingCRM +
-                "\r\n" +
-                "Please input command (or 'help'): \n" +
-                "\r\n" +
-                "Oops... Please connect to database!\r\n" +
-                "Please input command (or 'help'): \n" +
-                "\r\n" +
-                "See you again!\n\r\n";
-        assertEquals(expected.replaceAll("\r\n", "n"), out.getData().replaceAll("\r\n", "n"));
-    }
-
-    @Ignore
-    @Test
     public void testC() throws Exception {
         // given
         in.add("connect");
@@ -993,8 +1220,6 @@ public class IntegrationTest {
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
 
-    @Ignore
-    @Test
     public void testCo() throws Exception {
         // given
         in.add("connect");
