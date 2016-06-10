@@ -28,8 +28,6 @@ public class ClearTest {
         command = new ClearTable(manager);
     }
 
-    @Ignore
-    @Test
     public void testClearTable() throws SQLException {
         // given
 
@@ -41,8 +39,6 @@ public class ClearTest {
         verify(view).write("Таблица user была успешно очищена.");
     }
 
-    @Ignore
-    @Test
     public void testCanProcessClearWithParametersString() {
         // when
         boolean canProcess = command.canProcess("clear|user");
@@ -51,8 +47,6 @@ public class ClearTest {
         assertTrue(canProcess);
     }
 
-    @Ignore
-    @Test
     public void testCantProcessClearWithoutParametersString() {
         // when
         boolean canProcess = command.canProcess("clear");
@@ -61,8 +55,6 @@ public class ClearTest {
         assertFalse(canProcess);
     }
 
-    @Ignore
-    @Test
     public void testValidationErrorWhenCountParametersIsLessThan2() {
         // when
         try {
@@ -74,8 +66,6 @@ public class ClearTest {
         }
     }
 
-    @Ignore
-    @Test
     public void testValidationErrorWhenCountParametersIsMoreThan2() {
         // when
         try {

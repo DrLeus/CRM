@@ -26,8 +26,6 @@ public class ConnectTest {
         command = new ConnectToDataBase(manager);
     }
 
-    @Ignore
-    @Test
     public void testCanProcessWithParameters() {
         //when
 //        UserInput input = new UserInput("connect|test|user|password");
@@ -37,8 +35,6 @@ public class ConnectTest {
 //        assertTrue(is);
     }
 
-    @Ignore
-    @Test
     public void testCanProcessWithoutParameters() {
         //when
 //        UserInput input = new UserInput("connect");
@@ -48,8 +44,6 @@ public class ConnectTest {
 //        assertTrue(is);
     }
 
-    @Ignore
-    @Test
     public void testProcess() throws SQLException {
         //when
 //        command.process();

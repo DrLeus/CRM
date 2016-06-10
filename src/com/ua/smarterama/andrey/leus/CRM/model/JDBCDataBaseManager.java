@@ -1,7 +1,5 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
-import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.*;
 import java.util.*;
@@ -17,8 +15,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Oops.... Please add jdbc jar to project.", e);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
         }
     }
 

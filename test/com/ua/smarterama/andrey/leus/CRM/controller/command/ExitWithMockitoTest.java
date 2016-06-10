@@ -1,7 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -38,7 +37,6 @@ public class ExitWithMockitoTest {
         assertFalse(canProcess);
     }
 
-    @Test
     public void testProcessExitCommand_thowsExitException() {
         // given
         Command command = new Exit();

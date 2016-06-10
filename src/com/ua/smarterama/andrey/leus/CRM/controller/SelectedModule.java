@@ -48,7 +48,5 @@ public class SelectedModule extends Command {
     }
 
     @Override
-    public void process() {
-
-    }
+    public void process() {}
 }
