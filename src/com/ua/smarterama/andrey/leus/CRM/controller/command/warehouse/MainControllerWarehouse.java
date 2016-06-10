@@ -34,7 +34,7 @@ public class MainControllerWarehouse {
 
     public void run(DataBaseManager manager) throws Exception {
 
-//        InitialDB_CRM.setupTempDates(manager);
+        InitialDB_CRM.setupTempDates(manager);
 
         for (Command command : commands) {
             if (command.canProcess("connectCRM")) {

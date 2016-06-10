@@ -5,6 +5,10 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.MainController;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.MainControllerWarehouse;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Created by Admin on 08.06.2016.
  */
@@ -41,6 +45,29 @@ public class SelectedModule extends Command {
             }
         }
     }
+
+    public void checkCMD() throws IOException {
+
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", "sc query postgresql-x64-9.4");
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while (true) {
+            line = r.readLine();
+            if (line == null) {
+                break;
+            }
+            System.out.println(line);
+        }
+    }
+
+    /*надо распарсить ответ
+    сервисы могут быть postgresql-x64-9.x
+     перебрать несколько возможных
+     порт другой командой вычисляется
+     затем результат подставить в коннекшин стринг*/
 
     @Override
     public boolean canProcess(String command) {
