@@ -1,7 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
 import java.sql.SQLException;
@@ -40,7 +39,7 @@ public class Report extends Command {
             view.write(String.format("Error get column names in case - %s\n", e));
         }
 
-        String format = Assistant.getFormatedLine(listColumnName, listValue);
+        String format = view.getFormatedLine(listColumnName, listValue);
 
         outputColumnNames(listColumnName, format);
 

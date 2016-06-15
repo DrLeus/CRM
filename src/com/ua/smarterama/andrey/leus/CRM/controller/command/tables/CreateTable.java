@@ -34,7 +34,7 @@ public class CreateTable extends Command {
         view.write("Please input name of columns and type (for ex. TEXT; for column 'name' must be 'name TEXT')\n" +
                 "The first column = 'id' with auto-increment\n"); //TODO check parameter TEXT
 
-        List<Object> listColumn = Assistant.inputNames(view);
+        List<Object> listColumn = view.inputNames(view);
 
         if (listColumn.isEmpty()) {return;}
 

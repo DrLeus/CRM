@@ -20,7 +20,7 @@ public class RemoveTable extends Command {
     public void process() {}
 
     public void removeTable() {
-        String tableName = Assistant.selectTable(manager.getTableNames(), view);
+        String tableName = view.selectTable(manager.getTableNames(), view);
 
         view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N\n");
 

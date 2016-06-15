@@ -18,6 +18,7 @@ public class Main {
         SelectedModule select = new SelectedModule(manager);
 
         try {
+
             select.makeChoice();
 
         } catch (ExitException e) {

@@ -24,7 +24,7 @@ public class ClearTable extends Command {
 
         view.write("Please select table\n");
 
-        String tableName = Assistant.selectTable(manager.getTableNames(), view);
+        String tableName = view.selectTable(manager.getTableNames(), view);
 
         view.write("Please confirm, do you really want to clear table '" + tableName + "'? Y/N\n");
 

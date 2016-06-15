@@ -18,7 +18,7 @@ public class InsertData extends Command {
 
         view.write("Please select table\n");
 
-        String tableName = Assistant.selectTable(manager.getTableNames(), view);
+        String tableName = view.selectTable(manager.getTableNames(), view);
 
         List<Object> listColumnName;
         List<Object> columnTable = null;

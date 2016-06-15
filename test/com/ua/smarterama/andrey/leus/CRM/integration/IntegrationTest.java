@@ -5,10 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.Help;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 
 import java.io.*;
@@ -87,8 +84,15 @@ public class IntegrationTest {
 
     @AfterClass
     public static void clearAfterAllTests() throws SQLException {
+//        manager.connect("", DB_USER, DB_PASSWORD);
+////        manager.dropDatabase(DATABASE_NAME);
+//        manager.dropDatabase(DATABASE_NAME_NEW);
+    }
+
+    @After
+    public void clearAfterTest() throws SQLException {
         manager.connect("", DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DATABASE_NAME);
+////        manager.dropDatabase(DATABASE_NAME);
         manager.dropDatabase(DATABASE_NAME_NEW);
     }
 
@@ -304,6 +308,7 @@ public class IntegrationTest {
         in.add("exit");
 
         // when
+//        manager.dropDatabase(DATABASE_NAME_NEW);
         Main.main(new String[0]);
 
         // then
@@ -448,7 +453,7 @@ public class IntegrationTest {
         in.add("price TEXT");
         in.add("");
         in.add("1");
-        in.add("1");
+        in.add("1"); //ошибка здесь GetTable 25-я строка
         in.add("2");
         in.add("1");
         in.add("sv");
@@ -462,8 +467,6 @@ public class IntegrationTest {
         in.add("1");
         in.add("6");
         in.add("1");
-//        in.add("error");
-//        in.add("1");
         in.add("y");
         in.add("89");
         in.add("8");
@@ -473,6 +476,7 @@ public class IntegrationTest {
         in.add("exit");
 
         // when
+//        manager.dropDatabase(DATABASE_NAME_NEW);
         Main.main(new String[0]);
 
         // then

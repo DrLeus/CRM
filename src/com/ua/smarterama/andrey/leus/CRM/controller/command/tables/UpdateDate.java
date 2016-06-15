@@ -24,7 +24,7 @@ public class UpdateDate extends Command {
 
     public void update() {
 
-        String tableName = Assistant.selectTable(manager.getTableNames(),view);
+        String tableName = view.selectTable(manager.getTableNames(),view);
 
         List<Object> columnNames = null;
         try {
@@ -34,8 +34,8 @@ public class UpdateDate extends Command {
         }
 
         try {
-            Assistant.outputColumnNames(columnNames, Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData
-            Assistant.outputData(columnNames, manager.getTableData(tableName, ""), Assistant.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); //TODO duplicate getTableData
+            view.outputColumnNames(columnNames, view.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData
+            view.outputData(columnNames, manager.getTableData(tableName, ""), view.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); //TODO duplicate getTableData
         } catch (SQLException e) {
             view.write(String.format("Error get table data in case - %s\n", e));
         }

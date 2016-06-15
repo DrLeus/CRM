@@ -22,7 +22,7 @@ public class GetTable extends Command {
 
     public void getTableData() {
 
-        String tableName = Assistant.selectTable(manager.getTableNames(), view);
+        String tableName = view.selectTable(manager.getTableNames(), view);
 
         List<Object> listColumnName = null;
         try {
@@ -38,10 +38,10 @@ public class GetTable extends Command {
             view.write(String.format("Error get table data in case - %s\n", e));
         }
 
-        String format = Assistant.getFormatedLine(listColumnName, listValue);
+        String format = view.getFormatedLine(listColumnName, listValue);
 
-        Assistant.outputColumnNames(listColumnName, format);
+        view.outputColumnNames(listColumnName, format);
 
-        Assistant.outputData(listColumnName, listValue, format);
+        view.outputData(listColumnName, listValue, format);
     }
 }

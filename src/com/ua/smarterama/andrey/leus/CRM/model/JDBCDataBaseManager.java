@@ -1,18 +1,17 @@
 package com.ua.smarterama.andrey.leus.CRM.model;
 
-
 import java.sql.*;
 import java.util.*;
 import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
-    public static final String JDBC_POSTGRESQL_LOCALHOST = "jdbc:postgresql://localhost:5432/";
+    private static Configuration config = new Configuration();
 
     static {
         try {
 //            DriverManager.registerDriver(new org.postgresql.Driver());
-            Class.forName("org.postgresql.Driver");
+            Class.forName(config.getClassDriver());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Oops.... Please add jdbc jar to project.", e);
         }
@@ -29,8 +28,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void connect(String databaseName, String user, String password) throws SQLException {
-        connection = DriverManager.getConnection(
-                JDBC_POSTGRESQL_LOCALHOST + databaseName, user, password);
+        connection = DriverManager.getConnection(config.getDriver()+"://" + config.getServerName() + ":"
+                + config.getPort() + "/"  + databaseName, user, password);
     }
 
     @Override
@@ -112,7 +111,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
         return list;
     }
-
 
     @Override
     public List<String> getTableNames() {

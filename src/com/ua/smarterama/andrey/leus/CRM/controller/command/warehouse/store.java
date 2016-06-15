@@ -1,7 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Assistant;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
 import java.math.BigDecimal;
@@ -24,7 +23,7 @@ public class Store extends Command {
 
         String tableName = "stockbalance";
 
-        List<Object> list = Assistant.selectGoodsAndQty(view);
+        List<Object> list = view.selectGoodsAndQty(view);
 
         if (list.isEmpty()) {return;}
 

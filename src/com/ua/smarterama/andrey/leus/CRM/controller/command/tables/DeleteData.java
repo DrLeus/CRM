@@ -20,11 +20,11 @@ public class DeleteData extends Command {
     public void process() {}
 
     public void delete() {
-        String tableName = Assistant.selectTable(manager.getTableNames(), view);
+        String tableName = view.selectTable(manager.getTableNames(), view);
 
         try {
-            Assistant.outputColumnNames(manager.getColumnNames(tableName, ""), Assistant.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
-            Assistant.outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), Assistant.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData
+            view.outputColumnNames(manager.getColumnNames(tableName, ""), view.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
+            view.outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), view.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData
         } catch (SQLException e) {
             view.write(String.format("Error in case - %s\n", e));
         }
