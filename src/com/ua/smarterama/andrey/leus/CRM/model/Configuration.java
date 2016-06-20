@@ -32,12 +32,27 @@ public class Configuration {
     public String getDatabaseName() {
         return properties.getProperty("database.name");
     }
+
+    public String getDatabaseNameCRM() {
+        return properties.getProperty("database.name.CRM");
+    }
+
+    public String getDatabaseNameTemp() {
+        return properties.getProperty("database.name.temp");
+    }
+
+    public String getDatabaseNameTempNew() {
+        return properties.getProperty("database.name.temp.new");
+    }
+
     public String getPort() {
         return properties.getProperty("database.port");
     }
+
     public String getDriver() {
         return properties.getProperty("database.jdbc.driver");
     }
+
     public String getUserName() {
         return properties.getProperty("database.user.name");
     }

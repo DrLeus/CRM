@@ -46,10 +46,10 @@ public class Store extends Command {
                 manager.insert(tableName, manager.getColumnNames(tableName, ""), list);
                 view.write("The goods was added! Success!\n");
             } catch (SQLException e1) {
-                view.write(String.format("Error get column names in case - %s\n", e1));
+                view.write(String.format("Error get column names in case - %s%n", e1));
             }
         } catch (SQLException e) {
-            view.write(String.format("Error update data in case - %s\n", e));
+            view.write(String.format("Error update data in case - %s%n", e));
         }
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
-    private static Configuration config = new Configuration();
+       private static Configuration config = new Configuration();
 
     static {
         try {

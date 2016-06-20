@@ -24,8 +24,8 @@ public class ConnectToDataBaseCRM extends Command {
     public void process() {
 
         try {
-            manager.connect(config.getDatabaseName(), config.getUserName(), config.getUserPassword());
-            view.write("Connection succeeded to " + config.getDatabaseName() + "\n");
+            manager.connect(config.getDatabaseNameCRM(), config.getUserName(), config.getUserPassword());
+            view.write("Connection succeeded to " + config.getDatabaseNameCRM() + "\n");
         } catch (SQLException e) {
             view.write("Oops...Cant get connection to current database  in case " + e);
         }

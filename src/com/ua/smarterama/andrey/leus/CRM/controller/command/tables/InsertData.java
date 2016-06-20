@@ -47,7 +47,7 @@ public class InsertData extends Command {
 
 
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s\n", e));
+            view.write(String.format("Error get column names in case - %s%n", e));
         }
 
 
@@ -55,7 +55,7 @@ public class InsertData extends Command {
             manager.insert(tableName, columnTable, list);
             view.write("The row was created! Success!\n");
         } catch (SQLException e) {
-            view.write(String.format("Error insert data in case - %s\n", e));
+            view.write(String.format("Error insert data in case - %s%n", e));
         }
 
     }

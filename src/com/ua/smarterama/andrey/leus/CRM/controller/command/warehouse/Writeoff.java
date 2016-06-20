@@ -38,7 +38,7 @@ public class Writeoff extends Command {
         try {
             currentValue = manager.getTableData("", sql);
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s\n", e));
+            view.write(String.format("Error get table data in case - %s%n", e));
         }
 
         Integer newValueGoods = Integer.parseInt(String.valueOf(list.get(0)));
@@ -51,7 +51,7 @@ public class Writeoff extends Command {
             try {
                 manager.delete(id, tableName);
             } catch (SQLException e) {
-                view.write(String.format("Error delete data in case - %s\n", e));
+                view.write(String.format("Error delete data in case - %s%n", e));
             }
         } else if (newValueGoods < currentValueGoods) {
 
@@ -63,7 +63,7 @@ public class Writeoff extends Command {
                 manager.update(tableName, manager.getColumnNames(tableName, ""), id, list);
                 view.write("The goods was wrote off! Success!\n");
             } catch (SQLException e) {
-                view.write(String.format("Error update data in case - %s\n", e));
+                view.write(String.format("Error update data in case - %s%n", e));
             }
         } else {
             view.write("\n Oops...The quantity of goods on warehouse less than you want to writeoff!\n");

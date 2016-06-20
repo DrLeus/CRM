@@ -29,7 +29,7 @@ public class RemoveTable extends Command {
                 manager.dropTable(tableName);
                 view.write("Table '" + tableName + "'was removed! Success!\n");
             } catch (SQLException e) {
-                view.write(String.format("Error remove table in case - %s\n", e));
+                view.write(String.format("Error remove table in case - %s%n", e));
             }
         } else {
             view.write("Your action canceled!\n");

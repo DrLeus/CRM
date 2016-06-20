@@ -30,14 +30,14 @@ public class UpdateDate extends Command {
         try {
             columnNames = manager.getColumnNames(tableName, "");
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s\n", e));
+            view.write(String.format("Error get column names in case - %s%n", e));
         }
 
         try {
             view.outputColumnNames(columnNames, view.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); // TODO duplicate getTableData
             view.outputData(columnNames, manager.getTableData(tableName, ""), view.getFormatedLine(columnNames, manager.getTableData(tableName, ""))); //TODO duplicate getTableData
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s\n", e));
+            view.write(String.format("Error get table data in case - %s%n", e));
         }
 
         int id;
@@ -93,7 +93,7 @@ public class UpdateDate extends Command {
             manager.update(tableName, columnNames, id, list);
             view.write("The row was updated! Success!\n");
         } catch (SQLException e) {
-            view.write(String.format("Error update data in case - %s\n",  e));
+            view.write(String.format("Error update data in case - %s%n",  e));
         }
     }
 }

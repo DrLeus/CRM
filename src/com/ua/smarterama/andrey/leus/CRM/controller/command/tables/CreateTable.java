@@ -45,9 +45,9 @@ public class CreateTable extends Command {
             try {
                 manager.dropTable(tableName);
             } catch (SQLException e1) {
-                view.write(String.format("Error drop table in case - %s\n", e1));
+                view.write(String.format("Error drop table in case - %s%n", e1));
             }
-            view.write(String.format("Error create table in case - %s\n", e));
+            view.write(String.format("Error create table in case - %s%n", e));
 
         }
     }

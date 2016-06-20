@@ -29,14 +29,14 @@ public class Report extends Command {
         try {
             listValue = manager.getTableData("", sql);
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s\n", e));
+            view.write(String.format("Error get table data in case - %s%n", e));
         }
 
         List<Object> listColumnName = null;
         try {
             listColumnName = manager.getColumnNames("", sql);
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s\n", e));
+            view.write(String.format("Error get column names in case - %s%n", e));
         }
 
         String format = view.getFormatedLine(listColumnName, listValue);

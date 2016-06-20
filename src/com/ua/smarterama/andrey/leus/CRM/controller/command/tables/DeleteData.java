@@ -26,7 +26,7 @@ public class DeleteData extends Command {
             view.outputColumnNames(manager.getColumnNames(tableName, ""), view.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
             view.outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), view.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData
         } catch (SQLException e) {
-            view.write(String.format("Error in case - %s\n", e));
+            view.write(String.format("Error in case - %s%n", e));
         }
 
         while (true) {
@@ -49,7 +49,7 @@ public class DeleteData extends Command {
                         manager.delete(input, tableName);
                         view.write("Id '" + input + "' removed\n");
                     } catch (SQLException e) {
-                        view.write(String.format("Error delete data in case - %s\n", e));
+                        view.write(String.format("Error delete data in case - %s%n", e));
                     }
                 } else {
                     view.write("Your action canceled!\n");

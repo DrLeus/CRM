@@ -33,7 +33,7 @@ public class DropDataBase extends Command {
                     manager.dropDatabase(nameDataBase);
                     view.write("Database '" + nameDataBase + "' dropped\n");
                 } catch (SQLException e) {
-                    view.write(String.format("Drop database error in case - %s\n", e));
+                    view.write(String.format("Drop database error in case - %s%n", e));
                 }
             } else {
                 view.write("Your action canceled!\n");
@@ -49,7 +49,7 @@ public class DropDataBase extends Command {
 
         int i = 0;
 
-        view.write("The next data bases avaiilable:\n");
+        view.write("The next data bases available:\n");
 
         for (String sert : list) {
             view.write("" + ++i + ": " + sert);

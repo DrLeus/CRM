@@ -28,14 +28,14 @@ public class GetTable extends Command {
         try {
             listColumnName = manager.getColumnNames(tableName, "");
         } catch (SQLException e) {
-            view.write(String.format("Error get column names in case - %s\n", e));
+            view.write(String.format("Error get column names in case - %s%n", e));
         }
 
         List<Object> listValue = null;
         try {
             listValue = manager.getTableData(tableName, "");
         } catch (SQLException e) {
-            view.write(String.format("Error get table data in case - %s\n", e));
+            view.write(String.format("Error get table data in case - %s%n", e));
         }
 
         String format = view.getFormatedLine(listColumnName, listValue);

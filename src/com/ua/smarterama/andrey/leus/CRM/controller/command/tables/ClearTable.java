@@ -33,7 +33,7 @@ public class ClearTable extends Command {
                 manager.clear(tableName);
                 view.write("Table '" + tableName + "' was cleared! Success!\n");
             } catch (SQLException e) {
-                view.write(String.format("Error clear table in case - %s\n", e));
+                view.write(String.format("Error clear table in case - %s%n", e));
             }
         } else {
             view.write("Your action canceled!\n");

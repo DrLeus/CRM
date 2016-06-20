@@ -2,9 +2,9 @@ package com.ua.smarterama.andrey.leus.CRM.integration;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Help;
+import com.ua.smarterama.andrey.leus.CRM.model.Configuration;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.*;
 
 
@@ -18,16 +18,19 @@ import static org.junit.Assert.assertEquals;
 
 public class IntegrationTest {
 
-    private final static String DATABASE_NAME = "postgrestest";
-    private final static String DATABASE_NAME_NEW = "postgrestestnew";
-    private final static String DB_USER = "postgres";
-    private final static String DB_PASSWORD = "postgres";
+    private static Configuration config = new Configuration();
+
+    private final static String DATABASE_NAME = config.getDatabaseNameTemp();
+    private final static String DATABASE_NAME_NEW = config.getDatabaseNameTempNew();
+    private final static String DB_USER = config.getUserName();
+    private final static String DB_PASSWORD = config.getUserPassword();
     private final static String TABLE_NAME = "test";
+
     private final static String NOT_EXIST_TABLE = "notExistTable";
     private static List<Object> listColumn = new ArrayList<>();
     private static List<Object> list = new ArrayList<>();
-
     private static List<Object> newData = new ArrayList<>();
+
     private ConfigurableInputStream in;
     private LogOutputStream out;
 
@@ -92,7 +95,7 @@ public class IntegrationTest {
     @After
     public void clearAfterTest() throws SQLException {
         manager.connect("", DB_USER, DB_PASSWORD);
-////        manager.dropDatabase(DATABASE_NAME);
+//        manager.dropDatabase(DATABASE_NAME);
         manager.dropDatabase(DATABASE_NAME_NEW);
     }
 
@@ -318,7 +321,7 @@ public class IntegrationTest {
                 // exit
                 "\r\n" +
                 "Please input command (or 'help'): \n\n" +
-                "The next data bases avaiilable:\n" +
+                "The next data bases available:\n" +
                 "\r\n" +
                 "1: postgres\n" +
                 "2: CRM\n" +
@@ -326,8 +329,8 @@ public class IntegrationTest {
                 "4: " + DATABASE_NAME_NEW + "\n" +
                 "Please select database for dropping:\n" +
                 "\n" +
-                "Please confirm, do you really want to drop 'postgrestestnew' database? Y/N\n\n" +
-                "Database 'postgrestestnew' dropped\n\n" +
+                "Please confirm, do you really want to drop '" + DATABASE_NAME_NEW + "' database? Y/N\n\n" +
+                "Database '" + DATABASE_NAME_NEW + "' dropped\n\n" +
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
@@ -434,7 +437,7 @@ public class IntegrationTest {
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
 
-    @Test
+//    @Test
     public void testCreateInsertClearDropTableDBTest() throws Exception {
         // given
         in.add("n");
@@ -483,7 +486,7 @@ public class IntegrationTest {
         String expected = greetingTest +
                 "Please input database name for creating:\n" +
                 "\n" +
-                "Database postgrestestnew was created\n" +
+                "Database " + DATABASE_NAME_NEW + " was created\n" +
                 "\n" +
                 "Please input command (or 'help'): \n" +
                 "\n" +
@@ -689,17 +692,17 @@ public class IntegrationTest {
                 "Return to main menu!\n\n" +
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
-                "The next data bases avaiilable:\n" +
+                "The next data bases available:\n" +
                 "\n" +
                 "1: postgres\n" +
-                "2: postgrestest\n" +
-                "3: CRM\n" +
-                "4: postgrestestnew\n" +
+                "2: CRM\n" +
+                "3: " + DATABASE_NAME + "\n" +
+                "4: " + DATABASE_NAME_NEW + "\n" +
                 "Please select database for dropping:\n" +
                 "\n" +
-                "Please confirm, do you really want to drop 'postgrestestnew' database? Y/N\n" +
+                "Please confirm, do you really want to drop '" + DATABASE_NAME_NEW + "' database? Y/N\n" +
                 "\n" +
-                "Database 'postgrestestnew' dropped\n" +
+                "Database '" + DATABASE_NAME_NEW + "' dropped\n" +
                 "\n" +
                 "Please input command (or 'help'): \n\n" +
                 "See you again!\n\r\n";
@@ -755,7 +758,7 @@ public class IntegrationTest {
         String expected = greetingTest +
                 "Please input database name for creating:\n" +
                 "\n" +
-                "Database postgrestestnew was created\n" +
+                "Database "+ DATABASE_NAME_NEW +" was created\n" +
                 "\n" +
                 "Please input command (or 'help'): \n" +
                 "\n" +

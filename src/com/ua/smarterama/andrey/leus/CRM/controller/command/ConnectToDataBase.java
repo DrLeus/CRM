@@ -48,7 +48,7 @@ public class ConnectToDataBase extends Command {
                 view.write("Connection succeeded to '" + nameDB + "'\n");
                 break;
             } catch (SQLException e) {
-                view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s\n",
+                view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s%n",
                         nameDB, userName, password /*+ " in case " + e*/));
             }
         }
