@@ -73,6 +73,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void dropDatabase(String databaseName) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
+            if (databaseName.equals("CRM")){
+                stmt.executeUpdate("DROP DATABASE IF EXISTS \"CRM\"");//TODO drop with upper letters
+            }
             stmt.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
         }
     }
