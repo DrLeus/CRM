@@ -31,7 +31,7 @@ public class InsertData extends Command {
 
             for (int i = 1; i < listColumnName.size(); i++) {
 
-                view.write("Please input data for column '" + listColumnName.get(i) + "'\n");
+                view.write(String.format("Please input data for column '%s'%n", listColumnName.get(i)));
 
                 String input = view.read();
 

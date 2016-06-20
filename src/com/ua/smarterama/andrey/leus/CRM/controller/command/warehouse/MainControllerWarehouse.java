@@ -12,7 +12,6 @@ public class MainControllerWarehouse {
 
     private Console view;
     private Command[] commands;
-    private List<String> history = new LinkedList<>();
 
     public MainControllerWarehouse(DataBaseManager manager) {
         this.view = Console.getInstance();
@@ -34,7 +33,7 @@ public class MainControllerWarehouse {
 
     public void run(DataBaseManager manager) throws Exception {
 
-//        InitialDB_CRM.setupTempDates(manager);
+        InitialDB_CRM.setupTempDates(manager);
 
         for (Command command : commands) {
             if (command.canProcess("connectCRM")) {
@@ -62,7 +61,9 @@ public class MainControllerWarehouse {
                 try {
                     if (command.canProcess(input)) {
                         command.process();
-                        history.add(input);
+                        if (input.equals("help")){
+                            InitialDB_CRM.getAddComands();
+                        }
                         break;
                     }
                 } catch (Exception e) {

@@ -40,7 +40,7 @@ public class CreateTable extends Command {
 
         try {
             manager.createTable(tableName, listColumn);
-            view.write("The table " + tableName + " was created! Success!\n");
+            view.write(String.format("The table %s was created! Success!%n",tableName));
         } catch (SQLException e) {
             try {
                 manager.dropTable(tableName);

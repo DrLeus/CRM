@@ -65,7 +65,7 @@ public class UpdateDate extends Command {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
-            view.write("Please input data for column '" + columnNames.get(i) + "'\n");
+            view.write(String.format("Please input data for column '%s'%n", columnNames.get(i)));
 
             String input = view.read();
 

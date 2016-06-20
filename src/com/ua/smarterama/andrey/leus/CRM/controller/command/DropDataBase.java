@@ -8,7 +8,7 @@ import java.util.List;
 public class DropDataBase extends Command {
 
     public DropDataBase(DataBaseManager manager) {
-                super(manager);
+        super(manager);
     }
 
     @Override
@@ -21,17 +21,17 @@ public class DropDataBase extends Command {
 
         String nameDataBase = getNameDataBase();
 
-        if (nameDataBase.isEmpty()){
+        if (nameDataBase.isEmpty()) {
             view.write("Nothing to do!\n");
             view.write("Return to main menu!\n");
         } else {
 
-            view.write("Please confirm, do you really want to drop '" + nameDataBase + "' database? Y/N\n");
+            view.write(String.format("Please confirm, do you really want to drop '%s' database? Y/N%n", nameDataBase));
 
             if (view.read().equalsIgnoreCase("Y")) {
                 try {
                     manager.dropDatabase(nameDataBase);
-                    view.write("Database '" + nameDataBase + "' dropped\n");
+                    view.write(String.format("Database '%s' dropped%n", nameDataBase));
                 } catch (SQLException e) {
                     view.write(String.format("Drop database error in case - %s%n", e));
                 }
@@ -62,7 +62,10 @@ public class DropDataBase extends Command {
 
                 String input = (view.read());
 
-                if (view.checkExit(input)) {return nameDataBase; };
+                if (view.checkExit(input)) {
+                    return nameDataBase;
+                }
+                ;
 
                 for (String sert : list) {
                     if (input.equals(sert)) {

@@ -46,10 +46,11 @@ public class SelectedModule extends Command {
         }
     }
 
-    public void checkCMD() throws IOException {
+    public void checkCMD() throws IOException { //TODO check driver and port
 
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", "sc query postgresql-x64-9.4");
+        // sc query postgresql-9.5 (for Win 7-32)
         builder.redirectErrorStream(true);
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));

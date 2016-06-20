@@ -17,7 +17,8 @@ public class DeleteData extends Command {
     }
 
     @Override
-    public void process() {}
+    public void process() {
+    }
 
     public void delete() {
         String tableName = view.selectTable(manager.getTableNames(), view);
@@ -42,12 +43,12 @@ public class DeleteData extends Command {
 
                 int input = Integer.parseInt(line);
 
-                view.write("Please confirm, do you really want to remove position id='" + input + "'? Y/N\n");
+                view.write(String.format("Please confirm, do you really want to remove position id='%s'? Y/N%n", input));
 
                 if (view.read().equalsIgnoreCase("Y")) {
                     try {
                         manager.delete(input, tableName);
-                        view.write("Id '" + input + "' removed\n");
+                        view.write(String.format("Id '%s' removed%n", input));
                     } catch (SQLException e) {
                         view.write(String.format("Error delete data in case - %s%n", e));
                     }

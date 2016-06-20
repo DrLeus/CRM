@@ -45,7 +45,7 @@ public class ConnectToDataBase extends Command {
             try {
                 manager.connect(nameDB, userName, password);
                 view.write("\n");
-                view.write("Connection succeeded to '" + nameDB + "'\n");
+                view.write(String.format("Connection succeeded to '%s'%n", nameDB));
                 break;
             } catch (SQLException e) {
                 view.write(String.format("Oops...Cant get connection for DB: %s; USER: %s; PASS: %s%n",

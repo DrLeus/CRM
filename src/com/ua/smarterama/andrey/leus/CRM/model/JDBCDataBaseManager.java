@@ -6,7 +6,7 @@ import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
-       private static Configuration config = new Configuration();
+    private static Configuration config = new Configuration();
 
     static {
         try {
@@ -28,8 +28,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void connect(String databaseName, String user, String password) throws SQLException {
-        connection = DriverManager.getConnection(config.getDriver()+"://" + config.getServerName() + ":"
-                + config.getPort() + "/"  + databaseName, user, password);
+        connection = DriverManager.getConnection(String.format("%s://%s:%s/%s", config.getDriver(), config.getServerName(),
+                config.getPort(), databaseName), user, password);
+
     }
 
     @Override
@@ -47,9 +48,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
             createSequence(tableName, stmt);
 
-            String sql = "CREATE TABLE " + tableName +
-                    "(id NUMERIC NOT NULL DEFAULT nextval('" + tableName + "_seq'::regclass), CONSTRAINT " + tableName + "_pkey PRIMARY KEY(id), " +
-                    getFormatedLine(listColumn);
+            String sql = String.format("CREATE TABLE %s(id NUMERIC NOT NULL DEFAULT nextval('%s_seq'::regclass), CONSTRAINT " +
+                    "%s_pkey PRIMARY KEY(id), %s", tableName, tableName, tableName, getFormatedLine(listColumn));
             stmt.executeUpdate(sql);
         }
     }
@@ -81,14 +81,14 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public void dropTable(String tableName) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             dropSequnce(tableName);
-            stmt.executeUpdate("DROP TABLE IF EXISTS public." + tableName + " CASCADE");
+            stmt.executeUpdate(String.format("DROP TABLE IF EXISTS public.%s CASCADE", tableName));
         }
     }
 
     private void dropSequnce(String tableName) {
 
-        try (Statement stmt = connection.createStatement()){
-                stmt.executeUpdate("DROP SEQUENCE IF EXISTS public." + tableName + "_seq CASCADE");
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(String.format("DROP SEQUENCE IF EXISTS public.%s_seq CASCADE", tableName));
         } catch (SQLException e) {
             System.out.println("Error drop seq in case:" + e.getMessage());
         }
@@ -146,8 +146,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         data = data.substring(0, data.length() - 1) + ")";
 
         try (Statement stmt = connection.createStatement();) {
-            stmt.executeUpdate("INSERT INTO public." + tableName + columns +
-                    "VALUES " + data);
+            stmt.executeUpdate(String.format("INSERT INTO public.%s %s VALUES %s", tableName, columns, data));
         }
     }
 
@@ -156,7 +155,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
-            String sql = "UPDATE " + tableName + " SET " + columnNames.get(i) + "='" + list.get(i - 1) + "' WHERE id = " + id;
+            String sql = String.format("UPDATE %s SET %s='%s' WHERE id = %s", tableName, columnNames.get(i), list.get(i - 1), id);
 
             try (PreparedStatement ps = connection.prepareStatement(sql);) {
                 ps.executeUpdate();
@@ -174,7 +173,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         String sql;
         if (query.isEmpty()) {
-            sql = "SELECT * FROM public." + tableName + " ORDER BY id";
+            sql = String.format("SELECT * FROM public.%s ORDER BY id", tableName);
         } else {
             sql = query + " ORDER BY id";
         }
@@ -198,7 +197,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public List<Object> getColumnNames(String tableName, String query) throws SQLException {
         String sql;
         if (query.isEmpty()) {
-            sql = "SELECT * FROM public." + tableName;
+            sql = String.format("SELECT * FROM public.%s", tableName);
         } else {
             sql = query;
         }
@@ -220,7 +219,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public void delete(int id, String tableName) throws SQLException {
 
         try (Statement stmt = connection.createStatement();) {
-            stmt.executeUpdate("DELETE FROM public." + tableName + " WHERE id=" + id);
+            stmt.executeUpdate(String.format("DELETE FROM public.%s WHERE id=%s", tableName, id));
         }
     }
 }

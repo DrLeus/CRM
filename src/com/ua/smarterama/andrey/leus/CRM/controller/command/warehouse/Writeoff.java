@@ -32,7 +32,7 @@ public class Writeoff extends Command {
 
         if (list.equals(null)) {return;}
 
-        String sql = "SELECT * FROM " + tableName + " WHERE id_goods=" + list.get(1);
+        String sql = String.format("SELECT * FROM %s WHERE id_goods=%s", tableName, list.get(1));
 
         List<Object> currentValue = null;
         try {

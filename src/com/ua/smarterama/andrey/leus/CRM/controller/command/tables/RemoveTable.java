@@ -22,12 +22,12 @@ public class RemoveTable extends Command {
     public void removeTable() {
         String tableName = view.selectTable(manager.getTableNames(), view);
 
-        view.write("Please confirm, do you really want to remove '" + tableName + "' table? Y/N\n");
+        view.write(String.format("Please confirm, do you really want to remove '%s' table? Y/N%n", tableName));
 
         if (view.read().equalsIgnoreCase("Y")) {
             try {
                 manager.dropTable(tableName);
-                view.write("Table '" + tableName + "'was removed! Success!\n");
+                view.write(String.format("Table '%s'was removed! Success!%n",tableName));
             } catch (SQLException e) {
                 view.write(String.format("Error remove table in case - %s%n", e));
             }

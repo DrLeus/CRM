@@ -20,8 +20,9 @@ public class IntegrationTest {
 
     private static Configuration config = new Configuration();
 
-    private final static String DATABASE_NAME = config.getDatabaseNameTemp();
-    private final static String DATABASE_NAME_NEW = config.getDatabaseNameTempNew();
+    private final static String DATABASE_NAME = config.getDatabaseName();
+    private final static String DATABASE_NAME_TEMP = config.getDatabaseNameTemp();
+    private final static String DATABASE_NAME_TEMP_NEW = config.getDatabaseNameTempNew();
     private final static String DB_USER = config.getUserName();
     private final static String DB_PASSWORD = config.getUserPassword();
     private final static String TABLE_NAME = "test";
@@ -60,18 +61,18 @@ public class IntegrationTest {
             "Please input the database name\n" +
             "Please input user name\n" +
             "Please input password\n\n\n" +
-            "Connection succeeded to '" + DATABASE_NAME + "'" +
+            "Connection succeeded to '" + DATABASE_NAME_TEMP + "'" +
             "\n\n" +
             "Please input command (or 'help'): \n\n";
 
     @BeforeClass
     public static void init() throws SQLException {
         manager = new JDBCDataBaseManager();
-        manager.connect("", DB_USER, DB_PASSWORD);
-        manager.dropDatabase(DATABASE_NAME);
-        manager.dropDatabase(DATABASE_NAME_NEW);
-        manager.createDatabase(DATABASE_NAME);
         manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+        manager.dropDatabase(DATABASE_NAME_TEMP);
+        manager.dropDatabase(DATABASE_NAME_TEMP_NEW);
+        manager.createDatabase(DATABASE_NAME_TEMP);
+        manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
     }
 
     @Before
@@ -87,16 +88,16 @@ public class IntegrationTest {
 
     @AfterClass
     public static void clearAfterAllTests() throws SQLException {
-//        manager.connect("", DB_USER, DB_PASSWORD);
-////        manager.dropDatabase(DATABASE_NAME);
-//        manager.dropDatabase(DATABASE_NAME_NEW);
+//        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+////        manager.dropDatabase(DATABASE_NAME_TEMP);
+//        manager.dropDatabase(DATABASE_NAME_TEMP_NEW);
     }
 
     @After
     public void clearAfterTest() throws SQLException {
-        manager.connect("", DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DATABASE_NAME);
-        manager.dropDatabase(DATABASE_NAME_NEW);
+        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+//        manager.dropDatabase(DATABASE_NAME_TEMP);
+        manager.dropDatabase(DATABASE_NAME_TEMP_NEW);
     }
 
     @Test
@@ -105,7 +106,7 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("exit");
@@ -125,7 +126,7 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("help");
@@ -150,7 +151,7 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("exit");
@@ -169,7 +170,7 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("unsupported");
@@ -194,13 +195,13 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add("error");
         in.add("error");
         in.add(DB_USER);
         in.add(DB_PASSWORD);
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add("error");
         in.add(DB_PASSWORD);
         in.add("exit");
@@ -220,7 +221,7 @@ public class IntegrationTest {
                 "Please input the database name\n" +
                 "Please input user name\n" +
                 "Please input password\n" +
-                "Oops...Cant get connection for DB: " + DATABASE_NAME +
+                "Oops...Cant get connection for DB: " + DATABASE_NAME_TEMP +
                 "; USER: " + DB_USER + "; PASS: error\n\n" +
                 "Please input the database name\n" +
                 "Please input user name\n" +
@@ -230,7 +231,7 @@ public class IntegrationTest {
                 "Please input the database name\n" +
                 "Please input user name\n" +
                 "Please input password\n" +
-                "Oops...Cant get connection for DB: " + DATABASE_NAME +
+                "Oops...Cant get connection for DB: " + DATABASE_NAME_TEMP +
                 "; USER: error; PASS: " + DB_PASSWORD + "\n\n" +
                 "Please input the database name\n" +
                 "Return to main menu!\n\n" +
@@ -245,7 +246,7 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("list");
@@ -261,7 +262,7 @@ public class IntegrationTest {
                 "\r\n" +
                 "postgres\r\n" +
                 "CRM\n" +
-                DATABASE_NAME + "\n\n\n" +
+                DATABASE_NAME_TEMP + "\n\n\n" +
                 // exit
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
@@ -274,11 +275,11 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("create");
-        in.add(DATABASE_NAME_NEW);
+        in.add(DATABASE_NAME_TEMP_NEW);
         in.add("exit");
 
         // when
@@ -287,7 +288,7 @@ public class IntegrationTest {
         // then
         String expected = greetingTest +
                 "Please input database name for creating:\n\n" +
-                "Database " + DATABASE_NAME_NEW + " was created\n" +
+                "Database " + DATABASE_NAME_TEMP_NEW + " was created\n" +
                 // exit
                 "\r\n" +
                 "Please input command (or 'help'): \n\n" +
@@ -300,24 +301,24 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("create");
-        in.add(DATABASE_NAME_NEW);
+        in.add(DATABASE_NAME_TEMP_NEW);
         in.add("drop");
-        in.add(DATABASE_NAME_NEW);
+        in.add(DATABASE_NAME_TEMP_NEW);
         in.add("y");
         in.add("exit");
 
         // when
-//        manager.dropDatabase(DATABASE_NAME_NEW);
+//        manager.dropDatabase(DATABASE_NAME_TEMP_NEW);
         Main.main(new String[0]);
 
         // then
         String expected = greetingTest +
                 "Please input database name for creating:\n\n" +
-                "Database " + DATABASE_NAME_NEW + " was created\n" +
+                "Database " + DATABASE_NAME_TEMP_NEW + " was created\n" +
                 // exit
                 "\r\n" +
                 "Please input command (or 'help'): \n\n" +
@@ -325,12 +326,12 @@ public class IntegrationTest {
                 "\r\n" +
                 "1: postgres\n" +
                 "2: CRM\n" +
-                "3: " + DATABASE_NAME + "\n" +
-                "4: " + DATABASE_NAME_NEW + "\n" +
+                "3: " + DATABASE_NAME_TEMP + "\n" +
+                "4: " + DATABASE_NAME_TEMP_NEW + "\n" +
                 "Please select database for dropping:\n" +
                 "\n" +
-                "Please confirm, do you really want to drop '" + DATABASE_NAME_NEW + "' database? Y/N\n\n" +
-                "Database '" + DATABASE_NAME_NEW + "' dropped\n\n" +
+                "Please confirm, do you really want to drop '" + DATABASE_NAME_TEMP_NEW + "' database? Y/N\n\n" +
+                "Database '" + DATABASE_NAME_TEMP_NEW + "' dropped\n\n" +
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
@@ -437,16 +438,16 @@ public class IntegrationTest {
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
 
-//    @Test
+    @Test
     public void testCreateInsertClearDropTableDBTest() throws Exception {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("create");
-        in.add(DATABASE_NAME_NEW);
+        in.add(DATABASE_NAME_TEMP_NEW);
         in.add("catalog");
         in.add("5");
         in.add("exit");
@@ -456,7 +457,7 @@ public class IntegrationTest {
         in.add("price TEXT");
         in.add("");
         in.add("1");
-        in.add("1"); //ошибка здесь GetTable 25-я строка
+        in.add("1"); //ошибка здесь GetTable 25-я строка, JDBC 121 rs=null
         in.add("2");
         in.add("1");
         in.add("sv");
@@ -479,14 +480,14 @@ public class IntegrationTest {
         in.add("exit");
 
         // when
-//        manager.dropDatabase(DATABASE_NAME_NEW);
+//        manager.dropDatabase(DATABASE_NAME_TEMP_NEW);
         Main.main(new String[0]);
 
         // then
         String expected = greetingTest +
                 "Please input database name for creating:\n" +
                 "\n" +
-                "Database " + DATABASE_NAME_NEW + " was created\n" +
+                "Database " + DATABASE_NAME_TEMP_NEW + " was created\n" +
                 "\n" +
                 "Please input command (or 'help'): \n" +
                 "\n" +
@@ -696,13 +697,13 @@ public class IntegrationTest {
                 "\n" +
                 "1: postgres\n" +
                 "2: CRM\n" +
-                "3: " + DATABASE_NAME + "\n" +
-                "4: " + DATABASE_NAME_NEW + "\n" +
+                "3: " + DATABASE_NAME_TEMP + "\n" +
+                "4: " + DATABASE_NAME_TEMP_NEW + "\n" +
                 "Please select database for dropping:\n" +
                 "\n" +
-                "Please confirm, do you really want to drop '" + DATABASE_NAME_NEW + "' database? Y/N\n" +
+                "Please confirm, do you really want to drop '" + DATABASE_NAME_TEMP_NEW + "' database? Y/N\n" +
                 "\n" +
-                "Database '" + DATABASE_NAME_NEW + "' dropped\n" +
+                "Database '" + DATABASE_NAME_TEMP_NEW + "' dropped\n" +
                 "\n" +
                 "Please input command (or 'help'): \n\n" +
                 "See you again!\n\r\n";
@@ -714,11 +715,11 @@ public class IntegrationTest {
         // given
         in.add("n");
         in.add("connect");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add(DB_PASSWORD);
         in.add("create");
-        in.add(DATABASE_NAME_NEW);
+        in.add(DATABASE_NAME_TEMP_NEW);
         in.add("catalog");
         in.add("5");
         in.add(TABLE_NAME);
@@ -758,7 +759,7 @@ public class IntegrationTest {
         String expected = greetingTest +
                 "Please input database name for creating:\n" +
                 "\n" +
-                "Database "+ DATABASE_NAME_NEW +" was created\n" +
+                "Database "+ DATABASE_NAME_TEMP_NEW +" was created\n" +
                 "\n" +
                 "Please input command (or 'help'): \n" +
                 "\n" +
@@ -1056,7 +1057,7 @@ public class IntegrationTest {
                 "\r\n" +
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
-                "Do you want to connect to current database (" + DATABASE_NAME + ")? (Y/N)\r\n" +
+                "Do you want to connect to current database (" + DATABASE_NAME_TEMP + ")? (Y/N)\r\n" +
                 "Connection succeeded to postgrestest\n" +
                 "\n" +
                 "Please input command (or 'help'): \n" +
@@ -1494,8 +1495,8 @@ public class IntegrationTest {
                 "\r\n" +
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
-                "Do you want to connect to current database (" + DATABASE_NAME + ")? (Y/N)\r\n" +
-                "Connection succeeded to " + DATABASE_NAME + "\n" +
+                "Do you want to connect to current database (" + DATABASE_NAME_TEMP + ")? (Y/N)\r\n" +
+                "Connection succeeded to " + DATABASE_NAME_TEMP + "\n" +
                 "\r\n" +
                 // exit
                 "Please input command (or 'help'): \n" +
@@ -1509,7 +1510,7 @@ public class IntegrationTest {
         in.add("connect");
         in.add("error");
         in.add("N");
-        in.add(DATABASE_NAME);
+        in.add(DATABASE_NAME_TEMP);
         in.add(DB_USER);
         in.add("error");
         in.add("exit");
@@ -1523,13 +1524,13 @@ public class IntegrationTest {
                 "\r\n" +
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
-                "Do you want to connect to current database (" + DATABASE_NAME + ")? (Y/N)\r\n" +
+                "Do you want to connect to current database (" + DATABASE_NAME_TEMP + ")? (Y/N)\r\n" +
                 "Oops... something wrong\n" +
-                "Do you want to connect to current database (" + DATABASE_NAME + ")? (Y/N)\r\n" +
+                "Do you want to connect to current database (" + DATABASE_NAME_TEMP + ")? (Y/N)\r\n" +
                 "Please input the database name\n" +
                 "Please input user name\n" +
                 "Please input password\n" +
-                "Oops...Cant get connection for DB: " + DATABASE_NAME +
+                "Oops...Cant get connection for DB: " + DATABASE_NAME_TEMP +
                 "; USER: " + DB_USER + "; PASS: error\r\n" +
                 // exit
                 "Please input command (or 'help'): \n" +

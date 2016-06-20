@@ -1,5 +1,6 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
+import com.ua.smarterama.andrey.leus.CRM.model.Configuration;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
 import java.sql.SQLException;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitialDB_CRM {
+
+    private static Configuration config = new Configuration();
 
     public static void getAddComands() {
         System.out.println(addComands);
@@ -19,13 +22,13 @@ public class InitialDB_CRM {
 
     public static void setupTempDates(DataBaseManager manager) throws ClassNotFoundException, SQLException {
 
-        manager.connect("","postgres","postgres");
+        manager.connect(config.getDatabaseName(),config.getUserName(),config.getUserPassword());
 
         manager.dropDatabase("\"CRM\"");
 
         manager.createDatabase("\"CRM\"");
 
-        manager.connect("CRM","postgres","postgres");
+        manager.connect("CRM",config.getUserName(),config.getUserPassword());
 
         manager.dropTable("goods");
 

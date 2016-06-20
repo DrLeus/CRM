@@ -25,10 +25,12 @@ public class Store extends Command {
 
         List<Object> list = view.selectGoodsAndQty(view);
 
-        if (list.isEmpty()) {return;}
+        if (list.isEmpty()) {
+            return;
+        }
 
 
-        String sql = "SELECT * FROM " + tableName + " WHERE id_goods=" + list.get(1);
+        String sql = String.format("SELECT * FROM %s WHERE id_goods=%s", tableName, list.get(1));
 
         try {
             List<Object> currentValue = manager.getTableData("", sql);
