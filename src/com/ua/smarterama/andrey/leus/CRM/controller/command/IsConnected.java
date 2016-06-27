@@ -2,6 +2,8 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
+import java.sql.SQLException;
+
 public class IsConnected extends Command {
     public IsConnected(DataBaseManager manager) {
                 super(manager);
@@ -9,7 +11,11 @@ public class IsConnected extends Command {
 
     @Override
     public boolean canProcess(String command) {
-        return !manager.isConnected();
+
+        try {
+            return !manager.isConnected();
+        } catch (SQLException e) {}
+        return true;
     }
 
     @Override

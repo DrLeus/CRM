@@ -25,7 +25,7 @@ public interface DataBaseManager {
 
     void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException;
 
-    boolean isConnected();
+    boolean isConnected() throws SQLException;
 
     List<Object> getTableData(String tableName, String query) throws SQLException;
 

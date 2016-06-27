@@ -21,17 +21,9 @@ public class IntegrationTest_crm {
     private static Configuration config = new Configuration();
 
     private final static String DATABASE_NAME = config.getDatabaseName();
-    private final static String DB_NAME_TEMP = config.getDatabaseNameTemp();
-    private final static String DB_NAME_TEMP_NEW = config.getDatabaseNameTempNew();
     private final static String DB_NAME_TEMP_CRM = config.getDatabaseNameCRM();
     private final static String DB_USER = config.getUserName();
     private final static String DB_PASSWORD = config.getUserPassword();
-    private final static String TABLE_NAME = "test";
-
-    private final static String NOT_EXIST_TABLE = "notExistTable";
-    private static List<Object> listColumn = new ArrayList<>();
-    private static List<Object> list = new ArrayList<>();
-    private static List<Object> newData = new ArrayList<>();
 
     private ConfigurableInputStream in;
     private LogOutputStream out;
@@ -54,17 +46,11 @@ public class IntegrationTest_crm {
 
     @BeforeClass
     public static void init() throws SQLException, ClassNotFoundException {
-//        manager = new JDBCDataBaseManager();
-//        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DB_NAME_TEMP);
-//        manager.dropDatabase(DB_NAME_TEMP_NEW);
-//        InitialDB_CRM.setupTempDates(manager);
+        manager = new JDBCDataBaseManager();
     }
 
     @Before
     public void setup() throws SQLException {
-        manager = new JDBCDataBaseManager();
-//        manager.connect(DB_NAME_TEMP_CRM, DB_USER, DB_PASSWORD);
         out = new LogOutputStream();
         in = new ConfigurableInputStream();
 
@@ -74,7 +60,6 @@ public class IntegrationTest_crm {
 
     @After
     public void clearAfterTest() throws SQLException {
-        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
     }
 
     @AfterClass
@@ -104,10 +89,6 @@ public class IntegrationTest_crm {
         // given
         in.add("y");
         in.add("report");
-        in.add("connect");
-        in.add("");
-        in.add("postgres");
-        in.add("postgres");
         in.add("exit");
 
         // when

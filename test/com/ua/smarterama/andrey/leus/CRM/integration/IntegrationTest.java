@@ -2,12 +2,10 @@ package com.ua.smarterama.andrey.leus.CRM.integration;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Help;
-import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.InitialDB_CRM;
 import com.ua.smarterama.andrey.leus.CRM.model.Configuration;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import org.junit.*;
-
 
 import java.io.*;
 import java.sql.SQLException;
@@ -60,13 +58,11 @@ public class IntegrationTest {
         manager.dropDatabase(DB_NAME_TEMP);
         manager.dropDatabase(DB_NAME_TEMP_NEW);
         manager.dropDatabase(DB_NAME_TEMP_CRM);
-        InitialDB_CRM.setupTempDates(manager);
         manager.createDatabase(DB_NAME_TEMP);
     }
 
     @Before
     public void setup() throws SQLException {
-//        manager = new JDBCDataBaseManager();
         manager.connect(DB_NAME_TEMP, DB_USER, DB_PASSWORD);
         out = new LogOutputStream();
         in = new ConfigurableInputStream();
@@ -78,16 +74,14 @@ public class IntegrationTest {
     @After
     public void clearAfterTest() throws SQLException {
         manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DB_NAME_TEMP);
-//        manager.dropDatabase(DB_NAME_TEMP_NEW);
     }
 
     @AfterClass
     public static void clearAfterAllTests() throws SQLException {
-//        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DB_NAME_TEMP);
-//        manager.dropDatabase(DB_NAME_TEMP_NEW);
-//        manager.dropDatabase(DB_NAME_TEMP_CRM);
+        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+        manager.dropDatabase(DB_NAME_TEMP);
+        manager.dropDatabase(DB_NAME_TEMP_NEW);
+        manager.dropDatabase(DB_NAME_TEMP_CRM);
     }
 
     @Test
@@ -108,7 +102,7 @@ public class IntegrationTest {
         String expected = greetingTest +
                 "See you again!\n\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testHelpDBTest() throws Exception {
@@ -134,7 +128,7 @@ public class IntegrationTest {
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
 
-    } //+
+    }
 
     @Test
     public void testExitDBTest() throws Exception {
@@ -153,7 +147,7 @@ public class IntegrationTest {
         String expected = greetingTest +
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testUnsupportedAfterConnectDBTest() throws Exception {
@@ -178,7 +172,7 @@ public class IntegrationTest {
                 "\r\n" +
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testConnectWithErrorPass() throws Exception {
@@ -229,7 +223,7 @@ public class IntegrationTest {
                 "\n" +
                 "See you again!\n\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testListAfterConnect() throws Exception {
@@ -251,14 +245,13 @@ public class IntegrationTest {
                 "The next data bases available:\n" +
                 "\r\n" +
                 "postgres\r\n" +
-                DB_NAME_TEMP_CRM + "\n" +
                 DB_NAME_TEMP + "\n\n\n" +
                 // exit
                 "Please input command (or 'help'): \n" +
                 "\r\n" +
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testCreateDatabase() throws Exception {
@@ -285,7 +278,7 @@ public class IntegrationTest {
                 "Please input command (or 'help'): \n\n" +
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testDropDatabase() throws Exception {
@@ -303,7 +296,6 @@ public class IntegrationTest {
         in.add("exit");
 
         // when
-//        manager.dropDatabase(DB_NAME_TEMP_NEW);
         manager.dropDatabase(DB_NAME_TEMP_NEW);
         Main.main(new String[0]);
 
@@ -317,9 +309,8 @@ public class IntegrationTest {
                 "The next data bases available:\n" +
                 "\r\n" +
                 "1: postgres\n" +
-                "2: " + DB_NAME_TEMP_CRM + "\n" +
-                "3: " + DB_NAME_TEMP + "\n" +
-                "4: " + DB_NAME_TEMP_NEW + "\n" +
+                "2: " + DB_NAME_TEMP + "\n" +
+                "3: " + DB_NAME_TEMP_NEW + "\n" +
                 "Please select database for dropping:\n" +
                 "\n" +
                 "Please confirm, do you really want to drop '" + DB_NAME_TEMP_NEW + "' database? Y/N\n\n" +
@@ -328,7 +319,7 @@ public class IntegrationTest {
                 "\r\n" +
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
-    } //+
+    }
 
     @Test
     public void testCreateInsertClearDropTableDBTest() throws Exception {
@@ -370,17 +361,9 @@ public class IntegrationTest {
         in.add("y");
         in.add("89");
         in.add("8");
-        in.add("connect");
-        in.add(DB_NAME_TEMP);
-        in.add(DB_USER);
-        in.add(DB_PASSWORD);
-        in.add("drop");
-        in.add("4");
-        in.add("y");
         in.add("exit");
 
         // when
-//        manager.dropDatabase(DB_NAME_TEMP_NEW);
         Main.main(new String[0]);
 
         // then
@@ -599,24 +582,6 @@ public class IntegrationTest {
                 "Please select operation:\n" +
                 "\n" +
                 "Return to main menu!\n\n" +
-                "Please input command (or 'help'): \n" +
-                "Please input the database name\n" +
-                "Please input user name\n" +
-                "Please input password\n\n\n" +
-                "Connection succeeded to '" + DB_NAME_TEMP + "'" +
-                "\r\n" +
-                "The next data bases available:\n" +
-                "\n" +
-                "1: postgres\n" +
-                "2: " + DB_NAME_TEMP + "\n" +
-                "3: " + DB_NAME_TEMP_CRM + "\n" +
-                "4: " + DB_NAME_TEMP_NEW + "\n" +
-                "Please select database for dropping:\n" +
-                "\n" +
-                "Please confirm, do you really want to drop '" + DB_NAME_TEMP_NEW + "' database? Y/N\n" +
-                "\n" +
-                "Database '" + DB_NAME_TEMP_NEW + "' dropped\n" +
-                "\n" +
                 "Please input command (or 'help'): \n\n" +
                 "See you again!\n\r\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
@@ -898,5 +863,4 @@ public class IntegrationTest {
                 "See you again!\n\n";
         assertEquals(expected.replaceAll("\r\n", "\n"), out.getData().replaceAll("\r\n", "\n"));
     }
-
 }

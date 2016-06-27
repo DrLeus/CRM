@@ -42,19 +42,16 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public void connect(String databaseName, String user, String password) throws SQLException {
         DaoFactory.currentDB(databaseName, user, password);
 
-        // checking connection
-        Connection connection = null;
+        // check connection correctly
+
         try {
-            connection = daoFactory.getConnection();
+            isConnected();
         } catch (SQLException e) {
             throw new SQLException(e);
-        } finally {
-            try {
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                throw new SQLException("Error connection close in case - %s\n", e);
-            }
         }
+
+
+
     }
 
     @Override
@@ -160,7 +157,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
             while (rs.next()) {
                 list.add(rs.getString(1));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             list = null;
             e.printStackTrace();
         } finally {
@@ -218,9 +215,20 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public boolean isConnected() {
-//        return connection != null;
-        return true;
+    public boolean isConnected()  throws SQLException  {
+       Connection connection = null;
+        try {
+            connection = daoFactory.getConnection();
+            return true;
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                throw new SQLException("Error connection close in case - %s\n", e);
+            }
+        }
     }
 
     @Override

@@ -13,14 +13,13 @@ public class JDBCDataBaseManagerTest {
 
     private static Configuration config = new Configuration();
 
-    private final static String DATABASE_NAME = config.getDatabaseName(); // ""
-    private final static String DATABASE_NAME_TEMP = config.getDatabaseNameTemp(); //postgrestestforintegrationtest
+    private final static String DATABASE_NAME = config.getDatabaseName();
+    private final static String DATABASE_NAME_TEMP = config.getDatabaseNameTemp();
     private final static String DB_USER = config.getUserName();
     private final static String DB_PASSWORD = config.getUserPassword();
     private final static String TABLE_NAME = "test";
-
-//    private final static String DATABASE_NAME = "postgrestestnew";
     private final static String NOT_EXIST_TABLE = "notExistTable";
+
     private static List<Object> listColumn = new ArrayList<>();
     private static List<Object> list = new ArrayList<>();
     private static List<Object> newData = new ArrayList<>();
@@ -62,7 +61,6 @@ public class JDBCDataBaseManagerTest {
         manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
         manager.dropTable(TABLE_NAME);
     }
-
 
     @AfterClass
     public static void clearAfterAllTests() throws SQLException {
