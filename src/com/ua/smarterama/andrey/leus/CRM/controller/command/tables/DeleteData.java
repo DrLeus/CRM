@@ -23,6 +23,11 @@ public class DeleteData extends Command {
     public void delete() {
         String tableName = view.selectTable(manager.getTableNames(), view);
 
+        if (tableName.isEmpty()) {
+            view.write("Your action canceled!\n");
+            return;
+        }
+
         try {
             view.outputColumnNames(manager.getColumnNames(tableName, ""), view.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
             view.outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), view.getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData

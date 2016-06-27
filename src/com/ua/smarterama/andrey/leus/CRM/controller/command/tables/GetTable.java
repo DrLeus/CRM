@@ -24,6 +24,11 @@ public class GetTable extends Command {
 
         String tableName = view.selectTable(manager.getTableNames(), view);
 
+        if (tableName.isEmpty()) {
+            view.write("Your action canceled!\n");
+            return;
+        }
+
         List<Object> listColumnName = null;
         try {
             listColumnName = manager.getColumnNames(tableName, "");

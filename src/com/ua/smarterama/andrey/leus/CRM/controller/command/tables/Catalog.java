@@ -3,6 +3,8 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
+import java.sql.SQLException;
+
 public class Catalog extends Command {
 
     public Catalog(DataBaseManager manager) {
@@ -15,7 +17,7 @@ public class Catalog extends Command {
     }
 
     @Override
-    public void process() {
+    public void process()  {
 
         while (true) {
             try {

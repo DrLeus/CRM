@@ -13,8 +13,8 @@ public class JDBCDataBaseManagerTest {
 
     private static Configuration config = new Configuration();
 
-    private final static String DATABASE_NAME = config.getDatabaseName();
-    private final static String DATABASE_NAME_TEMP = config.getDatabaseNameTemp();
+    private final static String DATABASE_NAME = config.getDatabaseName(); // ""
+    private final static String DATABASE_NAME_TEMP = config.getDatabaseNameTemp(); //postgrestestforintegrationtest
     private final static String DB_USER = config.getUserName();
     private final static String DB_PASSWORD = config.getUserPassword();
     private final static String TABLE_NAME = "test";
@@ -62,8 +62,8 @@ public class JDBCDataBaseManagerTest {
 
     @AfterClass
     public static void clearAfterAllTests() throws SQLException {
-//        manager.connect("", DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DATABASE_NAME_TEMP);
+        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+        manager.dropDatabase(DATABASE_NAME_TEMP);
     }
 
     @Test 
@@ -96,7 +96,7 @@ public class JDBCDataBaseManagerTest {
             fail();
         } catch (Exception e) {
             //then
-            manager.connect(DATABASE_NAME, null, null);
+            manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
             throw e;
         }
     }
@@ -109,7 +109,7 @@ public class JDBCDataBaseManagerTest {
             fail();
         } catch (Exception e) {
             //then
-            manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+            manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
             throw e;
         }
     }
@@ -122,7 +122,7 @@ public class JDBCDataBaseManagerTest {
             fail();
         } catch (Exception e) {
             //then
-            manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+            manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
             throw e;
         }
     }
@@ -130,7 +130,7 @@ public class JDBCDataBaseManagerTest {
     @Test 
     public void testCreateDatabase() throws SQLException {
         //given
-        String newDatabase = "createdatabasetest";
+        String newDatabase = "createdatabasetestfordropping";
 
         //when
         manager.createDatabase(newDatabase);

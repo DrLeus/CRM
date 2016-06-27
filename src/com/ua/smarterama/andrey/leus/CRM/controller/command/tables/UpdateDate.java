@@ -26,6 +26,11 @@ public class UpdateDate extends Command {
 
         String tableName = view.selectTable(manager.getTableNames(),view);
 
+        if (tableName.isEmpty()) {
+            view.write("Your action canceled!\n");
+            return;
+        }
+
         List<Object> columnNames = null;
         try {
             columnNames = manager.getColumnNames(tableName, "");

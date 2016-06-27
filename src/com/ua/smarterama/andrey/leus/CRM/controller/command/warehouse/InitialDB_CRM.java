@@ -24,11 +24,11 @@ public class InitialDB_CRM {
 
         manager.connect(config.getDatabaseName(),config.getUserName(),config.getUserPassword());
 
-        manager.dropDatabase("\"CRM\"");
+        manager.dropDatabase(config.getDatabaseNameCRM());
 
-        manager.createDatabase("\"CRM\"");
+        manager.createDatabase(config.getDatabaseNameCRM());
 
-        manager.connect("CRM",config.getUserName(),config.getUserPassword());
+        manager.connect(config.getDatabaseNameCRM(),config.getUserName(),config.getUserPassword());
 
         manager.dropTable("goods");
 

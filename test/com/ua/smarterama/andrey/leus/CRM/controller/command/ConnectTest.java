@@ -48,7 +48,7 @@ public class ConnectTest {
         //when
 //        command.process();
         //then
-        verify(command).manager.connect("CRM", "postgres", "postgres");
+        verify(command).manager.connect("crmasanexample", "postgres", "postgres");
         verify(view).write("Connection succeeded to CRM");
 
     }

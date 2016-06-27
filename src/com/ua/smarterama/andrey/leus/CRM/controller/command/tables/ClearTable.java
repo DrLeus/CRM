@@ -2,7 +2,6 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
@@ -25,6 +24,11 @@ public class ClearTable extends Command {
         view.write("Please select table\n");
 
         String tableName = view.selectTable(manager.getTableNames(), view);
+
+        if (tableName.isEmpty()) {
+            view.write("Your action canceled!\n");
+            return;
+        }
 
         view.write(String.format("Please confirm, do you really want to clear table '%s'? Y/N%n",tableName));
 

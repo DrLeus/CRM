@@ -5,8 +5,7 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.sql.SQLException;
 
 public class MainControllerWarehouse {
 
@@ -17,6 +16,7 @@ public class MainControllerWarehouse {
         this.view = Console.getInstance();
         this.commands = new Command[]{
                 new ConnectToDataBaseCRM(manager),
+                new ConnectToDataBase(manager),
                 new Help(),
                 new Exit(),
                 new IsConnected(manager),
@@ -50,7 +50,7 @@ public class MainControllerWarehouse {
         } catch (ExitException e) { }
     }
 
-    public void doWork() {
+    public void doWork() throws SQLException {
 
         while (true) {
             view.write("Please input command (or 'help'): \n");

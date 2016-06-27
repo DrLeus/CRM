@@ -1,11 +1,10 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.ClearTable;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 import org.junit.Before;
 import org.junit.Test;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
 
 import java.sql.SQLException;
 
@@ -17,14 +16,14 @@ import static org.mockito.Mockito.verify;
 public class ClearTest {
 
     private DataBaseManager manager;
-    private View view;
+    private Console view;
     private Command command;
 
 
     @Before
     public void setup() {
         manager = mock(DataBaseManager.class);
-        view = mock(View.class);
+        view = mock(Console.class);
         command = new ClearTable(manager);
     }
 
@@ -55,7 +54,7 @@ public class ClearTest {
         assertFalse(canProcess);
     }
 
-    public void testValidationErrorWhenCountParametersIsLessThan2() {
+    public void testValidationErrorWhenCountParametersIsLessThan2() throws SQLException {
         // when
         try {
             command.process();

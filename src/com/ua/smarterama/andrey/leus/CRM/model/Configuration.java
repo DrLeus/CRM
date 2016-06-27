@@ -2,13 +2,24 @@ package com.ua.smarterama.andrey.leus.CRM.model;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.Main;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
+
 public class Configuration {
 
     private Properties properties;
+
+    private static Properties logProperty = new Properties();
+    private static String logFile;
+
+    @SuppressWarnings("static-access")
+    public Configuration(String logFile){
+        this.logFile = logFile;
+    }
 
     public Configuration() {
         try {
@@ -20,6 +31,16 @@ public class Configuration {
             e.printStackTrace();
         }
     }
+
+    public void initLog () {
+        try {
+            logProperty.load(new FileInputStream(logFile));
+            PropertyConfigurator.configure(logProperty);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public String getClassDriver() {
         return properties.getProperty("database.class.driver");

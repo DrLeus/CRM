@@ -20,7 +20,13 @@ public class RemoveTable extends Command {
     public void process() {}
 
     public void removeTable() {
+
         String tableName = view.selectTable(manager.getTableNames(), view);
+
+        if (tableName.isEmpty()) {
+            view.write("Your action canceled!\n");
+            return;
+        }
 
         view.write(String.format("Please confirm, do you really want to remove '%s' table? Y/N%n", tableName));
 

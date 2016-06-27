@@ -28,8 +28,13 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void connect(String databaseName, String user, String password) throws SQLException {
+        if (connection!=null) connection.close();
         connection = DriverManager.getConnection(String.format("%s://%s:%s/%s", config.getDriver(), config.getServerName(),
                 config.getPort(), databaseName), user, password);
+//        if (connection!=null){
+//            connection = DriverManager.getConnection(String.format("%s://%s:%s/%s", config.getDriver(), config.getServerName(),
+//                    config.getPort(), config.getDatabaseName()), config.getUserName(), config.getUserPassword());
+//        }
 
     }
 
@@ -73,9 +78,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
     @Override
     public void dropDatabase(String databaseName) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
-            if (databaseName.equals("CRM")){
-                stmt.executeUpdate("DROP DATABASE IF EXISTS \"CRM\"");//TODO drop with upper letters
-            }
             stmt.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
         }
     }
@@ -223,6 +225,13 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         try (Statement stmt = connection.createStatement();) {
             stmt.executeUpdate(String.format("DELETE FROM public.%s WHERE id=%s", tableName, id));
+        }
+    }
+
+    @Override
+    public void disconnectFromDataBase() throws SQLException {
+        if (connection != null) {
+            connection.close();
         }
     }
 }

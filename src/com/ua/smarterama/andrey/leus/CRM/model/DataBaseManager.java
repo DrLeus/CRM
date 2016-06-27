@@ -17,9 +17,9 @@ public interface DataBaseManager {
 
     void dropTable(String tableName) throws SQLException;
 
-    List<String> getDatabases();
+    List<String> getDatabases() ;
 
-    List<String> getTableNames();
+    List<String> getTableNames() ;
 
     void insert(String tableName, List<Object> columnTable, List<Object> value) throws SQLException;
 
@@ -32,6 +32,8 @@ public interface DataBaseManager {
     List<Object> getColumnNames(String tableName, String query) throws SQLException;
 
     void delete(int id, String taleName) throws SQLException;
+
+    void disconnectFromDataBase() throws SQLException;
 }
 
 

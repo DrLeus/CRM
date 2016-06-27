@@ -113,7 +113,7 @@ public class Console implements View {
 
     public String selectTable(List<String> tables, Console view) {
 
-        String tableName;
+        String tableName = "";
 
         int numberTable = 0;
 
@@ -128,6 +128,10 @@ public class Console implements View {
                 view.write("Please select table:\n");
 
                 String input = view.read();
+
+                if (view.checkExit(input)) {
+                    break;
+                }
 
                 for (String sert : tables) {
                     if (input.equals(sert)) {

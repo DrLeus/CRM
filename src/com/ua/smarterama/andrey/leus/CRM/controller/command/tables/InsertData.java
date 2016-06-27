@@ -20,6 +20,11 @@ public class InsertData extends Command {
 
         String tableName = view.selectTable(manager.getTableNames(), view);
 
+        if (tableName.isEmpty()) {
+            view.write("Your action canceled!\n");
+            return;
+        }
+
         List<Object> listColumnName;
         List<Object> columnTable = null;
         List<Object> list = null;
