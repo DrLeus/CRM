@@ -32,8 +32,6 @@ public interface DataBaseManager {
     List<Object> getColumnNames(String tableName, String query) throws SQLException;
 
     void delete(int id, String taleName) throws SQLException;
-
-    void disconnectFromDataBase() throws SQLException;
 }
 
 

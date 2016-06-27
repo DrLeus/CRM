@@ -64,7 +64,6 @@ public class IntegrationTest_crm {
     @Before
     public void setup() throws SQLException {
         manager = new JDBCDataBaseManager();
-        manager.disconnectFromDataBase();
 //        manager.connect(DB_NAME_TEMP_CRM, DB_USER, DB_PASSWORD);
         out = new LogOutputStream();
         in = new ConfigurableInputStream();
@@ -75,19 +74,13 @@ public class IntegrationTest_crm {
 
     @After
     public void clearAfterTest() throws SQLException {
-        manager.disconnectFromDataBase();
         manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DB_NAME_TEMP);
-//        manager.dropDatabase(DB_NAME_TEMP_NEW);
-        manager.dropDatabase(DB_NAME_TEMP_CRM);
     }
 
     @AfterClass
     public static void clearAfterAllTests() throws SQLException {
-//        manager.disconnectFromDataBase();
-//        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
-//        manager.dropDatabase(DB_NAME_TEMP_CRM);
-//        manager.disconnectFromDataBase();
+        manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
+        manager.dropDatabase(DB_NAME_TEMP_CRM);
     }
 
     @Test

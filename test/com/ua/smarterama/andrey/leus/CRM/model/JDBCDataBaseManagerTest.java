@@ -38,6 +38,9 @@ public class JDBCDataBaseManagerTest {
 
     @Before
     public void  setup() throws SQLException {
+
+        manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
+
         listColumn.clear();
         listColumn.add("code TEXT");
         listColumn.add("name TEXT");
@@ -56,6 +59,7 @@ public class JDBCDataBaseManagerTest {
 
     @After
     public void clear() throws SQLException {
+        manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
         manager.dropTable(TABLE_NAME);
     }
 
@@ -82,13 +86,13 @@ public class JDBCDataBaseManagerTest {
         assertEquals(expected, tests);
     }
 
-    @Test(expected = PSQLException.class) 
+    @Test(expected = SQLException.class)
     public void testClearNotExistTable() throws SQLException {
         //when
         manager.clear(NOT_EXIST_TABLE);
     }
 
-    @Test(expected = PSQLException.class) 
+    @Test(expected = SQLException.class)
     public void testConnectToNotExistDatabase() throws SQLException {
         //when
         try {
@@ -96,12 +100,11 @@ public class JDBCDataBaseManagerTest {
             fail();
         } catch (Exception e) {
             //then
-            manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
             throw e;
         }
     }
 
-    @Test(expected = PSQLException.class) 
+    @Test(expected = SQLException.class)
     public void testConnectToDatabaseWhenIncorrectUserAndPassword() throws SQLException {
         //when
         try {
@@ -109,12 +112,11 @@ public class JDBCDataBaseManagerTest {
             fail();
         } catch (Exception e) {
             //then
-            manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
             throw e;
         }
     }
 
-    @Test(expected = PSQLException.class) 
+    @Test(expected = SQLException.class)
     public void testConnectToServerWhenIncorrectUserAndPassword() throws SQLException {
         //when
         try {
@@ -122,7 +124,6 @@ public class JDBCDataBaseManagerTest {
             fail();
         } catch (Exception e) {
             //then
-            manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
             throw e;
         }
     }
@@ -157,7 +158,7 @@ public class JDBCDataBaseManagerTest {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = PSQLException.class) 
+    @Test(expected = SQLException.class)
     public void testCreateTableWrongQuery() throws SQLException {
         //given
         String query = "testTable(qwerty)";
@@ -233,12 +234,12 @@ public class JDBCDataBaseManagerTest {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = PSQLException.class) 
+    @Test(expected = SQLException.class)
     public void testInsertNotExistTable() throws SQLException {
         //given
         //when
         //then
-        manager.insert(NOT_EXIST_TABLE, newData, listColumn);
+        manager.insert(NOT_EXIST_TABLE, listColumn, newData);
     }
 
     @Test

@@ -62,7 +62,6 @@ public class IntegrationTest {
         manager.dropDatabase(DB_NAME_TEMP_CRM);
         InitialDB_CRM.setupTempDates(manager);
         manager.createDatabase(DB_NAME_TEMP);
-        manager.disconnectFromDataBase();
     }
 
     @Before
@@ -78,11 +77,9 @@ public class IntegrationTest {
 
     @After
     public void clearAfterTest() throws SQLException {
-        manager.disconnectFromDataBase();
         manager.connect(DATABASE_NAME, DB_USER, DB_PASSWORD);
 //        manager.dropDatabase(DB_NAME_TEMP);
 //        manager.dropDatabase(DB_NAME_TEMP_NEW);
-        manager.disconnectFromDataBase();
     }
 
     @AfterClass
@@ -91,7 +88,6 @@ public class IntegrationTest {
 //        manager.dropDatabase(DB_NAME_TEMP);
 //        manager.dropDatabase(DB_NAME_TEMP_NEW);
 //        manager.dropDatabase(DB_NAME_TEMP_CRM);
-        manager.disconnectFromDataBase();
     }
 
     @Test

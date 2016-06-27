@@ -6,61 +6,74 @@ import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
-    private static Configuration config = new Configuration();
-
-    static {
-        try {
-//            DriverManager.registerDriver(new org.postgresql.Driver());
-            Class.forName(config.getClassDriver());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Oops.... Please add jdbc jar to project.", e);
-        }
-    }
-
-    private Connection connection;
+    private final DaoFactory daoFactory = new DaoFactory() {
+    };
 
     @Override
     public void clear(String tableName) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate("DELETE FROM " + tableName);
+        executeUpdate("DELETE FROM " + tableName);
+    }
+
+    private void executeUpdate(String sql) throws SQLException {
+        Connection connection = null;
+        PreparedStatement ps = null;
+//        Statement stmt = null;
+
+        try {
+            connection = daoFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+//            stmt = connection.createStatement();
+//            stmt.executeUpdate(sql);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error update data in case - %s\n", e);
+        } finally {
+            try {
+//                if (stmt != null) stmt.close();
+                if (ps != null) ps.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                throw new SQLException("Error connection close in case - %s\n", e);
+            }
         }
     }
 
     @Override
     public void connect(String databaseName, String user, String password) throws SQLException {
-        if (connection!=null) connection.close();
-        connection = DriverManager.getConnection(String.format("%s://%s:%s/%s", config.getDriver(), config.getServerName(),
-                config.getPort(), databaseName), user, password);
-//        if (connection!=null){
-//            connection = DriverManager.getConnection(String.format("%s://%s:%s/%s", config.getDriver(), config.getServerName(),
-//                    config.getPort(), config.getDatabaseName()), config.getUserName(), config.getUserPassword());
-//        }
+        DaoFactory.currentDB(databaseName, user, password);
 
+        // checking connection
+        Connection connection = null;
+        try {
+            connection = daoFactory.getConnection();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                throw new SQLException("Error connection close in case - %s\n", e);
+            }
+        }
     }
 
     @Override
     public void createDatabase(String databaseName) throws SQLException {
-
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate("CREATE DATABASE " + databaseName);
-        }
+        executeUpdate("CREATE DATABASE " + databaseName);
     }
 
     @Override
     public void createTable(String tableName, List<Object> listColumn) throws SQLException {
 
-        try (Statement stmt = connection.createStatement()) {
+        createSequence(tableName);
 
-            createSequence(tableName, stmt);
-
-            String sql = String.format("CREATE TABLE %s(id NUMERIC NOT NULL DEFAULT nextval('%s_seq'::regclass), CONSTRAINT " +
-                    "%s_pkey PRIMARY KEY(id), %s", tableName, tableName, tableName, getFormatedLine(listColumn));
-            stmt.executeUpdate(sql);
-        }
+        String sql = String.format("CREATE TABLE %s(id NUMERIC NOT NULL DEFAULT nextval('%s_seq'::regclass), CONSTRAINT " +
+                "%s_pkey PRIMARY KEY(id), %s", tableName, tableName, tableName, getFormatedLine(listColumn));
+        executeUpdate(sql);
     }
 
-    public void createSequence(String tableName, Statement stmt) throws SQLException {
-        stmt.executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
+    private void createSequence(String tableName) throws SQLException {
+        executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
     }
 
     private String getFormatedLine(List<Object> listColumn) {
@@ -77,62 +90,23 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void dropDatabase(String databaseName) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
+        executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
+    }
+
+    @Override
+    public void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException {
+
+        for (int i = 1; i < columnNames.size(); i++) {
+
+            String sql = String.format("UPDATE %s SET %s='%s' WHERE id = %s", tableName, columnNames.get(i), list.get(i - 1), id);
+
+            executeUpdate(sql);
         }
     }
 
     @Override
-    public void dropTable(String tableName) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            dropSequnce(tableName);
-            stmt.executeUpdate(String.format("DROP TABLE IF EXISTS public.%s CASCADE", tableName));
-        }
-    }
-
-    private void dropSequnce(String tableName) {
-
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(String.format("DROP SEQUENCE IF EXISTS public.%s_seq CASCADE", tableName));
-        } catch (SQLException e) {
-            System.out.println("Error drop seq in case:" + e.getMessage());
-        }
-    }
-
-    @Override
-    public List<String> getDatabases() {
-
-        List<String> list = new ArrayList<>();
-
-        try (PreparedStatement ps = connection
-                .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
-             ResultSet rs = ps.executeQuery();) {
-            while (rs.next()) {
-                list.add(rs.getString(1));
-            }
-        } catch (Exception e) {
-            list = null;
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    @Override
-    public List<String> getTableNames() {
-
-        List<String> list = new ArrayList<>();
-
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'");) {
-            while (rs.next()) {
-                list.add(rs.getString("table_name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            list = null;
-            return list;
-        }
-        return list;
+    public void delete(int id, String tableName) throws SQLException {
+        executeUpdate(String.format("DELETE FROM public.%s WHERE id=%s", tableName, id));
     }
 
     @Override
@@ -150,27 +124,103 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
         data = data.substring(0, data.length() - 1) + ")";
 
-        try (Statement stmt = connection.createStatement();) {
-            stmt.executeUpdate(String.format("INSERT INTO public.%s %s VALUES %s", tableName, columns, data));
+        String sql = String.format("INSERT INTO public.%s %s VALUES %s", tableName, columns, data);
+        executeUpdate(sql);
+    }
+
+    @Override
+    public void dropTable(String tableName) throws SQLException {
+        dropSequnce(tableName);
+        executeUpdate(String.format("DROP TABLE IF EXISTS public.%s CASCADE", tableName));
+    }
+
+    private void dropSequnce(String tableName) {
+
+        try {
+            executeUpdate(String.format("DROP SEQUENCE IF EXISTS public.%s_seq CASCADE", tableName));
+        } catch (SQLException e) {
+            System.out.println("Error drop seq in case:" + e.getMessage());
         }
     }
 
     @Override
-    public void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws SQLException {
+    public List<String> getDatabases() {
 
-        for (int i = 1; i < columnNames.size(); i++) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-            String sql = String.format("UPDATE %s SET %s='%s' WHERE id = %s", tableName, columnNames.get(i), list.get(i - 1), id);
+        List<String> list = new ArrayList<>();
 
-            try (PreparedStatement ps = connection.prepareStatement(sql);) {
-                ps.executeUpdate();
+        String sql = "SELECT datname FROM pg_database WHERE datistemplate = false;";
+        try {
+            connection = daoFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            list = null;
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                try {
+                    throw new SQLException("Error connection close in case - %s\n", e);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
+        return list;
+    }
+
+    @Override
+    public List<String> getTableNames() {
+
+        List<String> list = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'";
+
+        try {
+            connection = daoFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getString("table_name"));
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                try {
+                    throw new SQLException("Error connection close in case - %s\n", e);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public boolean isConnected() {
-        return connection != null;
+//        return connection != null;
+        return true;
     }
 
     @Override
@@ -184,18 +234,42 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
 
         List<Object> list = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql);) {
+        try {
+            connection = daoFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
-
             while (rs.next()) {
                 for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                     list.add(rs.getObject(index));
                 }
             }
+            return list;
+
+        } catch (SQLException e) {
+            try {
+                throw new SQLException("Error get data in case - %s\n", e);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                try {
+                    throw new SQLException("Error connection close in case - %s\n", e);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
-        return list;
+        return null;
     }
 
     @Override
@@ -209,29 +283,41 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         List<Object> list = new ArrayList<>();
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql);) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connection = daoFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
 
             for (int index = 1; index <= rsmd.getColumnCount(); index++) {
                 list.add(rsmd.getColumnName(index));
             }
-        }
-        return list;
-    }
+            return list;
 
-    @Override
-    public void delete(int id, String tableName) throws SQLException {
-
-        try (Statement stmt = connection.createStatement();) {
-            stmt.executeUpdate(String.format("DELETE FROM public.%s WHERE id=%s", tableName, id));
+        } catch (SQLException e) {
+            try {
+                throw new SQLException("Error update data in case - %s\n", e);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                try {
+                    throw new SQLException("Error connection close in case - %s\n", e);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
-    }
-
-    @Override
-    public void disconnectFromDataBase() throws SQLException {
-        if (connection != null) {
-            connection.close();
-        }
+        return null;
     }
 }
+
