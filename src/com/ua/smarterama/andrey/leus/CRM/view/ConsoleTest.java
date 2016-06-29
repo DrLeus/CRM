@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
-public class Console implements View {
+public class ConsoleTest implements View {
 
     public void write(String message) {
         System.out.println(message);
@@ -30,18 +30,7 @@ public class Console implements View {
         return false;
     }
 
-    private static Console instance = null;
-
-    private Console() {
-    }
-
-    public static synchronized Console getInstance() {
-        if (instance == null)
-            instance = new Console();
-        return instance;
-    }
-
-    public void outputColumnNames(List<Object> listColumnName, String formatedLine) {
+        public void outputColumnNames(List<Object> listColumnName, String formatedLine) {
         System.out.println(String.format(formatedLine, listColumnName.toArray()));
     }
 
@@ -84,7 +73,7 @@ public class Console implements View {
         return result + 2;
     }
 
-    public List<Object> inputNames(Console view) {
+    public List<Object> inputNames(ConsoleTest view) {
 
         List<Object> list = new ArrayList<>();
 
@@ -107,7 +96,7 @@ public class Console implements View {
         return list;
     }
 
-    public String selectTable(List<String> tables, Console view) {
+    public String selectTable(List<String> tables, ConsoleTest view) {
 
         String tableName = "";
 
@@ -148,7 +137,7 @@ public class Console implements View {
         return tableName;
     }
 
-    public List<Object> selectGoodsAndQty(Console view) {
+    public List<Object> selectGoodsAndQty(ConsoleTest view) {
 
         List<Object> list = new ArrayList<>();
 

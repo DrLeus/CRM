@@ -18,10 +18,14 @@ public class ConnectToDataBase extends Command {
     @Override
     public void process() {
 
+        String nameDB;
+        String userName;
+        String password;
+
         while (true) {
 
             view.write("Please input the database name");
-            String nameDB = view.read();
+            nameDB = view.read();
             if (view.checkExit(nameDB)) {
                 view.write("Return to main menu!\n");
                 return;
@@ -29,14 +33,14 @@ public class ConnectToDataBase extends Command {
 
             view.write("Please input user name");
 
-            String userName = view.read();
+            userName = view.read();
             if (view.checkExit(userName)) {
                 view.write("Return to main menu!\n");
                 return;
             }
 
             view.write("Please input password");
-            String password = view.read();
+            password = view.read();
             if (view.checkExit(password)) {
                 view.write("Return to main menu!\n");
                 return;

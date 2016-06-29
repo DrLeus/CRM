@@ -48,9 +48,5 @@ public class ExitTest {
         } catch (ExitException e) {
             // do nothing
         }
-
-        // then
-//        assertEquals("До скорой встречи!\n", view.getContent());
-        // throws ExitException
     }
 }

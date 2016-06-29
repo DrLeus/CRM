@@ -4,8 +4,6 @@ public interface View {
 
     void write(String message);
 
-    void error(String message, Exception e);
-
     String read();
 
     boolean checkExit(String input);

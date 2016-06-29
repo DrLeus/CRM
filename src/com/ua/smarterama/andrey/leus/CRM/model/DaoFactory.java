@@ -30,17 +30,6 @@ public class DaoFactory {
         }
     }
 
-//    public Connection getConnection() throws SQLException{
-//        try {
-//
-//            String url = config.getDriver() + "://" + config.getServerName() + ":" + config.getPort() + "/" +
-//                    config.getDatabaseName();
-//
-//            return DriverManager.getConnection(url, config.getUserName(), config.getUserPassword());
-//        } catch (SQLException e) {
-//            throw new SQLException("Couldn't get connection in case -", e);
-//        }
-//    }
     public Connection getConnection() throws SQLException{
         try {
 
