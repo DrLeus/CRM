@@ -1,13 +1,14 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.util.List;
 
 public class SelectDataBase extends Command {
 
-    public SelectDataBase(DataBaseManager manager) {
-        super(manager);
+    public SelectDataBase(DataBaseManager manager, Console view) {
+        super(manager, view);
     }
 
     @Override

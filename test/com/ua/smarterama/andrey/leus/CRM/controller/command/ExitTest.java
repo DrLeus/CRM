@@ -10,12 +10,12 @@ import static org.junit.Assert.*;
 public class ExitTest {
 
     private DataBaseManager manager;
-    private Console view;
+    private Console view = new Console();
 
     @Test
     public void testCanProcessExitString() {
         // given
-        Command command = new Exit();
+        Command command = new Exit(view);
 
         // when
         boolean canProcess = command.canProcess("exit");
@@ -27,7 +27,7 @@ public class ExitTest {
     @Test
     public void testCantProcessQweString() {
         // given
-        Command command = new Exit();
+        Command command = new Exit(view);
 
         // when
         boolean canProcess = command.canProcess("qwe");
@@ -39,7 +39,7 @@ public class ExitTest {
     @Test
     public void testProcessExitCommand_thowsExitException() {
         // given
-        Command command = new Exit();
+        Command command = new Exit(view);
 
         // when
         try {

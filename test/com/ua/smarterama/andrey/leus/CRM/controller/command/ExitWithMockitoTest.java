@@ -16,7 +16,7 @@ public class ExitWithMockitoTest {
     @Test
     public void testCanProcessExitString() {
         // given
-        Command command = new Exit();
+        Command command = new Exit(view);
 
         // when
         boolean canProcess = command.canProcess("exit");
@@ -28,7 +28,7 @@ public class ExitWithMockitoTest {
     @Test
     public void testCantProcessQweString() {
         // given
-        Command command = new Exit();
+        Command command = new Exit(view);
 
         // when
         boolean canProcess = command.canProcess("qwe");
@@ -37,9 +37,10 @@ public class ExitWithMockitoTest {
         assertFalse(canProcess);
     }
 
+    @Test
     public void testProcessExitCommand_thowsExitException() {
         // given
-        Command command = new Exit();
+        Command command = new Exit(view);
 
         // when
         try {

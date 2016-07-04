@@ -1,19 +1,17 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
+import com.ua.smarterama.andrey.leus.CRM.model.Configuration;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.model.JDBCDataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
-import com.ua.smarterama.andrey.leus.CRM.view.View;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ConnectTest {
@@ -21,12 +19,13 @@ public class ConnectTest {
     private ConnectToDataBase command;
     private DataBaseManager manager;
     private Console view;
+    private static Configuration config = new Configuration();
 
     @Before
     public void setup() {
         manager = mock(JDBCDataBaseManager.class);
         view = mock(Console.class);
-        command = new ConnectToDataBase(manager);
+        command = new ConnectToDataBase(manager, view);
     }
 
     @Test
@@ -50,17 +49,30 @@ public class ConnectTest {
     @Test
     public void testProcess() throws SQLException {
         //when
-        when(view.read()).thenReturn("postgres");
-        when(view.read()).thenReturn("postgres");
-        when(view.read()).thenReturn("postgres");
+        when(view.read()).thenReturn(config.getDatabaseName());
+        when(view.read()).thenReturn(config.getUserName());
+        when(view.read()).thenReturn(config.getUserPassword());
         command.process();
 
         //then
-        verify(view).write("Please input the database name");
-        verify(view).write("Please input user name");
-        verify(view).write("Please input password");
-        verify(command).manager.connect("", "postgres", "postgres");
-        verify(view).write("Connection succeeded to postgres");
+        verify(manager).connect(config.getDatabaseName(), config.getUserName(), config.getUserPassword());
+        verify(view).write("\n");
+        verify(view).write(("Connection succeeded to '"+config.getDatabaseName()+"'\r\n"));
 
     }
+
+//    @Test /*(expected = SQLException.class)*/
+//    public void testProcessWithWrongParameters() throws SQLException {
+//        //when
+//        when(view.read()).thenReturn(config.getDatabaseName());
+//        when(view.read()).thenReturn("error");
+//        when(view.read()).thenReturn(config.getUserPassword());
+//        command.process();
+//
+//        //then
+////        doThrow(new SQLException()).when(manager).connect(config.getDatabaseName(), "error", config.getUserPassword());
+//      verify(manager).connect(config.getDatabaseName(), "error", config.getUserPassword());
+//        verify(view).write("\n");
+//        verify(view).write(("Oops...Cant get connection for DB: "+config.getDatabaseName()+"; USER: error; PASS: " + config.getUserPassword()+ "\r\n"));
+//    }
 }

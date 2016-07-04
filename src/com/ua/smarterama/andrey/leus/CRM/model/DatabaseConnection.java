@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DaoFactory {
+public class DatabaseConnection {
 
     private static Configuration config = new Configuration();
 

@@ -1,10 +1,12 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
 
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
+
 public class Help extends Command {
 
-    public Help() {
-        super();
+    public Help(Console view) {
+        super(view);
     }
 
     static String text = "This programme provides next commands:\n" +

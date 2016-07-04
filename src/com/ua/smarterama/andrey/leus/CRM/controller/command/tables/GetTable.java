@@ -2,14 +2,15 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class GetTable extends Command {
 
-    public GetTable(DataBaseManager manager) {
-        super(manager);
+    public GetTable(DataBaseManager manager, Console view) {
+        super(manager, view);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.MainController;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse.MainControllerWarehouse;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +16,8 @@ import java.io.InputStreamReader;
 public class SelectedModule extends Command {
 
 
-    private DataBaseManager manager;
-
-    public SelectedModule(DataBaseManager manager) {
-        this.manager = manager;
+    public SelectedModule(DataBaseManager manager, Console view) {
+        super(manager, view);
     }
 
     public void makeChoice() throws Exception {
@@ -30,12 +29,12 @@ public class SelectedModule extends Command {
 
             String read = view.read();
             if (read.equalsIgnoreCase("Y")) {
-                MainControllerWarehouse controller = new MainControllerWarehouse(manager);
+                MainControllerWarehouse controller = new MainControllerWarehouse(manager, view);
                 view.write("Please wait!\n");
                 controller.run(manager);
                 break;
             } else if (read.equalsIgnoreCase("N")) {
-                MainController controller = new MainController(manager);
+                MainController controller = new MainController(manager,view);
                 controller.run();
                 break;
             } else if (read.equalsIgnoreCase("exit")) {
@@ -61,6 +60,9 @@ public class SelectedModule extends Command {
                 break;
             }
             System.out.println(line);
+            if (line.contains("1060")){
+                System.out.println("catch");
+            }
         }
     }
 

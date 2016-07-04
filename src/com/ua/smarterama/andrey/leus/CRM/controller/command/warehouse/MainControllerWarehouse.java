@@ -12,22 +12,22 @@ public class MainControllerWarehouse {
     private Console view;
     private Command[] commands;
 
-    public MainControllerWarehouse(DataBaseManager manager) {
-        this.view = Console.getInstance();
+    public MainControllerWarehouse(DataBaseManager manager, Console view) {
+        this.view = view;
         this.commands = new Command[]{
-                new ConnectToDataBaseCRM(manager),
-                new ConnectToDataBase(manager),
-                new Help(),
-                new Exit(),
-                new IsConnected(manager),
-                new CreateDatabase(manager),
-                new DropDataBase(manager),
-                new Catalog(manager),
-                new Report(manager),
-                new SelectDataBase(manager),
-                new Store(manager),
-                new Writeoff(manager),
-                new Unsuported(),
+                new ConnectToDataBaseCRM(manager, view),
+                new ConnectToDataBase(manager, view),
+                new Help(view),
+                new Exit(view),
+                new IsConnected(manager, view),
+                new CreateDatabase(manager, view),
+                new DropDataBase(manager, view),
+                new Catalog(manager, view),
+                new Report(manager, view),
+                new SelectDataBase(manager, view),
+                new Store(manager, view),
+                new Writeoff(manager, view),
+                new Unsuported(view),
         };
     }
 

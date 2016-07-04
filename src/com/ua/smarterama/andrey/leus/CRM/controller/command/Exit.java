@@ -1,9 +1,11 @@
 package com.ua.smarterama.andrey.leus.CRM.controller.command;
 
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
+
 public class Exit extends Command {
 
-    public Exit() {
-        super();
+    public Exit(Console view) {
+        super(view);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.tables;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class InsertData extends Command {
 
-    public InsertData(DataBaseManager manager) {
-        super(manager);
+    public InsertData(DataBaseManager manager, Console view) {
+        super(manager, view);
     }
 
     public void insertData() {

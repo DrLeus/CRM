@@ -41,7 +41,6 @@ public class Configuration {
         }
     }
 
-
     public String getClassDriver() {
         return properties.getProperty("database.class.driver");
     }

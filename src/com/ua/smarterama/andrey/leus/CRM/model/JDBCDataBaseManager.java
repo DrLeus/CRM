@@ -6,8 +6,7 @@ import java.util.List;
 
 public class JDBCDataBaseManager implements DataBaseManager {
 
-    private final DaoFactory daoFactory = new DaoFactory() {
-    };
+    private final DatabaseConnection databaseConnection = new DatabaseConnection() {};
 
     @Override
     public void clear(String tableName) throws SQLException {
@@ -17,19 +16,15 @@ public class JDBCDataBaseManager implements DataBaseManager {
     private void executeUpdate(String sql) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
-//        Statement stmt = null;
 
         try {
-            connection = daoFactory.getConnection();
+            connection = databaseConnection.getConnection();
             ps = connection.prepareStatement(sql);
-//            stmt = connection.createStatement();
-//            stmt.executeUpdate(sql);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Error update data in case - %s\n", e);
         } finally {
             try {
-//                if (stmt != null) stmt.close();
                 if (ps != null) ps.close();
                 if (connection != null) connection.close();
             } catch (SQLException e) {
@@ -40,18 +35,15 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     @Override
     public void connect(String databaseName, String user, String password) throws SQLException {
-        DaoFactory.currentDB(databaseName, user, password);
+        DatabaseConnection.currentDB(databaseName, user, password);
 
         // check connection correctly
 
-        try {
+//        try {
             isConnected();
-        } catch (SQLException e) {
-            throw new SQLException(e);
-        }
-
-
-
+//        } catch (SQLException e) {
+//            throw new SQLException(e);
+//        }
     }
 
     @Override
@@ -74,6 +66,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     private String getFormatedLine(List<Object> listColumn) {
+
         String result = "";
 
         for (int i = 0; i < listColumn.size(); i++) {
@@ -81,8 +74,16 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
 
         result = result.substring(0, result.length() - 13) + ")";
-
         return result;
+
+//        StringBuilder result = new StringBuilder();
+//        for (int i = 0; i < listColumn.size(); i++) {
+//            result.append(listColumn.get(i) + " NOT NULL, ");
+//        }
+//        result.substring(0, result.length() - 13);
+//        result.append(")");
+
+//        return String.valueOf(result);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         String sql = "SELECT datname FROM pg_database WHERE datistemplate = false;";
         try {
-            connection = daoFactory.getConnection();
+            connection = databaseConnection.getConnection();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -188,7 +189,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'";
 
         try {
-            connection = daoFactory.getConnection();
+            connection = databaseConnection.getConnection();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -218,7 +219,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public boolean isConnected()  throws SQLException  {
        Connection connection = null;
         try {
-            connection = daoFactory.getConnection();
+            connection = databaseConnection.getConnection();
             return true;
         } catch (SQLException e) {
             throw new SQLException(e);
@@ -247,7 +248,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         ResultSet rs = null;
 
         try {
-            connection = daoFactory.getConnection();
+            connection = databaseConnection.getConnection();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -296,7 +297,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
         ResultSet rs = null;
 
         try {
-            connection = daoFactory.getConnection();
+            connection = databaseConnection.getConnection();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();

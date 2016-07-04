@@ -10,14 +10,14 @@ public abstract class Command {
     protected DataBaseManager manager;
     protected Console view;
 
-    public Command() {
-        this.view = Console.getInstance();
+    public Command(Console view) {
+        this.view = view;
     }
 
-    public Command(DataBaseManager manager) {
+    public Command(DataBaseManager manager, Console view) {
 
         this.manager = manager;
-        this.view = Console.getInstance();
+        this.view = view;
     }
 
     public abstract boolean canProcess(String command);

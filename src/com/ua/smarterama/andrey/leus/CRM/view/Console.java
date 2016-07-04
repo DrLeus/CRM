@@ -30,17 +30,6 @@ public class Console implements View {
         return false;
     }
 
-    private static Console instance = null;
-
-    private Console() {
-    }
-
-    public static synchronized Console getInstance() {
-        if (instance == null)
-            instance = new Console();
-        return instance;
-    }
-
     public void outputColumnNames(List<Object> listColumnName, String formatedLine) {
         System.out.println(String.format(formatedLine, listColumnName.toArray()));
     }

@@ -3,6 +3,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.Configuration;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 
@@ -11,8 +12,8 @@ public class ConnectToDataBaseCRM extends Command {
     Configuration config = new Configuration();
 
 
-    public ConnectToDataBaseCRM(DataBaseManager manager) {
-        super(manager);
+    public ConnectToDataBaseCRM(DataBaseManager manager, Console view) {
+        super(manager, view);
     }
 
     @Override

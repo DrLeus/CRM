@@ -2,6 +2,7 @@ package com.ua.smarterama.andrey.leus.CRM.controller.command.warehouse;
 
 import com.ua.smarterama.andrey.leus.CRM.controller.command.Command;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
+import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.MissingFormatArgumentException;
 
 public class Report extends Command {
 
-    public Report(DataBaseManager manager) {
-        super(manager);
+    public Report(DataBaseManager manager, Console view) {
+        super(manager, view);
     }
 
     @Override
