@@ -13,15 +13,6 @@ public class CreateTable extends Command {
         super(manager, view);
     }
 
-    @Override
-    public boolean canProcess(String command) {
-        return false;
-    }
-
-    @Override
-    public void process() {
-    }
-
     public void createTable() {
         view.write("Please input table name:\n");
 
@@ -33,15 +24,17 @@ public class CreateTable extends Command {
         }
 
         view.write("Please input name of columns and type (for ex. TEXT; for column 'name' must be 'name TEXT')\n" +
-                "The first column = 'id' with auto-increment\n"); //TODO check parameter TEXT
+                "The first column = 'id' with auto-increment\n");
 
         List<Object> listColumn = view.inputNames(view);
 
-        if (listColumn.isEmpty()) {return;}
+        if (listColumn.isEmpty()) {
+            return;
+        }
 
         try {
             manager.createTable(tableName, listColumn);
-            view.write(String.format("The table %s was created! Success!%n",tableName));
+            view.write(String.format("The table %s was created! Success!%n", tableName));
         } catch (SQLException e) {
             try {
                 manager.dropTable(tableName);
@@ -49,7 +42,15 @@ public class CreateTable extends Command {
                 view.write(String.format("Error drop table in case - %s%n", e1));
             }
             view.write(String.format("Error create table in case - %s%n", e));
-
         }
+    }
+
+    @Override
+    public boolean canProcess(String command) {
+        return false;
+    }
+
+    @Override
+    public void process() {
     }
 }

@@ -553,7 +553,7 @@ public class IntegrationTest {
                 "\n" +
                 "Please confirm, do you really want to remove 'test' table? Y/N\n" +
                 "\n" +
-                "Table 'test'was removed! Success!\n" +
+                "Table 'test' was removed! Success!\n" +
                 "\n" +
                 "Available operations:\n" +
                 "1. Get table data\n" +

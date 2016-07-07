@@ -12,15 +12,6 @@ public class DeleteData extends Command {
         super(manager, view);
     }
 
-    @Override
-    public boolean canProcess(String command) {
-        return false;
-    }
-
-    @Override
-    public void process() {
-    }
-
     public void delete() {
         String tableName = view.selectTable(manager.getTableNames(), view);
 
@@ -69,5 +60,12 @@ public class DeleteData extends Command {
         }
     }
 
+    @Override
+    public boolean canProcess(String command) {
+        return false;
+    }
 
+    @Override
+    public void process() {
+    }
 }

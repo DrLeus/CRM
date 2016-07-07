@@ -40,12 +40,6 @@ public class ConnectTest {
         assertFalse(canProcess);
     }
 
-    private void shouldPrint(String expected) {
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(view, atLeastOnce()).write(captor.capture());
-        assertEquals(expected, captor.getAllValues().toString());
-    }
-
     @Test
     public void testProcess() throws SQLException {
         //when
@@ -60,19 +54,4 @@ public class ConnectTest {
         verify(view).write(("Connection succeeded to '"+config.getDatabaseName()+"'\r\n"));
 
     }
-
-//    @Test /*(expected = SQLException.class)*/
-//    public void testProcessWithWrongParameters() throws SQLException {
-//        //when
-//        when(view.read()).thenReturn(config.getDatabaseName());
-//        when(view.read()).thenReturn("error");
-//        when(view.read()).thenReturn(config.getUserPassword());
-//        command.process();
-//
-//        //then
-////        doThrow(new SQLException()).when(manager).connect(config.getDatabaseName(), "error", config.getUserPassword());
-//      verify(manager).connect(config.getDatabaseName(), "error", config.getUserPassword());
-//        verify(view).write("\n");
-//        verify(view).write(("Oops...Cant get connection for DB: "+config.getDatabaseName()+"; USER: error; PASS: " + config.getUserPassword()+ "\r\n"));
-//    }
 }

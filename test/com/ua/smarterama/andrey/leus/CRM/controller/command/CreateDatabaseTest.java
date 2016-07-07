@@ -7,8 +7,6 @@ import org.junit.Test;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -51,24 +49,6 @@ public class CreateDatabaseTest {
         //then
         verify(view).write("Please input database name for creating:\n");
         verify(manager).createDatabase("temp");
-        verify(view).write("Database temp was created\n");
+        verify(view).write("Database temp was created\r\n");
     }
-
-    //    @Test
-    public void testListTableNames() throws SQLException {
-        //given
-        List<String> tableNames = new ArrayList<>();
-        tableNames.add("test");
-        tableNames.add("users");
-        when(manager.getTableNames()).thenReturn(tableNames);
-
-        //when
-        command.manager.getTableData("","");
-
-        //then
-        verify(view).write("[test, users]");
-    }
-
-
-
 }

@@ -12,14 +12,6 @@ public class RemoveTable extends Command {
         super(manager, view);
     }
 
-    @Override
-    public boolean canProcess(String command) {
-        return false;
-    }
-
-    @Override
-    public void process() {}
-
     public void removeTable() {
 
         String tableName = view.selectTable(manager.getTableNames(), view);
@@ -34,7 +26,7 @@ public class RemoveTable extends Command {
         if (view.read().equalsIgnoreCase("Y")) {
             try {
                 manager.dropTable(tableName);
-                view.write(String.format("Table '%s'was removed! Success!%n",tableName));
+                view.write(String.format("Table '%s' was removed! Success!%n",tableName));
             } catch (SQLException e) {
                 view.write(String.format("Error remove table in case - %s%n", e));
             }
@@ -42,4 +34,12 @@ public class RemoveTable extends Command {
             view.write("Your action canceled!\n");
         }
     }
+
+    @Override
+    public boolean canProcess(String command) {
+        return false;
+    }
+
+    @Override
+    public void process() {}
 }

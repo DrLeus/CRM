@@ -37,13 +37,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     public void connect(String databaseName, String user, String password) throws SQLException {
         DatabaseConnection.currentDB(databaseName, user, password);
 
-        // check connection correctly
-
-//        try {
-            isConnected();
-//        } catch (SQLException e) {
-//            throw new SQLException(e);
-//        }
+            isConnected();// check connection correctly
     }
 
     @Override
@@ -75,15 +69,6 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
         result = result.substring(0, result.length() - 13) + ")";
         return result;
-
-//        StringBuilder result = new StringBuilder();
-//        for (int i = 0; i < listColumn.size(); i++) {
-//            result.append(listColumn.get(i) + " NOT NULL, ");
-//        }
-//        result.substring(0, result.length() - 13);
-//        result.append(")");
-
-//        return String.valueOf(result);
     }
 
     @Override

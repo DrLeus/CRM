@@ -14,18 +14,9 @@ public class UpdateDate extends Command {
         super(manager, view);
     }
 
-    @Override
-    public boolean canProcess(String command) {
-        return false;
-    }
-
-    @Override
-    public void process() {}
-
-
     public void update() {
 
-        String tableName = view.selectTable(manager.getTableNames(),view);
+        String tableName = view.selectTable(manager.getTableNames(), view);
 
         if (tableName.isEmpty()) {
             view.write("Your action canceled!\n");
@@ -79,27 +70,22 @@ public class UpdateDate extends Command {
                 view.write("Return to main menu!\n");
                 return;
             }
-
-//            if( input.isEmpty()) {
-//
-//                try {
-//                    list.add(manager.getTableData(tableName, "SELECT " + columnNames.get(i) + " FROM " + tableName + " " +
-//                            "WHERE id =" + new BigDecimal(id)));
-//                } catch (SQLException e) {
-//                    view.write(String.format("Error get table data in case - %s", e));
-//                }
-//
-//            } else {
-                list.add(input);
-//            }
-// TODO fix input with empty input
+            list.add(input);
         }
-
         try {
             manager.update(tableName, columnNames, id, list);
             view.write("The row was updated! Success!\n");
         } catch (SQLException e) {
-            view.write(String.format("Error update data in case - %s%n",  e));
+            view.write(String.format("Error update data in case - %s%n", e));
         }
+    }
+
+    @Override
+    public boolean canProcess(String command) {
+        return false;
+    }
+
+    @Override
+    public void process() {
     }
 }

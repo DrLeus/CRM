@@ -17,12 +17,8 @@ public class Main {
 
     public static void main(String[] argv) throws Exception {
 
-
-
         Configuration conf = new Configuration(LOG_PROPERTIES_FILE);
         conf.initLog();
-
-
 
         DataBaseManager manager = new JDBCDataBaseManager();
         Console view = new Console();
@@ -31,9 +27,8 @@ public class Main {
 
         try {
 
-//            logger.info("Programme run...");
+//            logger.info("Programme run..."); logging
 
-//            select.checkCMD();
             select.makeChoice();
 
         } catch (ExitException e) {

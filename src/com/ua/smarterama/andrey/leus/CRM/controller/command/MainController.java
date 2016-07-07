@@ -4,7 +4,6 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.tables.Catalog;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,8 +37,6 @@ public class MainController {
         try {
             doWork();
         } catch (ExitException e) {
-//            System.exit(0);
-//            throw new ExitException();
         }
     }
 

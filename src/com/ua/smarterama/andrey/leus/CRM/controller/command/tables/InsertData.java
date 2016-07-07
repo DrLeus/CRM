@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class InsertData extends Command {
 
     public InsertData(DataBaseManager manager, Console view) {
@@ -51,11 +50,9 @@ public class InsertData extends Command {
 
             columnTable = manager.getColumnNames(tableName, "");
 
-
         } catch (SQLException e) {
             view.write(String.format("Error get column names in case - %s%n", e));
         }
-
 
         try {
             manager.insert(tableName, columnTable, list);
@@ -63,9 +60,7 @@ public class InsertData extends Command {
         } catch (SQLException e) {
             view.write(String.format("Error insert data in case - %s%n", e));
         }
-
     }
-
 
     @Override
     public boolean canProcess(String command) {

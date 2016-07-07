@@ -12,14 +12,6 @@ public class ClearTable extends Command {
         super(manager, view);
     }
 
-    @Override
-    public boolean canProcess(String command) {
-        return false;
-    }
-
-    @Override
-    public void process() {}
-
     public void clearTable() {
 
         view.write("Please select table\n");
@@ -44,5 +36,13 @@ public class ClearTable extends Command {
             view.write("Your action canceled!\n");
         }
     }
+
+    @Override
+    public boolean canProcess(String command) {
+        return false;
+    }
+
+    @Override
+    public void process() {}
 
 }

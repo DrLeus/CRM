@@ -13,7 +13,6 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.testng.AssertJUnit.fail;
 
 public class DropDBTest {
 
@@ -47,8 +46,7 @@ public class DropDBTest {
         //given
         List<String> list = new ArrayList<>();
         list.add("test");
-        when(view.read()).thenReturn("Y");
-        when(view.read()).thenReturn("1");
+        when(view.read()).thenReturn("1").thenReturn("Y");
         when(manager.getDatabases()).thenReturn(list);
 
         //when
@@ -58,9 +56,9 @@ public class DropDBTest {
         verify(view).write("The next data bases available:\n");
         verify(view).write("Please select database for dropping:\n");
         verify(view).write("1: test");
-        verify(view).write("Please confirm, do you really want to drop 'test' database? Y/N\n");
+        verify(view).write("Please confirm, do you really want to drop 'test' database? Y/N\r\n");
         verify(manager).dropDatabase("test");
-        verify(view).write("Database 'test' dropped\n");
+        verify(view).write("Database 'test' dropped\r\n");
     }
 
 
@@ -70,8 +68,7 @@ public class DropDBTest {
         //given
         List<String> list = new ArrayList<>();
         list.add("");
-        when(view.read()).thenReturn("Y");
-        when(view.read()).thenReturn("1");
+        when(view.read()).thenReturn("1").thenReturn("Y");
         when( manager.getDatabases()).thenReturn(list);
 
         //when
@@ -85,55 +82,5 @@ public class DropDBTest {
         verify(view).write("Return to main menu!\n");
     }
 
-    @Test (expected = SQLException.class)
-    public void testProcessSQLException() throws SQLException {
-
-        //given
-        List<String> list = new ArrayList<>();
-        list.add("test");
-        when(view.read()).thenReturn("Y");
-        when(view.read()).thenReturn("1");
-        when(manager.getDatabases()).thenReturn(list);
-
-        //when
-        doThrow(new SQLException()).when(manager).dropDatabase("test");
-        command.process();
-
-        //then
-        verify(view).write("The next data bases available:\n");
-        verify(view).write("Please select database for dropping:\n");
-        verify(view).write("1: test");
-        verify(view).write("Please confirm, do you really want to drop 'test' database? Y/N\n");
-//        verify(view).write("Return to main menu!\n");
-    }
-
-    @Test
-    public void testProcessSQLException2() throws SQLException {
-
-        //given
-        List<String> list = new ArrayList<>();
-        list.add("test");
-        when(view.read()).thenReturn("Y");
-        when(view.read()).thenReturn("1");
-        when(manager.getDatabases()).thenReturn(list);
-
-        //when
-
-        try {
-            doThrow(new SQLException()).when(manager).dropDatabase("test");
-            command.process();
-
-            //then
-            verify(view).write("The next data bases available:\n");
-            verify(view).write("Please select database for dropping:\n");
-            verify(view).write("1: test");
-            verify(view).write("Please confirm, do you really want to drop 'test' database? Y/N\n");
-            verify(view).write("Please confirm, do you really want to drop 'test' database? Y/N\n");
-
-            fail("Expected RuntimeException");
-        } catch (RuntimeException e) {
-            // do nothing
-        }
-    }
 
 }

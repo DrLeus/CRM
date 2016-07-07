@@ -4,8 +4,6 @@ import com.ua.smarterama.andrey.leus.CRM.controller.command.*;
 import com.ua.smarterama.andrey.leus.CRM.model.DataBaseManager;
 import com.ua.smarterama.andrey.leus.CRM.view.Console;
 
-import java.sql.SQLException;
-
 public class Catalog extends Command {
 
     public Catalog(DataBaseManager manager, Console view) {

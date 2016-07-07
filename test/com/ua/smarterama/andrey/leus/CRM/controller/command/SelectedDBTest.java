@@ -16,9 +16,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by Admin on 04.07.2016.
- */
 public class SelectedDBTest {
 
     private Console view;
