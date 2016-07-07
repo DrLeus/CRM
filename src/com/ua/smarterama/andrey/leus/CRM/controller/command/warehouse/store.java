@@ -44,7 +44,7 @@ public class Store extends Command {
 
             view.write("The goods was added! Success!\n");
 
-        } catch (IndexOutOfBoundsException e) {//TODO fix it
+        } catch (IndexOutOfBoundsException e) {
             try {
                 manager.insert(tableName, manager.getColumnNames(tableName, ""), list);
                 view.write("The goods was added! Success!\n");

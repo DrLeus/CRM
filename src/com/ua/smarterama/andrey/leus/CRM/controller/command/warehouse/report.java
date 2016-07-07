@@ -60,7 +60,7 @@ public class Report extends Command {
                 }
 
             } while (listValue.size() != 0);
-        } catch (MissingFormatArgumentException e) { //TODO when table is empty, getTable show error
+        } catch (MissingFormatArgumentException e) {
             view.write("The table is empty!\n");
         }
     }
