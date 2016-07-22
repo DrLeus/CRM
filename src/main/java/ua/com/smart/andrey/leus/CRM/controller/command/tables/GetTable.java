@@ -26,22 +26,20 @@ public class GetTable extends Command {
 
         List<Object> listColumnName;
         try {
-            listColumnName = manager.getColumnNames(tableName, "");
+            listColumnName = manager.getColumnNames(tableName);
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get column names in case - %s%n", e));
         }
 
         List<Object> listValue;
         try {
-            listValue = manager.getTableData(tableName, "");
+            listValue = manager.getTableData(tableName);
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get table data in case - %s%n", e));
         }
 
         String format = getFormatedLine(listColumnName, listValue);
-
         outputColumnNames(listColumnName, format);
-
         outputData(listColumnName, listValue, format);
     }
 

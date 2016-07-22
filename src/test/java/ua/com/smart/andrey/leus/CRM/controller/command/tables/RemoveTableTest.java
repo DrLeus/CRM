@@ -2,7 +2,7 @@ package ua.com.smart.andrey.leus.CRM.controller.command.tables;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.com.smart.andrey.leus.CRM.controller.command.*;
+import ua.com.smart.andrey.leus.CRM.controller.command.Command;
 import ua.com.smart.andrey.leus.CRM.model.CRMException;
 import ua.com.smart.andrey.leus.CRM.model.DataBaseManager;
 import ua.com.smart.andrey.leus.CRM.model.JDBCDataBaseManager;
@@ -13,11 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.verify;
 
 
-public class GetTableTest {
+public class RemoveTableTest {
 
     private View view;
     private DataBaseManager manager;
@@ -28,27 +26,22 @@ public class GetTableTest {
     public void setup() {
         view = mock(Console.class);
         manager = mock(JDBCDataBaseManager.class);
-        command = new GetTable(manager, view);
-
+        command = new RemoveTable(manager, view);
     }
 
     @Test
-    public void testProcessGetTable() throws CRMException {
+    public void testProcessRemoveTable() throws CRMException {
 
         //given
-        table = new GetTable(manager, view);
-        when(view.read()).thenReturn("1").thenReturn("8").thenReturn("exit");
+        table = new RemoveTable(manager, view);
+        when(view.read()).thenReturn("6").thenReturn("Y").thenReturn("8").thenReturn("exit");
         List<String> list = new ArrayList<>();
         list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
-        when(table.selectTable(list,view)).thenReturn("test");
+        when(table.selectTable(list, view)).thenReturn("test");
         List<Object> column = new ArrayList<>();
         column.add("name");
-        when(table.manager.getColumnNames("test")).thenReturn(column);
-        List<Object> value = new ArrayList<>();
-        value.add("pupkin");
-        when(table.manager.getTableData("test")).thenReturn(value);
-
+        when(table.inputNames(view)).thenReturn(column);
 
         //when
         command.process();
@@ -65,28 +58,25 @@ public class GetTableTest {
                 "8. Return to main menu\n");
 
         verify(view, atLeast(2)).write("Please select operation:\n");
-
+        verify(view).write("Please confirm, do you really want to remove 'test' table? Y/N\r\n");
+        verify(view).write("Table 'test' was removed! Success!\r\n");
         verify(view).write("Return to main menu!\n");
-        verify(manager).getTableNames();
+        verify(manager).dropTable("test");
     }
 
     @Test
-    public void testProcessGetTableCAnceledAction() throws CRMException {
+    public void testProcessRemoveTableCanceledAction() throws CRMException {
 
         //given
-        table = new GetTable(manager, view);
-        when(view.read()).thenReturn("").thenReturn("8").thenReturn("exit");
+        table = new RemoveTable(manager, view);
+        when(view.read()).thenReturn("6").thenReturn("N").thenReturn("8").thenReturn("exit");
         List<String> list = new ArrayList<>();
-        list.add("");
+        list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
-        when(table.selectTable(list, view)).thenReturn("");
+        when(table.selectTable(list, view)).thenReturn("test");
         List<Object> column = new ArrayList<>();
         column.add("name");
-        when(table.manager.getColumnNames("test")).thenReturn(column);
-        List<Object> value = new ArrayList<>();
-        value.add("pupkin");
-        when(table.manager.getTableData("test")).thenReturn(value);
-
+        when(table.inputNames(view)).thenReturn(column);
 
         //when
         command.process();
@@ -103,6 +93,8 @@ public class GetTableTest {
                 "8. Return to main menu\n");
 
         verify(view, atLeast(2)).write("Please select operation:\n");
+        verify(view).write("Please confirm, do you really want to remove 'test' table? Y/N\r\n");
+        verify(view).write("Your action canceled!\n");
         verify(view).write("Return to main menu!\n");
     }
 }

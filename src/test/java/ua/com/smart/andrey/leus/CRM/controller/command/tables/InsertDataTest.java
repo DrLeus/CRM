@@ -44,7 +44,7 @@ public class InsertDataTest {
         column.add("name");
         List<Object> value = new ArrayList<>();
         value.add("pupkin");
-        when(table.manager.getColumnNames("test","")).thenReturn(column);
+        when(table.manager.getColumnNames("test")).thenReturn(column);
 
         //when
         command.process();
@@ -65,7 +65,7 @@ public class InsertDataTest {
         verify(view).write("Please select table\n");
         verify(view).write("Return to main menu!\n");
         verify(manager).getTableNames();
-        verify(manager, atLeast(2)).getColumnNames("test","");
+        verify(manager, atLeast(2)).getColumnNames("test");
         verify(manager).insert("test", column, value);
     }
 
@@ -84,7 +84,7 @@ public class InsertDataTest {
         column.add("name");
         List<Object> value = new ArrayList<>();
         value.add("pupkin");
-        when(table.manager.getColumnNames("test","")).thenReturn(column);
+        when(table.manager.getColumnNames("test")).thenReturn(column);
 
         //when
         command.process();

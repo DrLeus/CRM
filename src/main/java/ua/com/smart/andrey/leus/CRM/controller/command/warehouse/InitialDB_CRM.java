@@ -48,35 +48,35 @@ public class InitialDB_CRM {
         value.add("SEAL SV-25 EPDM CAT 2");
         value.add("2,04");
         value.add("22,88");
-        manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 1
+        manager.insert("goods", manager.getColumnNames("goods"), value); // goods 1
 
         value.clear();
         value.add("H77459");
         value.add("SEAL SV-40 EPDM CAT 2");
         value.add("2,35");
         value.add("25,57");
-         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 2
+         manager.insert("goods", manager.getColumnNames("goods"), value); // goods 2
 
         value.clear();
         value.add("H77484");
         value.add("SEAL SV-50 EPDM CAT 2");
         value.add("2,50");
         value.add("27,75");
-         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 3
+         manager.insert("goods", manager.getColumnNames("goods"), value); // goods 3
 
         value.clear();
         value.add("H77509");
         value.add("SEAL SV-65 EPDM CAT 2");
         value.add("4,00");
         value.add("30,59");
-         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 4
+         manager.insert("goods", manager.getColumnNames("goods"), value); // goods 4
 
         value.clear();
         value.add("H77539");
         value.add("SEAL SV-80 EPDM CAT 2");
         value.add("5,99");
         value.add("42,56");
-         manager.insert("goods", manager.getColumnNames("goods",""), value); // goods 5
+         manager.insert("goods", manager.getColumnNames("goods"), value); // goods 5
         
         
         // create table STOCKBALANCE with data
@@ -92,12 +92,12 @@ public class InitialDB_CRM {
         value.clear();
         value.add("50");
         value.add(3);
-        manager.insert("stockbalance", manager.getColumnNames("stockbalance",""), value);
+        manager.insert("stockbalance", manager.getColumnNames("stockbalance"), value);
 
         value.clear();
         value.add("20");
         value.add(4);
-        manager.insert("stockbalance", manager.getColumnNames("stockbalance",""), value);
+        manager.insert("stockbalance", manager.getColumnNames("stockbalance"), value);
 
 
         // create table SUPPLIERS with data
@@ -117,35 +117,35 @@ public class InitialDB_CRM {
         value.add("Niels Raevsager");
         value.add("+48 3300 000 000");
         value.add("Denmark, Kolding");
-        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+        manager.insert("suppliers", manager.getColumnNames("suppliers"), value);
 
         value.clear();
         value.add("SPX Silkiborg");
         value.add("Conni Dones");
         value.add("+48 430 000 000");
         value.add("Denmark, Silkiborg");
-        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+        manager.insert("suppliers", manager.getColumnNames("suppliers"), value);
 
         value.clear();
         value.add("SPX Unna");
         value.add("Isabelle Teillere");
         value.add("+44 00 000 000");
         value.add("Germany, Unna");
-        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+        manager.insert("suppliers", manager.getColumnNames("suppliers"), value);
 
         value.clear();
         value.add("SPX Bydgosh");
         value.add("Katarzyna Drozden");
         value.add("+42 00 000 000");
         value.add("Poland, Bydgosh");
-        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+        manager.insert("suppliers", manager.getColumnNames("suppliers"), value);
 
         value.clear();
         value.add("SPX Hungary");
         value.add("Molnar Mols");
         value.add("+45 00 000 000");
         value.add("Hungary, Budapesht");
-        manager.insert("suppliers", manager.getColumnNames("suppliers",""), value);
+        manager.insert("suppliers", manager.getColumnNames("suppliers"), value);
 
         // create table transport_operators
 
@@ -164,7 +164,7 @@ public class InitialDB_CRM {
         value.add("Alex Dumin");
         value.add("+38 044 111 11 11");
         value.add("Kiev, Solomenka");
-        manager.insert("transport", manager.getColumnNames("transport",""), value);
+        manager.insert("transport", manager.getColumnNames("transport"), value);
 
 
         value.clear();
@@ -172,14 +172,14 @@ public class InitialDB_CRM {
         value.add("Inna Krug");
         value.add("+38 044 333 33 33");
         value.add("Kiev, Darnica");
-        manager.insert("transport", manager.getColumnNames("transport",""), value);
+        manager.insert("transport", manager.getColumnNames("transport"), value);
 
         value.clear();
         value.add("SAT");
         value.add("Alan Juret");
         value.add("+38 044 222 22 22");
         value.add("Kiev, Borshchagovka");
-        manager.insert("transport", manager.getColumnNames("transport",""), value);
+        manager.insert("transport", manager.getColumnNames("transport"), value);
 
         // create table Employee
 
@@ -200,7 +200,7 @@ public class InitialDB_CRM {
         value.add("director");
         value.add("accountant");
         value.add("+38 050 111 11 11");
-        manager.insert("employee", manager.getColumnNames("employee",""), value);
+        manager.insert("employee", manager.getColumnNames("employee"), value);
 
         value.clear();
         value.add("Inna");
@@ -208,7 +208,7 @@ public class InitialDB_CRM {
         value.add("chief account");
         value.add("accountant");
         value.add("+38 050 222 22 22");
-        manager.insert("employee", manager.getColumnNames("employee",""), value);
+        manager.insert("employee", manager.getColumnNames("employee"), value);
 
         value.clear();
         value.add("Valentin");
@@ -216,7 +216,7 @@ public class InitialDB_CRM {
         value.add("service manager");
         value.add("-");
         value.add("+38 050 333 33 33");
-        manager.insert("employee", manager.getColumnNames("employee",""), value);
+        manager.insert("employee", manager.getColumnNames("employee"), value);
 
         value.clear();
         value.add("Yana");
@@ -224,6 +224,6 @@ public class InitialDB_CRM {
         value.add("assistance");
         value.add("-");
         value.add("+38 050 444 44 44");
-        manager.insert("employee", manager.getColumnNames("employee",""), value);
+        manager.insert("employee", manager.getColumnNames("employee"), value);
     }
 }

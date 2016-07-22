@@ -26,14 +26,14 @@ public class UpdateDate extends Command {
 
         List<Object> columnNames;
         try {
-            columnNames = manager.getColumnNames(tableName, "");
+            columnNames = manager.getColumnNames(tableName);
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get column names in case - %s%n", e));
         }
 
         try {
-            outputColumnNames(columnNames, getFormatedLine(columnNames, manager.getTableData(tableName, "")));
-            outputData(columnNames, manager.getTableData(tableName, ""), getFormatedLine(columnNames, manager.getTableData(tableName, "")));
+            outputColumnNames(columnNames, getFormatedLine(columnNames, manager.getTableData(tableName)));
+            outputData(columnNames, manager.getTableData(tableName), getFormatedLine(columnNames, manager.getTableData(tableName)));
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get table data in case - %s%n", e));
         }

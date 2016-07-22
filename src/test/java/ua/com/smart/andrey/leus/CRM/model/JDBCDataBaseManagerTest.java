@@ -46,7 +46,7 @@ public class JDBCDataBaseManagerTest {
 
         manager.createTable(TABLE_NAME, listColumn);
 
-        list = manager.getColumnNames(TABLE_NAME,"");
+        list = manager.getColumnNames(TABLE_NAME);
 
         newData.clear();
         newData.add("H77435");
@@ -76,7 +76,7 @@ public class JDBCDataBaseManagerTest {
 
         //when
         manager.clear(TABLE_NAME);
-        List<Object> tests = manager.getTableData(TABLE_NAME, "");
+        List<Object> tests = manager.getTableData(TABLE_NAME);
 
         //then
         assertEquals(expected, tests);
@@ -212,7 +212,7 @@ public class JDBCDataBaseManagerTest {
         List<String> expected = new ArrayList<>(Arrays.asList("id","code", "name", "price"));
 
         //when
-        List<Object> actual = manager.getColumnNames(TABLE_NAME, "");
+        List<Object> actual = manager.getColumnNames(TABLE_NAME);
 
         //then
         assertEquals(expected, actual);
@@ -252,7 +252,7 @@ public class JDBCDataBaseManagerTest {
 //        manager.insert(TABLE_NAME, newData, list);
 
         //then
-        List<Object> user = manager.getTableData(TABLE_NAME, "");
+        List<Object> user = manager.getTableData(TABLE_NAME);
         assertEquals(newData, user);
     }
 
@@ -265,7 +265,7 @@ public class JDBCDataBaseManagerTest {
         expected.add("SV Flap 25");
         expected.add("24,00");
 
-        List<Object> list = manager.getColumnNames(TABLE_NAME,"");
+        List<Object> list = manager.getColumnNames(TABLE_NAME);
         manager.insert(TABLE_NAME, list, newData);
 
         //when
@@ -278,7 +278,7 @@ public class JDBCDataBaseManagerTest {
         manager.update(TABLE_NAME, list, 1, updateData);
 
         //then
-        List<Object> user = manager.getTableData(TABLE_NAME, "");
+        List<Object> user = manager.getTableData(TABLE_NAME);
         assertEquals(expected, user);
     }
 }

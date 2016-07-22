@@ -44,9 +44,8 @@ public class ConnectTest {
     @Test
     public void testProcess() throws CRMException {
         //when
-        when(view.read()).thenReturn(config.getDatabaseName());
-        when(view.read()).thenReturn(config.getUserName());
-        when(view.read()).thenReturn(config.getUserPassword());
+        when(view.read()).thenReturn(config.getDatabaseName()).thenReturn(config.getUserName())
+                .thenReturn(config.getUserPassword());
         command.process();
 
         //then

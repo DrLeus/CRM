@@ -21,8 +21,12 @@ public class DeleteData extends Command {
         }
 
         try {
-            outputColumnNames(manager.getColumnNames(tableName, ""), getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); // TODO duplicate getTableData
-            outputData(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""), getFormatedLine(manager.getColumnNames(tableName, ""), manager.getTableData(tableName, ""))); //TODO duplicate getTableData
+            outputColumnNames(manager.getColumnNames(tableName), getFormatedLine(manager.getColumnNames(tableName),
+                    manager.getTableData(tableName)));
+            outputData(manager.getColumnNames(tableName), manager.getTableData(tableName),
+                    getFormatedLine(manager.getColumnNames(tableName), manager.getTableData(tableName)));
+            // TODO duplicate getTableData
+
         } catch (CRMException e) {
             throw new CRMException(String.format("Error in case - %s%n", e));
         }

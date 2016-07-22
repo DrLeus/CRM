@@ -6,6 +6,7 @@ import ua.com.smart.andrey.leus.CRM.model.DataBaseManager;
 import ua.com.smart.andrey.leus.CRM.view.View;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,7 +41,7 @@ public class Writeoff extends Command {
 
         List<Object> currentValue = null;
         try {
-            currentValue = manager.getTableData("", sql);
+            currentValue = manager.getTableData(sql);
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get table data in case - %s%n", e));
         }
@@ -64,7 +65,7 @@ public class Writeoff extends Command {
             int id = (new BigDecimal(String.valueOf(currentValue.get(0)))).intValue();
 
             try {
-                manager.update(tableName, manager.getColumnNames(tableName, ""), id, list);
+                manager.update(tableName, manager.getColumnNames(tableName), id, list);
                 view.write("The goods was wrote off! Success!\n");
             } catch (CRMException e) {
                 throw new CRMException(String.format("Error update data in case - %s%n", e));
@@ -72,5 +73,49 @@ public class Writeoff extends Command {
         } else {
             view.write("\n Oops...The quantity of goods on warehouse less than you want to writeoff!\n");
         }
+    }
+
+    public List<Object> selectGoodsAndQty(View view) throws CRMException {
+
+        List<Object> list = new ArrayList<>();
+
+        list.add(0, "");
+
+        while (true) {
+            try {
+                view.write("Please input id of goods:\n");
+
+                String input = view.read();
+
+                if (checkExit(input)) {
+                    list.clear();
+                    return list;
+                }
+
+                list.add(1, Integer.parseInt(input));
+                break;
+            } catch (NumberFormatException e) {
+                view.write(INCORRECT_INPUT_TRY_AGAIN);
+            }
+        }
+
+        while (true) {
+            try {
+                view.write("Please input quantity of goods:\n");
+
+                String input = view.read();
+
+                if (checkExit(input)) {
+                    list.clear();
+                    return list;
+                }
+
+                list.set(0, Integer.parseInt(input));
+                break;
+            } catch (NumberFormatException e) {
+                view.write(INCORRECT_INPUT_TRY_AGAIN);
+            }
+        }
+        return list;
     }
 }

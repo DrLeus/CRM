@@ -44,7 +44,7 @@ public class UpdateDataTest {
         column.add("name");
         List<Object> value = new ArrayList<>();
         value.add("pupkin");
-        when(table.manager.getColumnNames("test","")).thenReturn(column);
+        when(table.manager.getColumnNames("test")).thenReturn(column);
 
         //when
         command.process();
@@ -66,7 +66,7 @@ public class UpdateDataTest {
         verify(view).write("Please select row id to update:\n");
         verify(view).write("Return to main menu!\n");
         verify(manager).getTableNames();
-        verify(manager).getColumnNames("test","");
+        verify(manager).getColumnNames("test");
         verify(manager).update("test", column, 1, value);
     }
 }

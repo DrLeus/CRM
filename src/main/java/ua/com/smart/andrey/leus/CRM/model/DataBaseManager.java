@@ -32,9 +32,9 @@ public interface DataBaseManager {
 
     List<String> getTableNames() throws CRMException;
 
-    List<Object> getTableData(String tableName, String query) throws CRMException;
+    List<Object> getTableData(String query) throws CRMException;
 
-    List<Object> getColumnNames(String tableName, String query) throws CRMException;
+    List<Object> getColumnNames(String query) throws CRMException;
 }
 
 

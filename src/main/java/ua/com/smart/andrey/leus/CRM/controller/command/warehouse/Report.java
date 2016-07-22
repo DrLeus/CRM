@@ -31,14 +31,14 @@ public class Report extends Command {
 
         List<Object> listValue;
         try {
-            listValue = manager.getTableData("", sql);
+            listValue = manager.getTableData(sql);
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get table data in case - %s%n", e));
         }
 
         List<Object> listColumnName;
         try {
-            listColumnName = manager.getColumnNames("", sql);
+            listColumnName = manager.getColumnNames(sql);
         } catch (CRMException e) {
             throw new CRMException(String.format("Error get column names in case - %s%n", e));
         }

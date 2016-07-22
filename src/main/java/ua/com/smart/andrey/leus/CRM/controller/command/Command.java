@@ -125,9 +125,9 @@ public abstract class Command {
                     break;
                 }
 
-                for (String sert : tables) {
-                    if (input.equals(sert)) {
-                        return sert;
+                for (String nameTables : tables) {
+                    if (input.equals(nameTables)) {
+                        return nameTables;
                     }
                 }
 
@@ -144,47 +144,5 @@ public abstract class Command {
         return tableName;
     }
 
-    public List<Object> selectGoodsAndQty(View view) throws CRMException {
 
-        List<Object> list = new ArrayList<>();
-
-        list.add(0, "");
-
-        while (true) {
-            try {
-                view.write("Please input id of goods:\n");
-
-                String input = view.read();
-
-                if (checkExit(input)) {
-                    list.clear();
-                    return list;
-                }
-
-                list.add(1, Integer.parseInt(input));
-                break;
-            } catch (NumberFormatException e) {
-                view.write(INCORRECT_INPUT_TRY_AGAIN);
-            }
-        }
-
-        while (true) {
-            try {
-                view.write("Please input quantity of goods:\n");
-
-                String input = view.read();
-
-                if (checkExit(input)) {
-                    list.clear();
-                    return list;
-                }
-
-                list.set(0, Integer.parseInt(input));
-                break;
-            } catch (NumberFormatException e) {
-                view.write(INCORRECT_INPUT_TRY_AGAIN);
-            }
-        }
-        return list;
-    }
 }

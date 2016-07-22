@@ -189,11 +189,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getTableData(String tableName, String query) throws CRMException {
+    public List<Object> getTableData(String query) throws CRMException {
 
         String sql;
-        if (query.isEmpty()) {
-            sql = String.format("SELECT * FROM public.%s ORDER BY id", tableName);
+        if (!query.startsWith("SELECT")) {
+            sql = String.format("SELECT * FROM public.%s ORDER BY id", query);
         } else {
             sql = query + " ORDER BY id";
         }
@@ -228,10 +228,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getColumnNames(String tableName, String query) throws CRMException {
+    public List<Object> getColumnNames(String query) throws CRMException {
+
         String sql;
-        if (query.isEmpty()) {
-            sql = String.format("SELECT * FROM public.%s", tableName);
+        if (!query.startsWith("SELECT")) {
+            sql = String.format("SELECT * FROM public.%s", query);
         } else {
             sql = query;
         }
