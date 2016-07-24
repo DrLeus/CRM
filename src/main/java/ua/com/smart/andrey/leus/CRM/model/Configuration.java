@@ -2,12 +2,10 @@ package ua.com.smart.andrey.leus.CRM.model;
 
 import ua.com.smart.andrey.leus.CRM.controller.Main;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.PropertyConfigurator;
 
 public class Configuration {
 

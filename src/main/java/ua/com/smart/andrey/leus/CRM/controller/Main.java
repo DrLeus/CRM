@@ -7,13 +7,12 @@ import ua.com.smart.andrey.leus.CRM.model.DataBaseManager;
 import ua.com.smart.andrey.leus.CRM.model.JDBCDataBaseManager;
 import ua.com.smart.andrey.leus.CRM.view.Console;
 import org.apache.log4j.Logger;
+import ua.com.smart.andrey.leus.CRM.view.View;
 
 
 public class Main {
 
-
     private static Logger logger = Logger.getLogger(Main.class);
-
 
     public static void main(String[] argv) throws Exception {
 
@@ -21,7 +20,7 @@ public class Main {
         conf.init();
 
         DataBaseManager manager = new JDBCDataBaseManager();
-        Console view = new Console();
+        View view = new Console();
 
         SelectedModule select = new SelectedModule(manager, view);
 
