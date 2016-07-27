@@ -1,5 +1,6 @@
 package ua.com.smart.andrey.leus.CRM.model;
 
+import org.apache.log4j.PropertyConfigurator;
 import ua.com.smart.andrey.leus.CRM.controller.Main;
 
 import java.io.IOException;
@@ -14,7 +15,9 @@ public class Configuration {
     public Configuration() {
         try {
             properties = new Properties();
-            InputStream is = Main.class.getClassLoader().getResourceAsStream("resource/config/sqlcmd.properties");
+            PropertyConfigurator.configure(properties);
+            InputStream is = Main.class.getClassLoader().getResourceAsStream("\"C:\\JavaCourse\\CRM\\src\\main\\resource\\config\\sqlcmd.properties\"");
+//            InputStream is = Main.class.getClassLoader().getResourceAsStream("resource/config/sqlcmd.properties");
             properties.load(is);
             is.close();
         } catch (IOException e) {
