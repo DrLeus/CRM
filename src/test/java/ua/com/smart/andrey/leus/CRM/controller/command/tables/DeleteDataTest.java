@@ -19,14 +19,13 @@ public class DeleteDataTest {
 
     private View view;
     private DataBaseManager manager;
-    private Command command;
     private Command table;
 
     @Before
     public void setup() {
         view = mock(Console.class);
         manager = mock(JDBCDataBaseManager.class);
-        command = new DeleteData(manager, view);
+        table = new DeleteData(manager, view);
     }
 
     @Test
@@ -34,33 +33,34 @@ public class DeleteDataTest {
 
         //given
         table = new DeleteData(manager, view);
-        when(view.read()).thenReturn("4").thenReturn("1").thenReturn("Y").thenReturn("8").thenReturn("exit");
+        when(view.read()).thenReturn("1").thenReturn("Y").thenReturn("8").thenReturn("exit");
         List<String> list = new ArrayList<>();
         list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
-        when(table.selectTable(list, view)).thenReturn("test");
+        when(table.selectTable(list, view)).thenReturn("1");
         List<Object> column = new ArrayList<>();
         column.add("id");
         column.add("name");
         when(table.manager.getColumnNames("test")).thenReturn(column);
 
         //when
-        command.process();
+        table.process();
 
         //then
-        verify(view, atLeast(2)).write("Available operations:\n" +
-                "1. Get table data\n" +
-                "2. Insert data (position)\n" +
-                "3. Update data (position)\n" +
-                "4. Delete data (position)\n" +
-                "5. Create table\n" +
-                "6. Remove table\n" +
-                "7. Clear table\n" +
-                "8. Return to main menu\n");
+//        verify(view, atLeast(2)).write("Available operations:\n" +
+//                "1. Get table data\n" +
+//                "2. Insert data (position)\n" +
+//                "3. Update data (position)\n" +
+//                "4. Delete data (position)\n" +
+//                "5. Create table\n" +
+//                "6. Remove table\n" +
+//                "7. Clear table\n" +
+//                "8. Return to main menu\n");
 
-        verify(view, atLeast(2)).write("Please select operation:\n");
+//        verify(view, atLeast(2)).write("Please select operation:\n");
 
         verify(view).write("Please input 'id' line to delete\n");
+        verify(view).write("Database has next tables:\n");
         verify(view).write("Return to main menu!\n");
         verify(manager).getTableNames();
         verify(manager, atLeast(2)).getColumnNames("test");
@@ -83,7 +83,7 @@ public class DeleteDataTest {
         when(table.manager.getColumnNames("test")).thenReturn(column);
 
         //when
-        command.process();
+        table.process();
 
         //then
         verify(view, atLeast(2)).write("Available operations:\n" +
@@ -119,7 +119,7 @@ public class DeleteDataTest {
         column.add("name");
 
         //when
-        command.process();
+        table.process();
 
         //then
         verify(view, atLeast(2)).write("Available operations:\n" +
@@ -154,7 +154,7 @@ public class DeleteDataTest {
         when(table.manager.getColumnNames("test")).thenReturn(column);
 
         //when
-        command.process();
+        table.process();
 
         //then
         verify(view, atLeast(2)).write("Available operations:\n" +

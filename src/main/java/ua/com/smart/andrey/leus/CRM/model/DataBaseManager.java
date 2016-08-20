@@ -1,6 +1,5 @@
 package ua.com.smart.andrey.leus.CRM.model;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface DataBaseManager {

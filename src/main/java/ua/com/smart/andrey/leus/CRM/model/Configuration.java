@@ -3,6 +3,8 @@ package ua.com.smart.andrey.leus.CRM.model;
 import org.apache.log4j.PropertyConfigurator;
 import ua.com.smart.andrey.leus.CRM.controller.Main;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -10,59 +12,79 @@ import java.util.Properties;
 
 public class Configuration {
 
+    private static final String SQL_PROPERTIES_FILE = "src/main/resource/config/sqlcmd.properties";
+
     private Properties properties;
 
+    private String driver;
+    private String serverName;
+    private String port;
+    private String classDriver;
+    private String databaseName;
+    private String userName;
+    private String userPassword;
+    private String databaseNameCRM;
+    private String databaseNameTemp;
+    private String databaseNameTempNew;
+
+
     public Configuration() {
-        try {
-            properties = new Properties();
-            PropertyConfigurator.configure(properties);
-            InputStream is = Main.class.getClassLoader().getResourceAsStream("\"C:\\JavaCourse\\CRM\\src\\main\\resource\\config\\sqlcmd.properties\"");
-//            InputStream is = Main.class.getClassLoader().getResourceAsStream("resource/config/sqlcmd.properties");
-            properties.load(is);
-            is.close();
-        } catch (IOException e) {
-            System.out.println("Problem loading sqlDB properties");
-            e.printStackTrace();
+        properties = new Properties();
+        File file = new File(SQL_PROPERTIES_FILE);
+        try (FileInputStream fileInput = new FileInputStream(file)) {
+            properties.load(fileInput);
+            driver = properties.getProperty("database.jdbc.driver");
+            serverName = properties.getProperty("database.server.name");
+            port = properties.getProperty("database.port");
+            classDriver = properties.getProperty("database.class.driver");
+            databaseName = properties.getProperty("database.name");
+            userName = properties.getProperty("database.user.name");
+            userPassword = properties.getProperty("database.user.password");
+            databaseNameCRM = properties.getProperty("database.name.CRM");
+            databaseNameTemp = properties.getProperty("database.name.temp");
+            databaseNameTempNew = properties.getProperty("database.name.temp.new");
+        } catch (Exception e) {
+                System.err.println("Loading error properties from file");
         }
     }
 
     public String getClassDriver() {
-        return properties.getProperty("database.class.driver");
+        return classDriver;
     }
 
     public String getServerName() {
-        return properties.getProperty("database.server.name");
+        return serverName;
     }
 
     public String getDatabaseName() {
-        return properties.getProperty("database.name");
+        return databaseName;
     }
 
     public String getDatabaseNameCRM() {
-        return properties.getProperty("database.name.CRM");
+        return databaseNameCRM;
     }
 
     public String getDatabaseNameTemp() {
-        return properties.getProperty("database.name.temp");
+        return databaseNameTemp;
     }
 
     public String getDatabaseNameTempNew() {
-        return properties.getProperty("database.name.temp.new");
+        return databaseNameTempNew;
     }
 
     public String getPort() {
-        return properties.getProperty("database.port");
+        return port;
     }
 
     public String getDriver() {
-        return properties.getProperty("database.jdbc.driver");
+        return driver;
     }
 
     public String getUserName() {
-        return properties.getProperty("database.user.name");
+        return userName;
     }
 
     public String getUserPassword() {
-        return properties.getProperty("database.user.password");
+        return userPassword;
     }
 }
