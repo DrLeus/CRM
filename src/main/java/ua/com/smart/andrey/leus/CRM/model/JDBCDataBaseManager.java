@@ -60,7 +60,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws CRMException {
+    public void update(String tableName, List<String> columnNames, int id, List<Object> list) throws CRMException {
 
         for (int i = 1; i < columnNames.size(); i++) {
 
@@ -76,7 +76,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void insert(String tableName, List<Object> columnTable, List<Object> value) throws CRMException {
+    public void insert(String tableName, List<String> columnTable, List<Object> value) throws CRMException {
 
         String columns = " (";
         for (int i = 1; i < columnTable.size(); i++) {
@@ -228,7 +228,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public List<Object> getColumnNames(String query) throws CRMException {
+    public List<String> getColumnNames(String query) throws CRMException {
 
         String sql;
         if (!query.startsWith("SELECT")) {
@@ -237,7 +237,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
             sql = query;
         }
 
-        List<Object> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
 
         Connection connection = null;
         PreparedStatement ps = null;

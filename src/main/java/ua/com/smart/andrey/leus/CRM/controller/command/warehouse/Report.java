@@ -36,7 +36,7 @@ public class Report extends Command {
             throw new CRMException(String.format("Error get table data in case - %s%n", e));
         }
 
-        List<Object> listColumnName;
+        List<String> listColumnName;
         try {
             listColumnName = manager.getColumnNames(sql);
         } catch (CRMException e) {

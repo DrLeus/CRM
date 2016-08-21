@@ -35,14 +35,14 @@ public abstract class Command {
         return false;
     }
 
-    public void outputColumnNames(List<Object> listColumnName, String formatedLine) {
+    public void outputColumnNames(List<String> listColumnName, String formatedLine) {
         System.out.println(String.format(formatedLine, listColumnName.toArray()));
     }
 
-    public void outputData(List<Object> listColumnName, List<Object> listValue, String result) {
+    public void outputData(List<String> listColumnName, List<Object> listValue, String result) {
         try {
             do {
-                outputColumnNames(listValue, result);
+                outputColumnNames(listColumnName, result);
                 for (int i = 0; i < listColumnName.size(); i++) {
                     listValue.remove(0);
                 }
@@ -53,7 +53,7 @@ public abstract class Command {
         }
     }
 
-    public String getFormatedLine(List<Object> listColumnName, List<Object> listValue) {
+    public String getFormatedLine(List<String> listColumnName, List<Object> listValue) {
         String result = "";
 
         for (int i = 0; i < listColumnName.size(); i++) {
@@ -63,7 +63,7 @@ public abstract class Command {
         return result;
     }
 
-    private int getWidthColumn(int i, List<Object> listColumnName, List<Object> listValue) {
+    private int getWidthColumn(int i, List<String> listColumnName, List<Object> listValue) {
 
         int result = (String.valueOf(listColumnName.get(i))).length();
 

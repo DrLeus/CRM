@@ -24,7 +24,7 @@ public class UpdateDate extends Command {
             return;
         }
 
-        List<Object> columnNames;
+        List<String> columnNames;
         try {
             columnNames = manager.getColumnNames(tableName);
         } catch (CRMException e) {

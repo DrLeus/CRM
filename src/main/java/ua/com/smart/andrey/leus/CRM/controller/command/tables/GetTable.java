@@ -24,7 +24,7 @@ public class GetTable extends Command {
             return;
         }
 
-        List<Object> listColumnName;
+        List<String> listColumnName;
         try {
             listColumnName = manager.getColumnNames(tableName);
         } catch (CRMException e) {

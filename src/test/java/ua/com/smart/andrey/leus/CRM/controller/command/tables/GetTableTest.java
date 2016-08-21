@@ -42,7 +42,7 @@ public class GetTableTest {
         list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list,view)).thenReturn("test");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("name");
         when(table.manager.getColumnNames("test")).thenReturn(column);
         List<Object> value = new ArrayList<>();
@@ -80,7 +80,7 @@ public class GetTableTest {
         list.add("");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list, view)).thenReturn("");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("name");
         when(table.manager.getColumnNames("test")).thenReturn(column);
         List<Object> value = new ArrayList<>();

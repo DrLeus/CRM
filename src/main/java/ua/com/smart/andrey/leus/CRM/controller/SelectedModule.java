@@ -9,8 +9,8 @@ import ua.com.smart.andrey.leus.CRM.view.Console;
 import ua.com.smart.andrey.leus.CRM.view.View;
 
 public class SelectedModule {
-    DataBaseManager manager;
-    View view;
+   private DataBaseManager manager;
+    private View view;
 
     public SelectedModule(DataBaseManager manager, View view) {
        this.manager = manager;

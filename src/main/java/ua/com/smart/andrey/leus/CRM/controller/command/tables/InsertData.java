@@ -23,8 +23,8 @@ public class InsertData extends Command {
             view.write("Your action canceled!\n");
             return;}
 
-        List<Object> listColumnName;
-        List<Object> columnTable;
+        List<String> listColumnName;
+        List<String> columnTable;
         List<Object> list;
 
         try {

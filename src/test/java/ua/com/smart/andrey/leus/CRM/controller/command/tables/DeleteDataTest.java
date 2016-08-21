@@ -38,7 +38,7 @@ public class DeleteDataTest {
         list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list, view)).thenReturn("1");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("id");
         column.add("name");
         when(table.manager.getColumnNames("test")).thenReturn(column);
@@ -77,7 +77,7 @@ public class DeleteDataTest {
         list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list, view)).thenReturn("test");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("id");
         column.add("name");
         when(table.manager.getColumnNames("test")).thenReturn(column);
@@ -148,7 +148,7 @@ public class DeleteDataTest {
         list.add("");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list, view)).thenReturn("");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("id");
         column.add("name");
         when(table.manager.getColumnNames("test")).thenReturn(column);

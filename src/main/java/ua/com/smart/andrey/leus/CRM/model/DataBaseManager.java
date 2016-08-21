@@ -21,9 +21,9 @@ public interface DataBaseManager {
     void clear(String tableName) throws CRMException;
 
 
-    void insert(String tableName, List<Object> columnTable, List<Object> value) throws CRMException;
+    void insert(String tableName, List<String> columnTable, List<Object> value) throws CRMException;
 
-    void update(String tableName, List<Object> columnNames, int id, List<Object> list) throws CRMException;
+    void update(String tableName, List<String> columnNames, int id, List<Object> list) throws CRMException;
 
     void delete(int id, String taleName) throws CRMException;
 
@@ -34,7 +34,7 @@ public interface DataBaseManager {
 
     List<Object> getTableData(String query) throws CRMException;
 
-    List<Object> getColumnNames(String query) throws CRMException;
+    List<String> getColumnNames(String query) throws CRMException;
 }
 
 

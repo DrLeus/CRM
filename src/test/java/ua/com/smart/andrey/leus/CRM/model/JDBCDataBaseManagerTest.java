@@ -19,7 +19,7 @@ public class JDBCDataBaseManagerTest {
     private final static String NOT_EXIST_TABLE = "notExistTable";
 
     private static Map<String, String> listColumn = new LinkedHashMap<>();
-    private static List<Object> list = new ArrayList<>();
+    private static List<String> list = new ArrayList<>();
     private static List<Object> newData = new ArrayList<>();
 
     private static DataBaseManager manager;
@@ -211,7 +211,7 @@ public class JDBCDataBaseManagerTest {
         List<String> expected = new ArrayList<>(Arrays.asList("id","code", "name", "price"));
 
         //when
-        List<Object> actual = manager.getColumnNames(TABLE_NAME);
+        List<String> actual = manager.getColumnNames(TABLE_NAME);
 
         //then
         assertEquals(expected, actual);
@@ -270,7 +270,7 @@ public class JDBCDataBaseManagerTest {
         expected.add("SV Flap 25");
         expected.add("24");
 
-        List<Object> list = manager.getColumnNames(TABLE_NAME);
+        List<String> list = manager.getColumnNames(TABLE_NAME);
         manager.insert(TABLE_NAME, list, newData);
 
         //when

@@ -39,7 +39,7 @@ public class InsertDataTest {
         list.add("test");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list, view)).thenReturn("test");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("id");
         column.add("name");
         List<Object> value = new ArrayList<>();
@@ -79,7 +79,7 @@ public class InsertDataTest {
         list.add("");
         when(table.manager.getTableNames()).thenReturn(list);
         when(table.selectTable(list, view)).thenReturn("");
-        List<Object> column = new ArrayList<>();
+        List<String> column = new ArrayList<>();
         column.add("id");
         column.add("name");
         List<Object> value = new ArrayList<>();
