@@ -4,9 +4,7 @@ import ua.com.smart.andrey.leus.CRM.model.CRMException;
 import ua.com.smart.andrey.leus.CRM.model.DataBaseManager;
 import ua.com.smart.andrey.leus.CRM.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.MissingFormatArgumentException;
+import java.util.*;
 
 public abstract class Command {
 
@@ -28,7 +26,6 @@ public abstract class Command {
     public abstract boolean canProcess(String command) throws CRMException;
 
     public abstract void process() throws CRMException;
-
 
 
     public boolean checkExit(String input) {
@@ -80,25 +77,34 @@ public abstract class Command {
         return result + 2;
     }
 
-    public List<Object> inputNames(View view) throws CRMException {
+    public Map<String, String> inputNames(View view) throws CRMException {
 
-        List<Object> list = new ArrayList<>();
+        Map<String, String> list = new LinkedHashMap<>();
 
-        String input;
+        String inputKey;
+        String inputValue;
         do {
 
             view.write("Please input name for next column\n");
 
-            input = view.read();
+            inputKey = view.read();
 
-            if (checkExit(input)) {
+            if (checkExit(inputKey)) {
                 list.clear();
                 return list;
             }
 
-            list.add(input);
+            view.write("Please input type for column " + inputKey + "\n");
 
-        } while (!input.isEmpty());
+            inputValue = view.read();
+
+            if (checkExit(inputValue)) {
+                list.clear();
+                return list;
+            }
+            list.put(inputKey, inputValue);
+
+        } while (!inputKey.isEmpty());
 
         return list;
     }

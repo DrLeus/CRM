@@ -15,6 +15,11 @@
                     <td></td>
                     <td><input type="submit" value="create"/></td>
                 </tr>
+                <td></td>
+                <td>
+                    <a href="menu">menu</a><br>
+                </td>
+                </tr>
             </table>
         </form>
     </body>

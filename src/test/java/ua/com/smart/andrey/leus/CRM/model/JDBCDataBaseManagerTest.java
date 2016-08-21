@@ -18,7 +18,7 @@ public class JDBCDataBaseManagerTest {
     private final static String TABLE_NAME = "test";
     private final static String NOT_EXIST_TABLE = "notExistTable";
 
-    private static List<Object> listColumn = new ArrayList<>();
+    private static Map<String, String> listColumn = new LinkedHashMap<>();
     private static List<Object> list = new ArrayList<>();
     private static List<Object> newData = new ArrayList<>();
 
@@ -39,10 +39,9 @@ public class JDBCDataBaseManagerTest {
         manager.connect(DATABASE_NAME_TEMP, DB_USER, DB_PASSWORD);
 
         listColumn.clear();
-        listColumn.add("code TEXT");
-        listColumn.add("name TEXT");
-        listColumn.add("price TEXT");
-        listColumn.add("");
+        listColumn.put("code", "TEXT");
+        listColumn.put("name", "TEXT");
+        listColumn.put("price", "INTEGER");
 
         manager.createTable(TABLE_NAME, listColumn);
 
@@ -51,7 +50,7 @@ public class JDBCDataBaseManagerTest {
         newData.clear();
         newData.add("H77435");
         newData.add("SV Flap");
-        newData.add("12,00");
+        newData.add("12");
     }
 
     @After
@@ -160,7 +159,7 @@ public class JDBCDataBaseManagerTest {
         String query = "testTable(qwerty)";
 
         //when
-        List <Object> list = new ArrayList<>();
+        Map <String, String> list = new LinkedHashMap<>();
         manager.createTable(query, list);
     }
 
@@ -235,7 +234,13 @@ public class JDBCDataBaseManagerTest {
         //given
         //when
         //then
-        manager.insert(NOT_EXIST_TABLE, listColumn, newData);
+        List list = new ArrayList();
+
+        for (Map.Entry<String, String> pair : listColumn.entrySet()) {
+            list.add(pair.getKey());
+        }
+
+        manager.insert(NOT_EXIST_TABLE, list, newData);
     }
 
     @Test
@@ -263,7 +268,7 @@ public class JDBCDataBaseManagerTest {
         expected.add(new BigDecimal(1));
         expected.add("H77445");
         expected.add("SV Flap 25");
-        expected.add("24,00");
+        expected.add("24");
 
         List<Object> list = manager.getColumnNames(TABLE_NAME);
         manager.insert(TABLE_NAME, list, newData);
@@ -273,7 +278,7 @@ public class JDBCDataBaseManagerTest {
         List<Object> updateData = new ArrayList<>();
         updateData.add("H77445");
         updateData.add("SV Flap 25");
-        updateData.add("24,00");
+        updateData.add("24");
 
         manager.update(TABLE_NAME, list, 1, updateData);
 

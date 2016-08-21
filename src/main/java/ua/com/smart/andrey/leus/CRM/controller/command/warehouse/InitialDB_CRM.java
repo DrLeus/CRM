@@ -1,11 +1,11 @@
 package ua.com.smart.andrey.leus.CRM.controller.command.warehouse;
 
+import ua.com.smart.andrey.leus.CRM.controller.Main;
 import ua.com.smart.andrey.leus.CRM.model.CRMException;
 import ua.com.smart.andrey.leus.CRM.model.Configuration;
 import ua.com.smart.andrey.leus.CRM.model.DataBaseManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class InitialDB_CRM {
 
@@ -34,13 +34,12 @@ public class InitialDB_CRM {
 
         // create table GOODS with date
 
-        List<Object> listColumns = new ArrayList<>();
+        Map<String, String> listColumns = new LinkedHashMap<>();
 
-        listColumns.add("code TEXT");
-        listColumns.add("name TEXT");
-        listColumns.add("net_price TEXT");
-        listColumns.add("customer_price TEXT");
-        listColumns.add("");
+        listColumns.put("code", "TEXT");
+        listColumns.put("name", "TEXT");
+        listColumns.put("net_price", "TEXT");
+        listColumns.put("customer_price", "TEXT");
         manager.createTable("goods", listColumns);
 
         List<Object> value = new ArrayList<>();
@@ -84,9 +83,8 @@ public class InitialDB_CRM {
         manager.dropTable("stockbalance");
 
         listColumns.clear();
-        listColumns.add("quantity TEXT");
-        listColumns.add("id_goods NUMERIC REFERENCES goods(id)");
-        listColumns.add("");
+        listColumns.put("quantity", "TEXT");
+        listColumns.put("id_goods", "NUMERIC REFERENCES goods(id)");
         manager.createTable("stockbalance",listColumns);
 
         value.clear();
@@ -105,11 +103,10 @@ public class InitialDB_CRM {
         manager.dropTable("suppliers");
 
         listColumns.clear();
-        listColumns.add("name TEXT");
-        listColumns.add("respon_person TEXT");
-        listColumns.add("phone TEXT");
-        listColumns.add("address TEXT");
-        listColumns.add("");
+        listColumns.put("name", "TEXT");
+        listColumns.put("respon_person", "TEXT");
+        listColumns.put("phone", "TEXT");
+        listColumns.put("address", "TEXT");
         manager.createTable("suppliers",listColumns);
 
         value.clear();
@@ -152,11 +149,10 @@ public class InitialDB_CRM {
         manager.dropTable("transport");
 
         listColumns.clear();
-        listColumns.add("name TEXT");
-        listColumns.add("respon_person TEXT");
-        listColumns.add("phone TEXT");
-        listColumns.add("address TEXT");
-        listColumns.add("");
+        listColumns.put("name", "TEXT");
+        listColumns.put("respon_person", "TEXT");
+        listColumns.put("phone", "TEXT");
+        listColumns.put("address", "TEXT");
         manager.createTable("transport",listColumns);
 
         value.clear();
@@ -186,12 +182,11 @@ public class InitialDB_CRM {
         manager.dropTable("employee");
 
         listColumns.clear();
-        listColumns.add("name TEXT");
-        listColumns.add("surname TEXT");
-        listColumns.add("position TEXT");
-        listColumns.add("past_position TEXT");
-        listColumns.add("phone TEXT");
-        listColumns.add("");
+        listColumns.put("name", "TEXT");
+        listColumns.put("surname", "TEXT");
+        listColumns.put("position", "TEXT");
+        listColumns.put("past_position", "TEXT");
+        listColumns.put("phone", "TEXT");
         manager.createTable("employee",listColumns);
 
         value.clear();

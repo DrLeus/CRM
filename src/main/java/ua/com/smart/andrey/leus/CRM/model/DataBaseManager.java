@@ -1,6 +1,7 @@
 package ua.com.smart.andrey.leus.CRM.model;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DataBaseManager {
 
@@ -13,7 +14,7 @@ public interface DataBaseManager {
     boolean isConnected() throws CRMException;
 
 
-    void createTable(String tableName, List<Object> listColumn) throws CRMException;
+    void createTable(String tableName, Map<String,String> listColumn) throws CRMException;
 
     void dropTable(String tableName) throws CRMException;
 

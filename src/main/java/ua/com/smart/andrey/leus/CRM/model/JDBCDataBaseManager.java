@@ -29,12 +29,14 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
-    public void createTable(String tableName, List<Object> listColumn) throws CRMException {
+    public void createTable(String tableName, Map<String, String> columns) throws CRMException {
 
+        dropSequnce(tableName); //TODO delete
+        dropTable(tableName);//TODO delete
         createSequence(tableName);
 
         String sql = String.format("CREATE TABLE %s(id NUMERIC NOT NULL DEFAULT nextval('%s_seq'::regclass), CONSTRAINT " +
-                "%s_pkey PRIMARY KEY(id), %s", tableName, tableName, tableName, getFormatedLine(listColumn));
+                "%s_pkey PRIMARY KEY(id), %s", tableName, tableName, tableName, getFormatedLine(columns));
         executeUpdate(sql);
     }
 
@@ -42,15 +44,13 @@ public class JDBCDataBaseManager implements DataBaseManager {
         executeUpdate("CREATE SEQUENCE public." + tableName + "_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
     }
 
-    private String getFormatedLine(List<Object> listColumn) {
+    private String getFormatedLine(Map<String, String> columns) {
 
         String result = "";
-
-        for (int i = 0; i < listColumn.size(); i++) {
-            result += listColumn.get(i) + " NOT NULL, ";
+        for (Map.Entry<String, String> pair : columns.entrySet()) {
+            result += String.format(" %s %s NOT NULL,", pair.getKey(), pair.getValue());
         }
-
-        result = result.substring(0, result.length() - 13) + ")";
+        result = result.substring(0, result.length()-1) + ")";
         return result;
     }
 

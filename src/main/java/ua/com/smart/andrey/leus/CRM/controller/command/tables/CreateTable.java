@@ -6,6 +6,7 @@ import ua.com.smart.andrey.leus.CRM.model.DataBaseManager;
 import ua.com.smart.andrey.leus.CRM.view.View;
 
 import java.util.List;
+import java.util.Map;
 
 public class CreateTable extends Command {
 
@@ -32,7 +33,7 @@ public class CreateTable extends Command {
         view.write("Please input name of columns and type (for ex. TEXT; for column 'name' must be 'name TEXT')\n" +
                 "The first column = 'id' with auto-increment\n");
 
-        List<Object> listColumn = inputNames(view);
+        Map<String,String> listColumn = inputNames(view);
 
         if (listColumn.isEmpty()) {
             return;

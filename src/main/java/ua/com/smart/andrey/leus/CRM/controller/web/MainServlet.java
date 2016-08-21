@@ -4,6 +4,10 @@ import ua.com.smart.andrey.leus.CRM.service.Service;
 import ua.com.smart.andrey.leus.CRM.service.ServiceImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +31,7 @@ public class MainServlet extends HttpServlet {
         String action = getAction(req);
 
         if (action.startsWith("/menu") || action.equals("/")) {
-            req.setAttribute("items", service.commandsList());
+            req.setAttribute("items", service.commandsListMenu());
             req.getRequestDispatcher("menu.jsp").forward(req, resp);
         } else if (action.startsWith("/help")) {
             req.getRequestDispatcher("help.jsp").forward(req, resp);
@@ -36,10 +40,19 @@ public class MainServlet extends HttpServlet {
         } else if (action.startsWith("/createDB")) {
             req.getRequestDispatcher("createDB.jsp").forward(req, resp);
         } else if (action.startsWith("/dropDB")) {
+            req.setAttribute("items", service.listDB());
             req.getRequestDispatcher("dropDB.jsp").forward(req, resp);
-        } else if (action.startsWith("/selectDB")) {
-            req.setAttribute("items", service.selectDB());
-            req.getRequestDispatcher("selectDB.jsp").forward(req, resp);
+        } else if (action.startsWith("/listDB")) {
+            req.setAttribute("items", service.listDB());
+            req.getRequestDispatcher("listDB.jsp").forward(req, resp);
+        } else if (action.startsWith("/catalog")) {
+            req.setAttribute("items", service.commandsListCatalog());
+            req.getRequestDispatcher("catalog.jsp").forward(req, resp);
+        } else if (action.startsWith("/createTable")) {
+            req.getRequestDispatcher("createTable.jsp").forward(req, resp);
+        } else if (action.startsWith("/exit")) {
+            req.getRequestDispatcher("exit.jsp").forward(req, resp);
+//            System.exit(0);
         } else {
             req.getRequestDispatcher("error.jsp").forward(req, resp);
         }
@@ -71,6 +84,15 @@ public class MainServlet extends HttpServlet {
             } else if (action.startsWith("/dropDB")) {
                 String databaseName = req.getParameter("dbname");
                 service.dropDB(databaseName);
+                resp.sendRedirect(resp.encodeRedirectURL("menu"));
+
+            } else if (action.startsWith("/createTable")) {
+                String tablename = req.getParameter("tablename");
+                Map<String, String> column = new LinkedHashMap<>();
+                column.put(req.getParameter("column1"), req.getParameter("type1"));
+                column.put(req.getParameter("column2"), req.getParameter("type2"));
+                column.put(req.getParameter("column3"), req.getParameter("type3"));
+                service.createTable(tablename, column);
                 resp.sendRedirect(resp.encodeRedirectURL("menu"));
             }
 
