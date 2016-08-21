@@ -4,21 +4,18 @@
         <title>SQLCmd</title>
     </head>
     <body>
-    Существующие команды:<br>
-        connect|databaseName|userName|password<br>
-            для подключения к базе данных, с которой будем работать<br>
-        tables<br>
-            для получения списка всех таблиц базы, к которой подключились<br>
-        clear|tableName<br>
-            для очистки всей таблицы<br>
-        create|tableName|column1|value1|column2|value2|...|columnN|valueN<br>
-            для создания записи в таблице<br>
-        find|tableName<br>
-            для получения содержимого таблицы tableName<br>
-        help<br>
-            для вывода этого списка на экран<br>
-        exit<br>
-            для выхода из программы<br>
+    This programme provides next commands:<br>
+        - 'connect' - connect to database<br>
+        - 'list' - get list of databases;<br>
+        - 'create' - create new database;<br>
+        - 'drop' - delete the database;<br>
+        - 'catalog' - get contain of tables (for example information about 'goods';<br>
+            -- in this partition you can: <br>
+            --- add, update or delete rows and columns;<br>
+            --- add, delete, clear table;<br>
+    <br>
+        - 'help' - get list of commands.<br>
+        - 'exit' - escape from programme or return to main menu.\n";
         You can goto <a href="menu">Menu</a><br>
     </body>
 </html>
