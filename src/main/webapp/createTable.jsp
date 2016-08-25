@@ -14,20 +14,23 @@
                 <tr>
                     <td>Input name for column1</td>
                     <td><input type="text" name="column1"/></td>
+                    <td>type</td>
                     <td><input type="text" name="type1"/></td>
                 </tr>
 
                 <tr>
                     <td>Input name for column2</td>
                     <td><input type="text" name="column2"/></td>
-                    <td><input type="text" name="type1"/></td>
+                    <td>type</td>
+                    <td><input type="text" name="type2"/></td>
                 </tr>
 
 
                 <tr>
                     <td>Input name for column3</td>
                     <td><input type="text" name="column3"/></td>
-                    <td><input type="text" name="type1"/></td>
+                    <td>type</td>
+                    <td><input type="text" name="type3"/></td>
                 </tr>
 
 

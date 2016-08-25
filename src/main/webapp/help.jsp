@@ -15,7 +15,7 @@
             --- add, delete, clear table;<br>
     <br>
         - 'help' - get list of commands.<br>
-        - 'exit' - escape from programme or return to main menu.\n";
+        - 'exit' - escape from programme or return to main menu.\n";<br>
         You can goto <a href="menu">Menu</a><br>
     </body>
 </html>

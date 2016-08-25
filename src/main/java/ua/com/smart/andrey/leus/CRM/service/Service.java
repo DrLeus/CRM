@@ -18,4 +18,16 @@ public interface Service {
     List<String> listDB();
 
     void createTable(String tableName, Map<String, String> listColumn);
+
+    void clearTable(String tableName);
+
+    List<String> getListTables();
+
+    void removeTable(String tableName);
+
+    List<String> getColumnNames(String tableName);
+
+    List<Object> getTableData(String tableName);
+
+    void insertData(String tableName, String value1, String value2, String value3 );
 }

@@ -4,9 +4,7 @@ import ua.com.smart.andrey.leus.CRM.service.Service;
 import ua.com.smart.andrey.leus.CRM.service.ServiceImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -50,6 +48,18 @@ public class MainServlet extends HttpServlet {
             req.getRequestDispatcher("catalog.jsp").forward(req, resp);
         } else if (action.startsWith("/createTable")) {
             req.getRequestDispatcher("createTable.jsp").forward(req, resp);
+        } else if (action.startsWith("/clearTable")) {
+            req.setAttribute("items", service.getListTables());
+            req.getRequestDispatcher("removeTable.jsp").forward(req, resp);
+        } else if (action.startsWith("/removeTable")) {
+            req.setAttribute("items", service.getListTables());
+            req.getRequestDispatcher("removeTable.jsp").forward(req, resp);
+        } else if (action.startsWith("/getTable")) {
+            req.setAttribute("items", service.getListTables());
+            req.getRequestDispatcher("selectTable.jsp").forward(req, resp);
+        } else if (action.startsWith("/insertData")) {
+            req.setAttribute("items", service.getListTables());
+            req.getRequestDispatcher("insertData.jsp").forward(req, resp);
         } else if (action.startsWith("/exit")) {
             req.getRequestDispatcher("exit.jsp").forward(req, resp);
 //            System.exit(0);
@@ -93,6 +103,30 @@ public class MainServlet extends HttpServlet {
                 column.put(req.getParameter("column2"), req.getParameter("type2"));
                 column.put(req.getParameter("column3"), req.getParameter("type3"));
                 service.createTable(tablename, column);
+                resp.sendRedirect(resp.encodeRedirectURL("menu"));
+
+            } else if (action.startsWith("/clearTable")) {
+                String tableName = req.getParameter("tablename");
+                service.clearTable(tableName);
+                resp.sendRedirect(resp.encodeRedirectURL("menu"));
+
+            } else if (action.startsWith("/removeTable")) {
+                String tableName = req.getParameter("tablename");
+                service.removeTable(tableName);
+                resp.sendRedirect(resp.encodeRedirectURL("menu"));
+
+            } else if (action.startsWith("/selectTable")) {
+                String tableName = req.getParameter("tablename");
+                req.setAttribute("columns", service.getColumnNames(tableName));
+                req.setAttribute("data", service.getTableData(tableName));
+                req.getRequestDispatcher("getTable.jsp").forward(req, resp);
+
+            } else if (action.startsWith("/insertData")) {
+                String tableName = req.getParameter("tablename");
+                String value1 = req.getParameter("value1");
+                String value2 = req.getParameter("value2");
+                String value3 = req.getParameter("value3");
+                service.insertData(tableName, value1, value2, value3);
                 resp.sendRedirect(resp.encodeRedirectURL("menu"));
             }
 
